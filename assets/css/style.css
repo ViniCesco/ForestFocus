@@ -658,29 +658,39 @@ header p {
 }
 
 /* ========================================
-   12. RESPONSIVIDADE MOBILE OTIMIZADA (COM MENU RECOLHÍVEL)
+   12. RESPONSIVIDADE MOBILE OTIMIZADA
 ======================================== */
 
 @media (max-width: 768px) {
-  /* ... (mantenha suas regras de .container e .main-content aqui) ... */
+  .container {
+    flex-direction: column;
+  }
 
-  .sidebar {
+  .main-content {
+    padding: 15px; 
+    padding-top: 85px; 
     width: 100%;
-    padding: 15px;
-    border-right: none;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    position: sticky;
-    top: 0;
-    z-index: 999;
-    background: #1e1e2f; 
     box-sizing: border-box;
   }
 
-  .sidebar h2 {
-    display: none; /* Esconde o título fixo para economizar espaço no mobile */
+  .sidebar {
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 12px 15px;
+    border-right: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    z-index: 9999;
+    background: #1e1e2f; 
+    box-sizing: border-box;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3); 
   }
 
-  /* Estilo do botão de expansão do menu */
+  .sidebar h2 {
+    display: none; 
+  }
+
   .menu-toggle {
     display: flex !important;
     justify-content: space-between;
@@ -703,26 +713,26 @@ header p {
     color: #a78bfa;
   }
 
-  /* Oculta as opções de navegação por padrão no mobile */
+  
   .sidebar nav {
     display: none !important; 
     grid-template-columns: repeat(2, 1fr); 
     gap: 10px;
     width: 100%;
     margin-top: 10px;
+    max-height: 70vh; 
+    overflow-y: auto; 
   }
 
-  /* TRUQUE CSS: Quando o botão ou a própria barra recebe o clique/foco, o menu abre! */
+
   .sidebar:focus-within nav {
     display: grid !important;
   }
 
-  /* Rotaciona a seta para baixo "▼" quando o menu estiver aberto */
   .sidebar:focus-within .menu-toggle .menu-icon {
     transform: rotate(90deg);
   }
 
-  /* Estilização interna dos links do menu */
   .sidebar a, 
   .sidebar nav a {
     font-size: 13px;
@@ -750,10 +760,7 @@ header p {
     display: none !important;
   }
 
-  /* ... (mantenha o restante das suas regras do @media: .cards, .task-input, etc) ... */
 }
-
-/* Oculta o botão de menu nas telas de Computador/Desktop */
 @media (min-width: 769px) {
   .menu-toggle {
     display: none !important;
