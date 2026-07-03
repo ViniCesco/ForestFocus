@@ -233,3 +233,20 @@ function setupEnterKey() {
 loadGoals();
 renderGoals();
 setupEnterKey();
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    const sidebar = document.querySelector(".sidebar");
+    const button = document.querySelector(".menu-toggle");
+    const main = document.querySelector(".main-content");
+
+    if (!sidebar || !button || !main) return;
+
+    button.addEventListener("click", () => {
+
+        sidebar.classList.toggle("open");
+        main.classList.toggle("menu-expanded");
+
+    });
+
+});

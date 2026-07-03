@@ -658,113 +658,353 @@ header p {
 }
 
 /* ========================================
-   12. RESPONSIVIDADE MOBILE OTIMIZADA
+   12. RESPONSIVIDADE MOBILE
 ======================================== */
 
-@media (max-width: 768px) {
-  .container {
-    flex-direction: column;
-  }
+@media (max-width:768px){
 
-  .main-content {
-    padding: 15px; 
-    padding-top: 85px; 
-    width: 100%;
-    box-sizing: border-box;
-  }
+/*=========================
+CONTAINER
+=========================*/
 
-  .sidebar {
-    position: fixed !important;
-    top: 0;
-    left: 0;
-    width: 100%;
-    padding: 12px 15px;
-    border-right: none;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    z-index: 9999;
-    background: #1e1e2f; 
-    box-sizing: border-box;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3); 
-  }
+.container{
+    flex-direction:column;
+}
 
-  .sidebar h2 {
-    display: none; 
-  }
+.main-content{
+    width:100%;
+    box-sizing:border-box;
+    padding:15px;
+    padding-top:90px;
+    transition:.35s;
+}
 
-  .menu-toggle {
-    display: flex !important;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    padding: 12px 15px;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 8px;
-    color: #fff;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-    box-sizing: border-box;
-  }
+.main-content.menu-expanded{
+    padding-top:520px;
+}
 
-  .menu-toggle .menu-icon {
-    transition: transform 0.3s ease;
-    font-size: 14px;
-    color: #a78bfa;
-  }
+/*=========================
+SIDEBAR
+=========================*/
 
-  
-  .sidebar nav {
-    display: none !important; 
-    grid-template-columns: repeat(2, 1fr); 
-    gap: 10px;
-    width: 100%;
-    margin-top: 10px;
-    max-height: 70vh; 
-    overflow-y: auto; 
-  }
+.sidebar{
 
+    position:fixed;
 
-  .sidebar:focus-within nav {
-    display: grid !important;
-  }
+    top:0;
 
-  .sidebar:focus-within .menu-toggle .menu-icon {
-    transform: rotate(90deg);
-  }
+    left:0;
 
-  .sidebar a, 
-  .sidebar nav a {
-    font-size: 13px;
-    display: flex !important;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    padding: 12px 8px;
-    background: rgba(255, 255, 255, 0.03);
-    border-radius: 8px;
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    text-align: center;
-    text-decoration: none;
-    margin: 0 !important;
-    box-sizing: border-box;
-    color: #fff;
-  }
+    width:100%;
 
-  .sidebar nav a[href*="youtube.com"] {
-    border: 1px solid rgba(16, 185, 129, 0.3) !important;
-    background: rgba(16, 185, 129, 0.05) !important;
-  }
+    background:#1e1e2f;
 
-  .sidebar nav::after {
-    display: none !important;
-  }
+    border-right:none;
+
+    border-bottom:1px solid rgba(255,255,255,.05);
+
+    padding:15px;
+
+    z-index:9999;
+
+    box-sizing:border-box;
 
 }
-@media (min-width: 769px) {
-  .menu-toggle {
-    display: none !important;
-  }
+
+/*=========================
+ESCONDE O TÍTULO
+=========================*/
+
+.sidebar h2{
+
+    display:none;
+
+}
+
+/*=========================
+BOTÃO
+=========================*/
+
+.menu-toggle{
+
+    display:flex !important;
+
+    width:100%;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    background:none;
+
+    border:none;
+
+    color:#fff;
+
+    font-size:20px;
+
+    font-weight:700;
+
+    cursor:pointer;
+
+    padding:0;
+
+}
+
+/*=========================
+SETA
+=========================*/
+
+.menu-icon{
+
+    transition:.3s;
+
+    color:#a78bfa;
+
+    font-size:18px;
+
+}
+
+/*=========================
+MENU FECHADO
+=========================*/
+
+.sidebar nav{
+
+    display:flex;
+
+    flex-direction:column;
+
+    overflow:hidden;
+
+    max-height:0;
+
+    transition:max-height .35s ease;
+
+    gap:10px;
+
+    margin-top:0;
+
+}
+
+/*=========================
+MENU ABERTO
+=========================*/
+
+.sidebar.open nav{
+
+    max-height:600px;
+
+    margin-top:20px;
+
+}
+
+.sidebar.open .menu-icon{
+
+    transform:rotate(180deg);
+
+}
+
+/*=========================
+LINKS
+=========================*/
+
+.sidebar a{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:flex-start;
+
+    width:100%;
+
+    padding:14px 18px;
+
+    border-radius:10px;
+
+    text-decoration:none;
+
+    background:rgba(255,255,255,.04);
+
+    border:1px solid rgba(255,255,255,.05);
+
+    color:#fff;
+
+    font-size:15px;
+
+    transition:.25s;
+
+    box-sizing:border-box;
+
+}
+
+.sidebar a:hover{
+
+    background:rgba(255,255,255,.08);
+
+}
+
+.sidebar nav a[href*="youtube"]{
+
+    border-color:rgba(16,185,129,.35);
+
+    background:rgba(16,185,129,.05);
+
+}
+
+/*=========================
+HEADER
+=========================*/
+
+header{
+
+    display:flex !important;
+
+    flex-direction:column !important;
+
+    align-items:flex-start !important;
+
+    gap:15px;
+
+    margin-bottom:25px;
+
+}
+
+header h1{
+
+    font-size:24px;
+
+}
+
+header p{
+
+    font-size:14px;
+
+}
+
+/*=========================
+CARDS
+=========================*/
+
+.cards{
+
+    display:grid;
+
+    grid-template-columns:1fr;
+
+    gap:15px;
+
+}
+
+.card{
+
+    padding:20px;
+
+}
+
+.card-wide{
+
+    grid-column:span 1;
+
+}
+
+.card-dash{
+
+    min-height:120px;
+
+}
+
+/*=========================
+TASK INPUT
+=========================*/
+
+.task-input{
+
+    flex-direction:column;
+
+    gap:10px;
+
+}
+
+.task-input input,
+.task-input button,
+.task-input select,
+#taskCategory,
+#taskPriority{
+
+    width:100%;
+
+    box-sizing:border-box;
+
+}
+
+/*=========================
+LISTAS
+=========================*/
+
+#taskList li,
+#financeHistory li{
+
+    flex-direction:column;
+
+    align-items:flex-start;
+
+    gap:12px;
+
+    padding:12px;
+
+}
+
+.task-actions{
+
+    width:100%;
+
+    justify-content:flex-end;
+
+}
+
+/*=========================
+PLANTA
+=========================*/
+
+#plantStage{
+
+    font-size:42px;
+
+}
+
+#treeCounter,
+#levelText{
+
+    font-size:24px;
+
+}
+
+.avatar-circle{
+
+    width:70px;
+
+    height:70px;
+
+    font-size:36px;
+
+}
+
+}
+
+/*=================================
+DESKTOP
+=================================*/
+
+@media(min-width:769px){
+
+.menu-toggle{
+
+display:none !important;
+
+}
+
 }
 
 /* ========================================
