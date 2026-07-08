@@ -1382,6 +1382,7 @@ header p {
         box-sizing: border-box;
         padding: 15px;
         padding-top: 90px;
+        padding-bottom: 120px !important; /* Margem de segurança para os botões fixos */
         transition: .35s;
     }
 
@@ -1504,13 +1505,17 @@ header p {
         justify-content: flex-end;
     }
 
-    .cards {
-        grid-template-columns: 1fr;
-        gap: 15px;
+    /* Resolução do problema 2: Desgrudar os cards (Dashboard, Energia, etc.) */
+    .cards, .main-content > div, .energy-section {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 20px !important; 
     }
 
-    .card {
+    .card, [class*="card"], .mood-tracker, .finance-card {
         padding: 20px;
+        margin-bottom: 5px !important;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
     }
 
     .calendar-header {
@@ -1551,16 +1556,8 @@ header p {
         align-self: flex-end;
     }
 
-    .pomodoro-pet img {
-        width: 170px;
-    }
-
     #timer {
         font-size: 50px;
-    }
-
-    #athenaStatus {
-        font-size: 18px;
     }
 
     .pomodoro-buttons {
@@ -1578,5 +1575,48 @@ header p {
     #musicPanel {
         width: 300px;
     }
-}
 
+    /* Resolução do problema 1: Correção estrutural da Assistente Athena */
+    .pomodoro-pet {
+        position: fixed !important;
+        bottom: 25px !important;
+        left: 20px !important;
+        z-index: 9999 !important;
+        background: #1e1e2f !important;
+        border: 2px solid #a78bfa !important;
+        border-radius: 50% !important;
+        width: 75px !important;
+        height: 75px !important;
+        padding: 0 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5) !important;
+        overflow: hidden !important;
+        touch-action: manipulation !important;
+    }
+
+    .pomodoro-pet img {
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: cover !important;
+    }
+
+    #athenaStatus, .pomodoro-pet + div, [id*="message"] {
+        position: fixed !important;
+        bottom: 110px !important;
+        left: 20px !important;
+        z-index: 9998 !important;
+        background: #1e1e2f !important;
+        border: 1px solid #2d2d44 !important;
+        border-radius: 12px !important;
+        padding: 12px !important;
+        max-width: 260px !important;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4) !important;
+        box-sizing: border-box !important;
+    }
+
+    .pomodoro-pet p, .pomodoro-pet h3, #athenaStage {
+        display: none !important;
+    }
+}
