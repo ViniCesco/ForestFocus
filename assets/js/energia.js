@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
+
     let moodLogs = JSON.parse(localStorage.getItem("forestMoodLogs")) || [];
     let archivedMonths = JSON.parse(localStorage.getItem("forestMoodArchive")) || {};
     let selectedMood = null;
@@ -13,6 +14,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const archivedMonthList = document.getElementById("archivedMonthList");
     const moodChartContainer = document.getElementById("moodChartContainer");
     const monthFilter = document.getElementById("monthFilter");
+    const sidebar = document.querySelector(".sidebar");
+    const menuButton = document.querySelector(".menu-toggle");
+    const mainContent = document.querySelector(".main-content");
 
     const moodConfig = {
         "Ultra Focado": { emoji: "⚡", class: "bar-ultra" },
@@ -28,12 +32,21 @@ document.addEventListener("DOMContentLoaded", () => {
         "09": "Setembro", "10": "Outubro", "11": "Novembro", "12": "Dezembro"
     };
 
+    const getLocalDateStr = () => {
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = String(now.getMonth() + 1).padStart(2, '0');
+        const day = String(now.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    };
+
     const getCurrentMonthKey = () => {
         const now = new Date();
         return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
     };
 
     function formatMonthLabel(key) {
+        if (!key) return "";
         const [year, month] = key.split("-");
         return `${monthNames[month] || month} ${year}`;
     }
@@ -60,6 +73,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function updateFilterOptions() {
+        if (!monthFilter) return;
         const currentSelected = monthFilter.value;
         monthFilter.innerHTML = '<option value="">Selecione um mês anterior...</option>';
         
@@ -74,8 +88,11 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function createHistoryItemHTML(log) {
-        const [, month, day] = log.date.split("-");
+        const parts = log.date.split("-");
+        const day = parts[2] || "00";
+        const month = parts[1] || "00";
         const config = moodConfig[log.mood] || { emoji: "📝" };
+        
         return `
             <div class="mood-history-main">
                 <span style="font-size: 20px;">${config.emoji}</span>
@@ -99,54 +116,8 @@ document.addEventListener("DOMContentLoaded", () => {
         return toggleBtn;
     }
 
-    moodButtons.forEach(button => {
-        button.addEventListener("click", () => {
-            moodButtons.forEach(btn => btn.classList.remove("selected"));
-            button.classList.add("selected");
-            selectedMood = button.dataset.mood;
-        });
-    });
-
-    moodNoteInput.addEventListener("keydown", (event) => {
-        if (event.key === "Enter") {
-            event.preventDefault();
-            saveMoodButton.click();
-        }
-    });
-
-    saveMoodButton.addEventListener("click", () => {
-        if (!selectedMood) {
-            alert("Por favor, selecione um estado de energia antes de registrar.");
-            return;
-        }
-
-        const todayStr = new Date().toISOString().split("T")[0];
-        moodLogs = moodLogs.filter(log => log.date !== todayStr);
-
-        moodLogs.unshift({
-            date: todayStr,
-            mood: selectedMood,
-            note: moodNoteInput.value.trim()
-        });
-
-        localStorage.setItem("forestMoodLogs", JSON.stringify(moodLogs));
-        alert("✅ Estado de energia registrado!");
-        
-        moodNoteInput.value = "";
-        moodButtons.forEach(btn => btn.classList.remove("selected"));
-        selectedMood = null;
-
-        isCurrentExpanded = false;
-        updateAnalytics();
-    });
-
-    monthFilter.addEventListener("change", () => {
-        isArchiveExpanded = false;
-        renderArchiveList();
-    });
-
     function renderArchiveList() {
-        if (!archivedMonthList) return;
+        if (!archivedMonthList || !monthFilter) return;
         archivedMonthList.innerHTML = "";
         
         const selectedPeriod = monthFilter.value;
@@ -241,22 +212,64 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    updateAnalytics();
-});
-
-document.addEventListener("DOMContentLoaded", () => {
-
-    const sidebar = document.querySelector(".sidebar");
-    const button = document.querySelector(".menu-toggle");
-    const main = document.querySelector(".main-content");
-
-    if (!sidebar || !button || !main) return;
-
-    button.addEventListener("click", () => {
-
-        sidebar.classList.toggle("open");
-        main.classList.toggle("menu-expanded");
-
+    moodButtons.forEach(button => {
+        button.addEventListener("click", () => {
+            moodButtons.forEach(btn => btn.classList.remove("selected"));
+            button.classList.add("selected");
+            selectedMood = button.dataset.mood;
+        });
     });
 
+    if (moodNoteInput && saveMoodButton) {
+        moodNoteInput.addEventListener("keydown", (event) => {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                saveMoodButton.click();
+            }
+        });
+    }
+
+    if (saveMoodButton) {
+        saveMoodButton.addEventListener("click", () => {
+            if (!selectedMood) {
+                alert("Por favor, selecione um estado de energia antes de registrar.");
+                return;
+            }
+
+            const todayStr = getLocalDateStr();
+            moodLogs = moodLogs.filter(log => log.date !== todayStr);
+
+            moodLogs.unshift({
+                date: todayStr,
+                mood: selectedMood,
+                note: moodNoteInput ? moodNoteInput.value.trim() : ""
+            });
+
+            localStorage.setItem("forestMoodLogs", JSON.stringify(moodLogs));
+            alert("✅ Estado de energia registrado!");
+            
+            if (moodNoteInput) moodNoteInput.value = "";
+            moodButtons.forEach(btn => btn.classList.remove("selected"));
+            selectedMood = null;
+
+            isCurrentExpanded = false;
+            updateAnalytics();
+        });
+    }
+
+    if (monthFilter) {
+        monthFilter.addEventListener("change", () => {
+            isArchiveExpanded = false;
+            renderArchiveList();
+        });
+    }
+
+    if (menuButton && sidebar && mainContent) {
+        menuButton.addEventListener("click", () => {
+            sidebar.classList.toggle("open");
+            mainContent.classList.toggle("menu-expanded");
+        });
+    }
+
+    updateAnalytics();
 });

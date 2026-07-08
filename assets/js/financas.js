@@ -6,14 +6,14 @@ console.log("Sistema Financeiro Carregado!");
 
 let finances = [];
 let showAllFinances = false;
-let showAllMonthlyHistory = false; // Estado global para o controle de exibição do histórico acumulado
+let showAllMonthlyHistory = false; 
 
 /* ----------------------------------------------
    2. FORMATADORES E UTILITÁRIOS
 -----------------------------------------------*/
 
 
-/* Formata valores numéricos para o padrão de moeda brasileiro (R$) */
+/* Formata valores para moeda brasileira (R$) */
 function formatMoney(value) {
 
   return value.toLocaleString("pt-BR", {
@@ -22,7 +22,6 @@ function formatMoney(value) {
   });
 }
 
-/* Retorna o nome por extenso do mês com base no seu índice numérico */
 function getMonthName(month) {
   const months = [
     "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
@@ -31,7 +30,6 @@ function getMonthName(month) {
   return months[month];
 }
 
-/* Retorna um emoji representativo para cada categoria financeira disponível */
 function getCategoryIcon(category) {
   switch (category) {
     case "Salário":           return "💰";
@@ -74,7 +72,6 @@ function saveFinances() {
    4. ENTRADA DE MOVIMENTAÇÕES (AÇÕES)
 -----------------------------------------------*/
 
-/* Captura os dados do formulário e insere uma nova receita (entrada) no sistema */
 function addIncome() {
   const description = document.getElementById("financeDescription").value.trim();
   const value = Number(document.getElementById("financeValue").value);
@@ -98,7 +95,6 @@ function addIncome() {
   document.getElementById("financeCategory").selectedIndex = 0;
 }
 
-/* Captura os dados do formulário e insere uma nova despesa (saída) no sistema */
 function addExpense() {
   const description = document.getElementById("financeDescription").value.trim();
   const value = Number(document.getElementById("financeValue").value);
@@ -126,7 +122,6 @@ function addExpense() {
    5. ESTILOS E COMPONENTES DE INTERFACE
 -----------------------------------------------*/
 
-/* Atualiza dinamicamente o cabeçalho da página com o mês e o ano vigentes */
 function updateCurrentMonthTitle() {
   const title = document.getElementById("currentMonthTitle");
   if (!title) return;
@@ -135,7 +130,6 @@ function updateCurrentMonthTitle() {
   title.textContent = `📄 ${getMonthName(today.getMonth())} ${today.getFullYear()}`;
 }
 
-/* Preenche o elemento select com os meses que possuem movimentações registradas */
 function populateMonthFilter() {
   const filter = document.getElementById("monthFilter");
   if (!filter) return;
@@ -158,7 +152,6 @@ function populateMonthFilter() {
   });
 }
 
-/* Alterna o estado de exibição do histórico simplificado entre completo ou reduzido */
 function toggleFinanceHistory() {
   showAllFinances = !showAllFinances;
   const text = document.getElementById("toggleFinanceText");
@@ -178,7 +171,6 @@ function toggleFinanceHistory() {
    6. RENDERIZAÇÃO DOS LISTADOS (MÊS ATUAL)
 -----------------------------------------------*/
 
-/* Monta e renderiza a lista de lançamentos do mês atual diretamente no HTML */
 function renderFinances() {
   const financeHistory = document.getElementById("financeHistory");
   if (!financeHistory) return;
@@ -245,7 +237,6 @@ function renderFinances() {
    7. HISTÓRICO MENSAL ACUMULADO
 -----------------------------------------------*/
 
-/* Agrupa todas as movimentações por mês e constrói cartões retráteis com os detalhes */
 function renderMonthlyHistory() {
   const container = document.getElementById("monthlyHistory");
   if (!container) return;
@@ -314,7 +305,6 @@ function renderMonthlyHistory() {
     container.appendChild(card);
   });
 
-  // Remove um eventual botão duplicado antes de criar o novo
   document.getElementById("toggleMonthlyHistoryButton")?.remove();
 
   if (filteredKeys.length > 3) {
@@ -341,7 +331,6 @@ function renderMonthlyHistory() {
    8. CONTADORES FINANCEIROS (MÊS CORRENTE)
 -----------------------------------------------*/
 
-/* Calcula o somatório total de entradas e saídas do mês vigente e renderiza na tela */
 function updateFinanceSummary() {
   const today = new Date();
   const currentMonth = today.getMonth();
@@ -365,7 +354,6 @@ function updateFinanceSummary() {
   if (expenseElement) expenseElement.textContent = formatMoney(expense);
 }
 
-/* Calcula o saldo líquido restante (Receitas - Despesas) para o mês atual */
 function updateBalance() {
   const today = new Date();
   const currentMonth = today.getMonth();
@@ -389,7 +377,6 @@ function updateBalance() {
    9. CONTROLADOR CENTRAL DE ATUALIZAÇÃO
 -----------------------------------------------*/
 
-/* Gerencia a execução em cadeia de todas as funções visuais do módulo financeiro */
 function updateAllFinanceViews() {
   populateMonthFilter();
   renderFinances();
@@ -403,13 +390,11 @@ function updateAllFinanceViews() {
    10. DISPARO INICIAL
 -----------------------------------------------*/
 
-/* Carrega o banco de dados e atualiza a interface assim que a página é carregada */
 document.addEventListener("DOMContentLoaded", () => {
   loadFinances();
   updateAllFinanceViews();
 
-  // Reinicia o estado de expansão do histórico quando o filtro de seleção mudar
-  document.getElementById("monthFilter")?.addEventListener("change", () => {
+document.getElementById("monthFilter")?.addEventListener("change", () => {
     showAllMonthlyHistory = false;
     renderMonthlyHistory();
   });

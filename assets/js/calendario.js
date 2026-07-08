@@ -1,28 +1,18 @@
 // ========================================
-// CALENDÁRIO - FOREST FOCUS
+// 1. CONFIGURAÇÕES E SINALIZADORES GLOBAIS
 // ========================================
-
-// Data atual
 const today = new Date();
-
 let currentMonth = today.getMonth();
 let currentYear = today.getFullYear();
+let selectedDate = today.toISOString().split("T")[0];
+let editingEventId = null; // Declarada corretamente no escopo global
 
-// Eventos
+// Carregar Eventos do LocalStorage
 let events = JSON.parse(localStorage.getItem("forestCalendarEvents")) || [];
 
-let selectedDate = today.toISOString().split("T")[0];
-
 // ========================================
-// ELEMENTOS
+// 2. MAPEAMENTO DE ELEMENTOS DO DOM
 // ========================================
-
-const toggleCalendar =
-    document.getElementById("toggleCalendar");
-
-const calendarContainer =
-    document.getElementById("calendarContainer");
-
 const calendarGrid = document.getElementById("calendarGrid");
 const calendarTitle = document.getElementById("calendarTitle");
 
@@ -41,579 +31,296 @@ const eventCategory = document.getElementById("eventCategory");
 const eventDescription = document.getElementById("eventDescription");
 
 const addEventButton = document.getElementById("addEventButton");
-
 const eventList = document.getElementById("eventList");
 const selectedDateTitle = document.getElementById("selectedDateTitle");
 
-// ========================================
-// MESES
-// ========================================
-
 const months = [
-    "Janeiro",
-    "Fevereiro",
-    "Março",
-    "Abril",
-    "Maio",
-    "Junho",
-    "Julho",
-    "Agosto",
-    "Setembro",
-    "Outubro",
-    "Novembro",
-    "Dezembro"
+    "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
+    "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
 ];
 
 // ========================================
-// INICIALIZAÇÃO
+// 3. INICIALIZAÇÃO DO SISTEMA
 // ========================================
-
 updateTodayCard();
-
 updateSummaryCards();
-
 eventDate.value = selectedDate;
-
 generateCalendar();
-
 renderEvents();
 
-
 // ========================================
-// BOTÕES
+// 4. OUVINTES DE EVENTOS (LISTENERS)
 // ========================================
-
 prevMonthBtn.addEventListener("click", () => {
-
     currentMonth--;
-
     if (currentMonth < 0) {
-
         currentMonth = 11;
         currentYear--;
-
     }
-
     generateCalendar();
-
 });
 
 nextMonthBtn.addEventListener("click", () => {
-
     currentMonth++;
-
     if (currentMonth > 11) {
-
         currentMonth = 0;
         currentYear++;
-
     }
-
     generateCalendar();
-
 });
 
 todayBtn.addEventListener("click", () => {
-
     currentMonth = today.getMonth();
     currentYear = today.getFullYear();
-
     generateCalendar();
-
 });
 
 addEventButton.addEventListener("click", addEvent);
 
+// Torna as funções globais para funcionarem com os atributos `onclick` e `onchange` do HTML dinâmico
+window.toggleEvent = toggleEvent;
+window.editEvent = editEvent;
+window.deleteEvent = deleteEvent;
+
+// ========================================
+// 5. FUNÇÕES AUXILIARES DE FORMATAÇÃO
+// ========================================
 function formatDateBR(dateString) {
-
     const [year, month, day] = dateString.split("-");
-
     return `${day}/${month}/${year}`;
-
 }
-
-// ========================================
-// CARD HOJE
-// ========================================
 
 function updateTodayCard() {
-
     todayCard.textContent = today.toLocaleDateString("pt-BR");
-
 }
-// 
 
+// ========================================
+// 6. ATUALIZAÇÃO DOS CARDS DE RESUMO
+// ========================================
 function updateSummaryCards() {
-
     // Eventos do mês atual
     const monthCount = events.filter(event => {
-
         const date = new Date(event.date + "T00:00");
-
-        return (
-            date.getMonth() === currentMonth &&
-            date.getFullYear() === currentYear
-        );
-
+        return date.getMonth() === currentMonth && date.getFullYear() === currentYear;
     }).length;
 
     monthEvents.textContent = monthCount;
 
-    // Próximo evento
+    // Próximo evento pendente
     const now = new Date();
-
     const upcoming = events
         .filter(event => new Date(event.date + "T" + (event.time || "23:59")) >= now)
-        .sort((a, b) =>
-            new Date(a.date + "T" + (a.time || "23:59")) -
-            new Date(b.date + "T" + (b.time || "23:59"))
-        );
+        .sort((a, b) => new Date(a.date + "T" + (a.time || "23:59")) - new Date(b.date + "T" + (b.time || "23:59")));
 
     if (upcoming.length > 0) {
-
-        nextEvent.textContent =
-            `${upcoming[0].title} (${formatDateBR(upcoming[0].date)})`;
-
+        nextEvent.textContent = `${upcoming[0].title} (${formatDateBR(upcoming[0].date)})`;
     } else {
-
         nextEvent.textContent = "Nenhum evento";
-
     }
-
 }
 
 // ========================================
-// GERAR CALENDÁRIO
+// 7. RENDERIZAÇÃO DO CALENDÁRIO (DIAS)
 // ========================================
-
 function generateCalendar() {
-
     calendarGrid.innerHTML = "";
+    calendarTitle.textContent = `${months[currentMonth]} ${currentYear}`;
 
-    calendarTitle.textContent =
-        `${months[currentMonth]} ${currentYear}`;
+    const firstDay = new Date(currentYear, currentMonth, 1).getDay();
+    const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+    const prevMonthDays = new Date(currentYear, currentMonth, 0).getDate();
 
-    const firstDay =
-        new Date(currentYear, currentMonth, 1).getDay();
-
-    const daysInMonth =
-        new Date(currentYear, currentMonth + 1, 0).getDate();
-
-    const prevMonthDays =
-        new Date(currentYear, currentMonth, 0).getDate();
-
-    // =============================
-    // MÊS ANTERIOR
-    // =============================
-
+    // Mês Anterior (Dias opacos)
     for (let i = firstDay; i > 0; i--) {
-
         const day = document.createElement("div");
-
-        day.className =
-            "calendar-day calendar-other-month";
-
-        day.innerHTML = `
-            <div class="calendar-day-number">
-                ${prevMonthDays - i + 1}
-            </div>
-        `;
-
+        day.className = "calendar-day calendar-other-month";
+        day.innerHTML = `<div class="calendar-day-number">${prevMonthDays - i + 1}</div>`;
         calendarGrid.appendChild(day);
-
     }
 
-    // =============================
-    // MÊS ATUAL
-    // =============================
-
+    // Mês Atual
     for (let i = 1; i <= daysInMonth; i++) {
-
         const day = document.createElement("div");
-
         day.className = "calendar-day";
 
-        const fullDate =
-            `${currentYear}-${String(currentMonth + 1).padStart(2, "0")}-${String(i).padStart(2, "0")}`;
-
+        const fullDate = `${currentYear}-${String(currentMonth + 1).padStart(2, "0")}-${String(i).padStart(2, "0")}`;
         day.dataset.date = fullDate;
 
-        if (
-
-            i === today.getDate() &&
-            currentMonth === today.getMonth() &&
-            currentYear === today.getFullYear()
-
-        ) {
-
+        if (i === today.getDate() && currentMonth === today.getMonth() && currentYear === today.getFullYear()) {
             day.classList.add("calendar-today");
-
         }
 
         day.innerHTML = `
-            <div class="calendar-day-number">
-                ${i}
-            </div>
-
+            <div class="calendar-day-number">${i}</div>
             <div class="event-dots"></div>
         `;
 
         // Destacar dia selecionado
-
         if (selectedDate === fullDate) {
-
             day.style.borderColor = "#22c55e";
-
         }
 
-        // Clique
-
+        // Evento de clique para selecionar o dia
         day.addEventListener("click", () => {
-
             selectedDate = fullDate;
-
             eventDate.value = fullDate;
-
             generateCalendar();
-
             renderEvents();
-
         });
 
-        // Bolinhas
-
+        // Adicionar bolinhas indicadoras de eventos (Limite de 4)
         const dots = day.querySelector(".event-dots");
-
         const count = events.filter(e => e.date === fullDate).length;
-
         for (let j = 0; j < Math.min(count, 4); j++) {
-
             const dot = document.createElement("div");
-
             dot.className = "event-dot";
-
             dots.appendChild(dot);
-
         }
 
         calendarGrid.appendChild(day);
-
     }
 
-    // =============================
-    // PRÓXIMO MÊS
-    // =============================
-
+    // Próximo Mês (Dias opacos para fechar a grade de 6 linhas / 42 blocos)
     while (calendarGrid.children.length < 42) {
-
         const day = document.createElement("div");
-
-        day.className =
-            "calendar-day calendar-other-month";
-
+        day.className = "calendar-day calendar-other-month";
         day.innerHTML = `
             <div class="calendar-day-number">
                 ${calendarGrid.children.length - (firstDay + daysInMonth) + 1}
             </div>
         `;
-
         calendarGrid.appendChild(day);
-
     }
-
 }
 
 // ========================================
-// ADICIONAR EVENTO
+// 8. GERENCIAMENTO DE EVENTOS (CRUD)
 // ========================================
 
-// ========================================
-// ADICIONAR / EDITAR EVENTO
-// ========================================
-
+// Adicionar ou Atualizar Evento
 function addEvent() {
-
-    // Validação
     if (!eventTitle.value.trim()) {
-
         alert("Digite um título.");
         eventTitle.focus();
         return;
-
     }
 
     if (!eventDate.value) {
-
         alert("Escolha uma data.");
         eventDate.focus();
         return;
-
     }
 
-    // =============================
-    // EDITANDO EVENTO
-    // =============================
+    const wasEditing = editingEventId !== null;
 
-    if (editingEventId !== null) {
-
+    if (wasEditing) {
         const event = events.find(e => e.id === editingEventId);
-
         if (event) {
-
             event.title = eventTitle.value;
             event.date = eventDate.value;
             event.time = eventTime.value;
             event.category = eventCategory.value;
             event.description = eventDescription.value;
-
         }
-
-    }
-
-    // =============================
-    // NOVO EVENTO
-    // =============================
-
-    else {
-
-        events.push({
-
-            id: Date.now(),
-
-            title: eventTitle.value,
-
-            date: eventDate.value,
-
-            time: eventTime.value,
-
-            category: eventCategory.value,
-
-            description: eventDescription.value,
-
-            completed: false
-
-        });
-
-    }
-
-    // Guarda se estava editando
-    const wasEditing = editingEventId !== null;
-
-    // =============================
-    // SALVA
-    // =============================
-
-    localStorage.setItem(
-        "forestCalendarEvents",
-        JSON.stringify(events)
-    );
-
-    // Mensagem
-
-    if (wasEditing) {
-
-        alert("✅ Evento atualizado com sucesso!");
-
     } else {
-
-        alert("✅ Evento adicionado com sucesso!");
-
+        events.push({
+            id: Date.now(),
+            title: eventTitle.value,
+            date: eventDate.value,
+            time: eventTime.value,
+            category: eventCategory.value,
+            description: eventDescription.value,
+            completed: false
+        });
     }
 
-    // =============================
-    // LIMPA FORMULÁRIO
-    // =============================
+    // Salvar e Resetar Estado
+    localStorage.setItem("forestCalendarEvents", JSON.stringify(events));
+    alert(wasEditing ? "✅ Evento atualizado com sucesso!" : "✅ Evento adicionado com sucesso!");
 
     editingEventId = null;
-
     addEventButton.textContent = "+ Adicionar Evento";
-
-    selectedDate = today.toISOString().split("T")[0];
-
+    
+    // Limpar formulário
     eventTitle.value = "";
-    eventDate.value = selectedDate;
     eventTime.value = "";
     eventCategory.selectedIndex = 0;
     eventDescription.value = "";
 
-    // =============================
-    // ATUALIZA TELA
-    // =============================
-
+    // Atualizar UI
     generateCalendar();
-
     renderEvents();
-
     updateSummaryCards();
-
 }
 
-// ========================================
-// RENDERIZA EVENTOS
-// ========================================
-
+// Renderizar Eventos do Dia Selecionado
 function renderEvents() {
-
-    selectedDateTitle.textContent =
-    "📅 Eventos de " + formatDateBR(selectedDate);
-
+    selectedDateTitle.textContent = "📅 Eventos de " + formatDateBR(selectedDate);
     eventList.innerHTML = "";
 
-    const dayEvents = events.filter(
-
-        event => event.date === selectedDate
-
-    );
+    const dayEvents = events.filter(event => event.date === selectedDate);
 
     if (dayEvents.length === 0) {
-
-        eventList.innerHTML = `
-
-            <div class="empty-events">
-
-                Nenhum evento para este dia.
-
-            </div>
-
-        `;
-
+        eventList.innerHTML = `<div class="empty-events">Nenhum evento para este dia.</div>`;
         return;
-
     }
 
+    // Construção acumulada em string para evitar re-renderizações excessivas do DOM
+    let listHTML = "";
     dayEvents.forEach(event => {
-
-    eventList.innerHTML += `
-
-    <div class="event-card ${event.completed ? "event-completed" : ""}">
-
-        <h3>${event.title}</h3>
-
-        <div class="event-info">
-
-            🕒 ${event.time || "--:--"}
-
+        listHTML += `
+        <div class="event-card ${event.completed ? "event-completed" : ""}">
+            <h3>${event.title}</h3>
+            <div class="event-info">🕒 ${event.time || "--:--"}</div>
+            <div class="event-info">${event.category || ""}</div>
+            <div class="event-description">${event.description || ""}</div>
+            <div class="event-actions">
+                <label>
+                    <input type="checkbox" ${event.completed ? "checked" : ""} onchange="toggleEvent(${event.id})">
+                    Concluído
+                </label>
+                <div class="event-buttons">
+                    <button class="edit-btn" onclick="editEvent(${event.id})" title="Editar">✏️</button>
+                    <button class="delete-btn" onclick="deleteEvent(${event.id})" title="Excluir">❌</button>
+                </div>
+            </div>
         </div>
-
-        <div class="event-info">
-
-            ${event.category || ""}
-
-        </div>
-
-        <div class="event-description">
-
-            ${event.description || ""}
-
-        </div>
-
-        <div class="event-actions">
-
-            <label>
-
-                <input
-                    type="checkbox"
-                    ${event.completed ? "checked" : ""}
-                    onchange="toggleEvent(${event.id})">
-
-                Concluído
-
-            </label>
-
-            <div class="event-buttons">
-
-            <button
-                class="edit-btn"
-                onclick="editEvent(${event.id})"
-                title="Editar">
-
-                ✏️
-
-            </button>
-
-            <button
-                class="delete-btn"
-                onclick="deleteEvent(${event.id})"
-                title="Excluir">
-
-                ❌
-
-            </button>
-
-        </div>
-
-        </div>
-
-    </div>
-
-    `;
-
-});
-
+        `;
+    });
+    eventList.innerHTML = listHTML;
 }
 
-// ========================================
-// EXCLUIR EVENTO
-// ========================================
-
-function deleteEvent(id){
-
-    if(!confirm("Deseja realmente excluir este evento?")){
-
-        return;
-
-    }
+// Excluir Evento
+function deleteEvent(id) {
+    if (!confirm("Deseja realmente excluir este evento?")) return;
 
     events = events.filter(e => e.id !== id);
-
-    localStorage.setItem(
-        "forestCalendarEvents",
-        JSON.stringify(events)
-    );
+    localStorage.setItem("forestCalendarEvents", JSON.stringify(events));
 
     generateCalendar();
-
     renderEvents();
-
     updateSummaryCards();
-
 }
 
-// ========================================
-// CONCLUIR EVENTO
-// ========================================
-
-function toggleEvent(id){
-
+// Alternar Estado de Conclusão
+function toggleEvent(id) {
     const event = events.find(e => e.id === id);
-
-    if(!event) return;
+    if (!event) return;
 
     event.completed = !event.completed;
-
-    localStorage.setItem(
-        "forestCalendarEvents",
-        JSON.stringify(events)
-    );
+    localStorage.setItem("forestCalendarEvents", JSON.stringify(events));
 
     generateCalendar();
-
     renderEvents();
-
     updateSummaryCards();
-
 }
 
-let editingEventId = null;
-
-function editEvent(id){
-
+// Iniciar Modo de Edição
+function editEvent(id) {
     const event = events.find(e => e.id === id);
-
-    if(!event) return;
+    if (!event) return;
 
     editingEventId = id;
-
     selectedDate = event.date;
 
     eventTitle.value = event.title;
@@ -629,8 +336,10 @@ function editEvent(id){
     updateSummaryCards();
 }
 
+// ========================================
+// 9. CONTROLE DA SIDEBAR RESPONSIVA
+// ========================================
 document.addEventListener("DOMContentLoaded", () => {
-
     const sidebar = document.querySelector(".sidebar");
     const button = document.querySelector(".menu-toggle");
     const main = document.querySelector(".main-content");
@@ -638,10 +347,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!sidebar || !button || !main) return;
 
     button.addEventListener("click", () => {
-
         sidebar.classList.toggle("open");
         main.classList.toggle("menu-expanded");
-
     });
-
 });

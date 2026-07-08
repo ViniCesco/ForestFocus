@@ -87,8 +87,6 @@ self.addEventListener("fetch", event => {
 
     }
 
-    // CSS, JS e imagens
-
     event.respondWith(
 
         caches.match(event.request)

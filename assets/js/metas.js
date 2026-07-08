@@ -59,7 +59,6 @@ function addGoal() {
   document.getElementById("goalTarget").value = "";
 }
 
-/* Exibe uma janela para o usuário somar uma quantia numérica ao progresso da meta */
 function incrementGoal(id) {
   const goal = goals.find(g => g.id === id);
   if (!goal) return;
@@ -77,7 +76,6 @@ function incrementGoal(id) {
   renderGoals();
 }
 
-/* Exibe uma janela para o usuário subtrair uma quantia numérica do progresso da meta */
 function decrementGoal(id) {
   const goal = goals.find(g => g.id === id);
   if (!goal) return;
@@ -184,7 +182,6 @@ function renderGoals() {
   document.getElementById("financialGoalsCounter").textContent = finCount;
 }
 
-/* Modifica a categoria do filtro ativo e atualiza os estilos visuais dos botões de filtro */
 function filterGoals(category) {
   currentFilter = category;
 

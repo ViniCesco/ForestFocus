@@ -14,7 +14,6 @@ function renderProfile() {
   const currentXP = parseInt(localStorage.getItem("forestXP") || "0", 10);
   const currentTrees = localStorage.getItem("forestTrees") || "0";
   const currentAvatar = localStorage.getItem("forestAvatar") || "🌱";
-  
   const nameDisplay = document.getElementById("profileNameDisplay");
   const xpDisplay = document.getElementById("profileXP");
   const treesDisplay = document.getElementById("profileTrees");

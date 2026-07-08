@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Metas - Forest Focus</title>
-  <link rel="icon" type="image/png" href="../assets/img/favicon.png">
+  <link class="favicon" type="image/png" href="../assets/img/favicon.png">
   <link rel="stylesheet" href="../assets/css/style.css">
 </head>
 <body>
@@ -14,34 +14,36 @@
     <aside class="sidebar">
       <h2>🌱 Forest Focus</h2>
 
-    <button class="menu-toggle" aria-label="Abrir menu">
-      <span>Menu</span>
-      <span class="menu-icon">▼</span>
-    </button>
+      <button class="menu-toggle" aria-label="Abrir menu">
+        <span>🌱 Forest Focus</span>
+        <span class="menu-icon">☰</span>
+      </button>
 
       <nav>
-        <a href="perfil.html">👤 Perfil</a>
-        <a href="energia.html">⚡ Energia</a>
         <a href="../index.html">🚀 Dashboard</a>
         <a href="tarefas.html">📋 Tarefas</a>
+        <a href="pomodoro.html">⏱️ Pomodoro</a>
         <a href="calendario.html">📅 Calendário</a>
-        <a href="financas.html">🪙 Finanças</a>
+        <a href="energia.html">⚡ Energia</a>
         <a href="metas.html">🎯 Metas</a>
-        <a href="https://youtu.be/IvgZ4maSn4c" target="_blank" style="margin-top: 20px; color: #ffffff; border-top: 1px solid #374151; padding-top: 15px;">
-          📻 Rádio
+        <a href="financas.html">🪙 Finanças</a>
+        <a href="perfil.html">👤 Perfil</a>
+        <a href="https://youtu.be/IvgZ4maSn4c" target="_blank" class="radio-link">
+          🎧 Focus Radio
         </a>
       </nav>
     </aside>
 
     <main class="main-content">
+      
       <header>
         <h1>🎯 Metas</h1>
         <p>Planeje seu futuro e acompanhe sua evolução.</p>
       </header>
 
-      <details class="smart-guide" style="background: #1e1e2f; padding: 15px; border-radius: 12px; margin-bottom: 25px; border: 1px solid rgba(255,255,255,0.05);">
-        <summary style="cursor: pointer; font-weight: bold; color: #a78bfa;">🧠 Método SMART!</summary>
-        <div class="smart-content" style="margin-top: 10px; display: flex; flex-direction: column; gap: 8px; color: #a0aec0; font-size: 14px;">
+      <details class="smart-guide">
+        <summary>🧠 Método SMART!</summary>
+        <div class="smart-content">
           <p><strong>S</strong> - 🎯 Specific (Específica): O que exatamente você quer alcançar?</p>
           <p><strong>M</strong> - 📊 Measurable (Mensurável): Qual o número ou métrica que define o seu sucesso?</p>
           <p><strong>A</strong> - 💪 Achievable (Atingível): A meta é realista com os seus recursos atuais?</p>
@@ -51,6 +53,7 @@
       </details>
 
       <section class="cards">
+        
         <div class="card card-dash">
           <h3>🎓 Profissionais</h3>
           <div class="card-body-center">
@@ -71,6 +74,7 @@
             <p id="financialGoalsCounter" class="dash-number">0</p>
           </div>
         </div>
+
       </section>
 
       <section class="tasks">
@@ -84,31 +88,31 @@
           </select>
 
           <input type="text" id="goalInput" placeholder="Escreva o seu objetivo...">
-          <input type="number" id="goalTarget" placeholder="Alvo numérico" style="max-width: 145px; padding: 12px; background: #1e1e2f; border: 1px solid #3d3d5c; border-radius: 8px; color: #fff;">
+          <input type="number" id="goalTarget" placeholder="Alvo numérico" class="input-target">
 
           <button onclick="addGoal()">Adicionar</button>
         </div>
       </section>
 
       <section class="tasks">
-        <div class="goal-filters" style="display: flex; gap: 10px; margin-bottom: 20px;">
-          <button onclick="filterGoals('Todas')" class="filter-btn active" style="background: #6366f1; color: #fff; border: none; padding: 6px 14px; border-radius: 20px; cursor: pointer; font-size: 13px; font-weight: 500; transition: 0.2s;">Todas</button>
-          <button onclick="filterGoals('Profissional')" class="filter-btn" style="background: #1e1e2f; color: #a0aec0; border: 1px solid #3d3d5c; padding: 6px 14px; border-radius: 20px; cursor: pointer; font-size: 13px; font-weight: 500; transition: 0.2s;">🎓 Profissional</button>
-          <button onclick="filterGoals('Pessoal')" class="filter-btn" style="background: #1e1e2f; color: #a0aec0; border: 1px solid #3d3d5c; padding: 6px 14px; border-radius: 20px; cursor: pointer; font-size: 13px; font-weight: 500; transition: 0.2s;">🏠 Pessoal</button>
-          <button onclick="filterGoals('Financeira')" class="filter-btn" style="background: #1e1e2f; color: #a0aec0; border: 1px solid #3d3d5c; padding: 6px 14px; border-radius: 20px; cursor: pointer; font-size: 13px; font-weight: 500; transition: 0.2s;">💰 Financeira</button>
+        
+        <div class="goal-filters">
+          <button onclick="filterGoals('Todas')" class="filter-btn active">Todas</button>
+          <button onclick="filterGoals('Profissional')" class="filter-btn">🎓 Profissional</button>
+          <button onclick="filterGoals('Pessoal')" class="filter-btn">🏠 Pessoal</button>
+          <button onclick="filterGoals('Financeira')" class="filter-btn">💰 Financeira</button>
         </div>
 
-        <ul id="goalList" style="display: flex; flex-direction: column; gap: 15px; padding: 0; list-style: none;"></ul>
+        <ul id="goalList"></ul>
+
       </section>
 
-      <footer class="main-footer" style="display: flex; justify-content: center; align-items: center; gap: 12px; padding: 20px 0; margin-top: 30px; border-top: 1px solid rgba(255,255,255,0.05); flex-wrap: wrap; text-align: center;">
-        <p style="margin: 0; color: #a0aec0; font-size: 14px;">
+      <footer class="main-footer">
+        <p>
           &copy; 2026 Forest Focus. Desenvolvido por <strong>CESCONETTO</strong>. Todos os direitos reservados.
-          <span style="display: inline-block; margin-left: 8px; font-size: 11px; background: rgba(99, 102, 241, 0.15); color: #818cf8; padding: 2px 8px; border-radius: 12px; font-weight: 600; border: 1px solid rgba(99, 102, 241, 0.3);">v1.0</span>
         </p>
-        
-        <a href="https://github.com/ViniCesco" target="_blank" title="Ver meu GitHub" style="display: flex; align-items: center; text-decoration: none; transition: transform 0.2s ease;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
-          <svg height="20" width="20" viewBox="0 0 16 16" fill="#6366f1" style="cursor: pointer; transition: fill 0.2s;" onmouseover="this.style.fill='#818cf8'" onmouseout="this.style.fill='#6366f1'">
+        <a href="https://github.com/ViniCesco" target="_blank" title="Ver meu GitHub">
+          <svg height="20" width="20" viewBox="0 0 16 16">
             <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path>
           </svg>
         </a>
