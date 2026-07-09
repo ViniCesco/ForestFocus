@@ -11,32 +11,26 @@ let isRunning = false;
 // ========================================
 // 2. MAPEAMENTO DE ELEMENTOS DO DOM
 // ========================================
-
-// Timer e Controles Principais
 const timer = document.getElementById("timer");
 const startButton = document.getElementById("startPomodoro");
 const pauseButton = document.getElementById("pausePomodoro");
 const resetButton = document.getElementById("resetPomodoro");
 
-// Barras de Progresso e Métricas
 const progressBar = document.getElementById("pomodoroProgress");
 const progressText = document.getElementById("progressPercent");
 const focusTime = document.getElementById("focusTime");
 
-// Mascote Virtual (Athena)
 const athenaImage = document.getElementById("athenaImage");
 const athenaStage = document.getElementById("athenaStage");
 const athenaMessage = document.getElementById("athenaMessage");
 const petCard = document.querySelector(".pomodoro-pet");
 
-// Paineis de Informação e Música
 const infoCard = document.querySelector(".pomodoro-info");
 const infoButton = document.querySelector(".pomodoro-info-toggle");
 const musicButton = document.getElementById("musicButton");
 const musicPanel = document.getElementById("musicPanel");
 const closeMusic = document.getElementById("closeMusic");
 
-// Layout Responsivo (Menu)
 const sidebar = document.querySelector(".sidebar");
 const menuButton = document.querySelector(".menu-toggle");
 const mainContent = document.querySelector(".main-content");
@@ -45,26 +39,25 @@ const mainContent = document.querySelector(".main-content");
 // 3. INICIALIZAÇÃO DO SISTEMA
 // ========================================
 document.addEventListener("DOMContentLoaded", () => {
-    // Inicializa os estados visuais
     updateTimer();
     updateProgress();
     updateAthena();
     loadFocusTime();
-    
-    // Configura os listeners dinâmicos de interface
     initInterfaceListeners();
 });
 
 // ========================================
 // 4. OUVINTES DE EVENTOS (LISTENERS)
 // ========================================
-// Controles do Cronômetro
 if (startButton) startButton.addEventListener("click", startPomodoro);
 if (pauseButton) pauseButton.addEventListener("click", pausePomodoro);
 if (resetButton) resetButton.addEventListener("click", resetPomodoro);
 
-// Atalhos de Teclado (Espaço para Start/Pause)
 document.addEventListener("keydown", (event) => {
+    if (document.activeElement.tagName === "INPUT" || document.activeElement.tagName === "TEXTAREA") {
+        return;
+    }
+
     if (event.code === "Space") {
         event.preventDefault();
         if (isRunning) {
@@ -75,7 +68,6 @@ document.addEventListener("keydown", (event) => {
     }
 });
 
-// Inicialização de Toggles de UI
 function initInterfaceListeners() {
     if (menuButton && sidebar && mainContent) {
         menuButton.addEventListener("click", () => {
@@ -117,36 +109,37 @@ function todayKey() {
     return today.toISOString().split("T")[0];
 }
 
-// Emissão de som via Web Audio API (Notificação Harmônica de Sucesso)
 function tocarSomFimCronograma() {
-    const context = new (window.AudioContext || window.webkitAudioContext)();
-    
-    // Nota 1: Tom Médio (C5)
-    const osc1 = context.createOscillator();
-    const gain1 = context.createGain();
-    osc1.type = 'triangle';
-    osc1.frequency.value = 523.25;
-    
-    osc1.connect(gain1);
-    gain1.connect(context.destination);
-    osc1.start(context.currentTime);
-    gain1.gain.setValueAtTime(0.5, context.currentTime);
-    gain1.gain.exponentialRampToValueAtTime(0.001, context.currentTime + 0.2); 
-    osc1.stop(context.currentTime + 0.2);
+    try {
+        const context = new (window.AudioContext || window.webkitAudioContext)();
+        
+        const osc1 = context.createOscillator();
+        const gain1 = context.createGain();
+        osc1.type = 'triangle';
+        osc1.frequency.value = 523.25;
+        
+        osc1.connect(gain1);
+        gain1.connect(context.destination);
+        osc1.start(context.currentTime);
+        gain1.gain.setValueAtTime(0.5, context.currentTime);
+        gain1.gain.exponentialRampToValueAtTime(0.001, context.currentTime + 0.2); 
+        osc1.stop(context.currentTime + 0.2);
 
-    // Nota 2: Tom Agudo Harmônico (E5)
-    const tempoNota2 = context.currentTime + 0.15;
-    const osc2 = context.createOscillator();
-    const gain2 = context.createGain();
-    osc2.type = 'triangle';
-    osc2.frequency.value = 659.25;
-    
-    osc2.connect(gain2);
-    gain2.connect(context.destination);
-    osc2.start(tempoNota2);
-    gain2.gain.setValueAtTime(0.5, tempoNota2);
-    gain2.gain.exponentialRampToValueAtTime(0.001, tempoNota2 + 0.35);
-    osc2.stop(tempoNota2 + 0.35);
+        const tempoNota2 = context.currentTime + 0.15;
+        const osc2 = context.createOscillator();
+        const gain2 = context.createGain();
+        osc2.type = 'triangle';
+        osc2.frequency.value = 659.25;
+        
+        osc2.connect(gain2);
+        gain2.connect(context.destination);
+        osc2.start(tempoNota2);
+        gain2.gain.setValueAtTime(0.5, tempoNota2);
+        gain2.gain.exponentialRampToValueAtTime(0.001, tempoNota2 + 0.35);
+        osc2.stop(tempoNota2 + 0.35);
+    } catch (e) {
+        console.error("AudioContext não suportado ou bloqueado.", e);
+    }
 }
 
 // ========================================
@@ -173,14 +166,11 @@ function updateAthena() {
         petCard.classList.remove("stage2", "stage3");
     }
 
-    // Estágio 1: Início da sessão
     if (progress < 40) {
         athenaImage.src = "../assets/img/athena/athena_inicio.png";
         athenaStage.textContent = "Estágio 1 de 3";
         athenaMessage.textContent = "Vamos começar uma nova sessão de foco?";
-    }
-    // Estágio 2: Progresso Médio
-    else if (progress < 80) {
+    } else if (progress < 80) {
         athenaImage.src = "../assets/img/athena/athena_meio.png";
         athenaStage.textContent = "Estágio 2 de 3";
         if (petCard) petCard.classList.add("stage2");
@@ -188,9 +178,7 @@ function updateAthena() {
         athenaMessage.textContent = (progress < 60) 
             ? "Ótimo trabalho! Continue nesse ritmo." 
             : "Excelente! Já passamos da metade.";
-    }
-    // Estágio 3: Reta Final / Concluído
-    else {
+    } else {
         athenaImage.src = "../assets/img/athena/athena_fim.png";
         athenaStage.textContent = "Estágio 3 de 3";
         if (petCard) petCard.classList.add("stage3");
@@ -229,18 +217,20 @@ function startPomodoro() {
 
     timerInterval = setInterval(() => {
         remainingSeconds--;
-        updateTimer();
-        updateProgress();
-        updateAthena();
 
         if (remainingSeconds <= 0) {
             finishPomodoro();
+        } else {
+            updateTimer();
+            updateProgress();
+            updateAthena();
         }
     }, 1000);
 }
 
 function pausePomodoro() {
     clearInterval(timerInterval);
+    timerInterval = null;
     isRunning = false;
 }
 
@@ -255,6 +245,7 @@ function resetPomodoro() {
 function finishPomodoro() {
     pausePomodoro();
     remainingSeconds = 0;
+    
     updateTimer();
     updateProgress();
     updateAthena();
@@ -264,10 +255,9 @@ function finishPomodoro() {
 
     setTimeout(() => {
         alert("🏆 Parabéns! Sessão concluída!\n\nAgora faça uma pausa de 5 minutos antes de iniciar um novo Pomodoro.");
-    }, 600);
+    }, 100);
 }
 
-// Persistência local diária de Tempo Focado
 function checkNewDay() {
     const savedDate = localStorage.getItem("pomodoroDate");
     const todayStr = todayKey();

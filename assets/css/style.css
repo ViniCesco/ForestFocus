@@ -105,9 +105,7 @@ header p {
 /* ========================================
    3. CARDS DO PAINEL (DASHBOARD & METAS)
 ======================================== */
-/* --- AJUSTES DO DASHBOARD GRID --- */
 
-/* Garante que a seção principal limpe estilos antigos de grid global */
 .cards {
     display: flex !important;
     flex-direction: column !important;
@@ -115,21 +113,23 @@ header p {
     width: 100%;
 }
 
-/* Força os cards internos a respeitarem a altura interna e layouts flex/grid */
 .card-dash {
-    background: #1e1e2f; /* Mantém o fundo padrão escuro */
+    background: #1e1e2f;
     border: 1px solid rgba(255, 255, 255, 0.05);
     border-radius: 12px;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
+    margin-bottom: 20px;
 }
 
-/* Efeito de Hover sutil padrão para os novos blocos */
+.card-dash:last-child {
+    margin-bottom: 0;
+}
+
 .card-dash:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
 }
 
-/* Responsividade básica para telas menores (Notebooks e Tablets) */
 @media (max-width: 900px) {
     .card-dash[style*="grid-template-columns: repeat(3, 1fr)"],
     div[style*="grid-template-columns: repeat(3, 1fr)"] {
@@ -142,17 +142,53 @@ header p {
         gap: 15px !important;
     }
     
-    /* Remove as bordas laterais do topo unificado no mobile */
     .metric-item {
         border-right: none !important;
         border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         padding-bottom: 15px !important;
         margin-bottom: 10px;
     }
+    
     .metric-item:last-child {
         border-bottom: none !important;
         padding-bottom: 0 !important;
     }
+}
+
+.goal-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin: 20px 0;
+}
+
+.filter-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 18px;
+    background: #1e1e2f;
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.filter-btn:hover {
+    background: #2b3247;
+    border-color: #6366f1;
+    transform: translateY(-2px);
+}
+
+.filter-btn.active {
+    background: #6366f1;
+    border-color: #6366f1;
+    color: #fff;
+    box-shadow: 0 0 15px rgba(99, 102, 241, 0.35);
 }
 
 /* ========================================
@@ -940,28 +976,42 @@ header p {
 
 .mood-selector {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-    gap: 15px;
-    margin-top: 20px;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 16px;
+    margin-top: 24px;
+    margin-bottom: 24px; 
 }
 
-.mood-btn {
-    background: var(--bg-card);
-    border: 1px solid var(--border-color);
-    border-radius: 16px;
-    padding: 16px;
-    cursor: pointer;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+.mood-btn{
+    background:var(--bg-card);
+    border:1px solid var(--border-color);
+    border-radius:18px;
+
+    min-height:110px;
+
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+
+    gap:12px;
+
+    cursor:pointer;
+
+    transition:.25s ease;
+
+    padding:18px;
 }
 
-.mood-btn:hover {
-    border-color: var(--primary);
-    transform: translateY(-3px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+.mood-btn:hover{
+
+    transform:translateY(-5px);
+
+    border-color:#6366f1;
+
+    box-shadow:
+    0 12px 28px rgba(0,0,0,.25);
+
 }
 
 .mood-btn.selected {
@@ -972,7 +1022,7 @@ header p {
 }
 
 .mood-emoji {
-    font-size: 28px;
+    font-size: 34px;
 }
 
 .mood-label {
@@ -1220,7 +1270,7 @@ header p {
 }
 
 /* ========================================
-   18. ASSISTENTE DE MÚSICA E JIDGETS
+   18. ASSISTENTE DE MÚSICA
 ======================================== */
 
 #musicAssistant {
@@ -1304,58 +1354,6 @@ header p {
     border: none;
 }
 
-.athena-assistant-button {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    overflow: hidden;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #1a1a2e;
-    border: 2px solid #6366f1;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, .3);
-    transition: .25s;
-}
-
-.athena-assistant-button:hover {
-    transform: scale(1.08);
-}
-
-.athena-avatar {
-    width: 200%;
-    height: 200%;
-    object-fit: contain;
-    transform: translateY(4px);
-    transition: transform .25s ease;
-}
-
-#plantStage { font-size: 42px; }
-#treeCounter, #levelText { font-size: 24px; }
-
-.avatar-circle {
-    width: 70px;
-    height: 70px;
-    font-size: 36px;
-}
-
-.main-footer {
-    margin-top: 35px;
-    text-align: center;
-    color: #9ca3af;
-}
-
-@keyframes assistantOpen {
-    from {
-        opacity: 0;
-        transform: translateY(20px) scale(.96);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-    }
-}
 
 /* ========================================
    19. COMPORTAMENTO DESKTOP (REGRA GERAL)
@@ -1368,7 +1366,156 @@ header p {
 }
 
 /* ========================================
-   20. RESPONSIVIDADE MOBILE GLOBAL (MAX-WIDTH: 768px)
+   20. ATHENA ASSISTENTE
+======================================== */
+
+.athena-assistant-container{
+    position: fixed;
+    right: 25px;
+    bottom: 25px;
+    z-index: 9999;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 12px;
+}
+
+.athena-assistant-button{
+    width: 68px;
+    height: 68px;
+
+    border-radius: 50%;
+    overflow: hidden;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    cursor: pointer;
+
+    background: #1a1a2e;
+    border: 2px solid #6366f1;
+
+    box-shadow: 0 8px 25px rgba(0,0,0,.35);
+
+    transition: .25s;
+}
+
+.athena-assistant-button:hover{
+    transform: translateY(-3px) scale(1.05);
+}
+
+.athena-avatar{
+    width: 200%;
+    height: 200%;
+    object-fit: contain;
+    transform: translateY(4px);
+}
+
+.athena-summary-card{
+
+    display: none;
+
+    position: absolute;
+
+    right: 0;
+    bottom: 82px;
+
+    width: 330px;
+    max-width: calc(100vw - 40px);
+
+    padding: 18px;
+
+    background: #1e1e2f;
+
+    border: 1px solid rgba(255,255,255,.08);
+
+    border-radius: 18px;
+
+    color: #fff;
+
+    box-shadow: 0 20px 50px rgba(0,0,0,.45);
+
+    animation: assistantOpen .25s ease;
+}
+
+.athena-summary-card h3{
+
+    margin: 0 0 15px;
+
+    color: #8b5cf6;
+
+    font-size: 18px;
+}
+
+.athena-summary-card p{
+
+    margin: 0;
+
+    color: #d1d5db;
+
+    font-size: 14px;
+
+    line-height: 1.7;
+}
+
+.close-summary-button{
+
+    position: absolute;
+
+    top: 10px;
+    right: 14px;
+
+    background: none;
+
+    border: none;
+
+    color: #9ca3af;
+
+    font-size: 22px;
+
+    cursor: pointer;
+
+    transition: .2s;
+}
+
+.close-summary-button:hover{
+
+    color: #fff;
+}
+
+@media (max-width: 768px){
+
+    .athena-assistant-container{
+        right: 16px;
+        bottom: 16px;
+    }
+
+    .athena-assistant-button{
+        width: 60px;
+        height: 60px;
+    }
+
+    .athena-summary-card{
+        width: calc(100vw - 32px);
+        max-width: 320px;
+        right: 0;
+        bottom: 75px;
+    }
+
+    .athena-summary-card h3{
+        font-size: 16px;
+    }
+
+    .athena-summary-card p{
+        font-size: 13px;
+        line-height: 1.6;
+    }
+}
+
+/* ========================================
+   21. RESPONSIVIDADE MOBILE GLOBAL (MAX-WIDTH: 768px)
 ======================================== */
 
 @media (max-width: 768px) {
@@ -1382,7 +1529,7 @@ header p {
         box-sizing: border-box;
         padding: 15px;
         padding-top: 90px;
-        padding-bottom: 120px !important; /* Margem de segurança para os botões fixos */
+        padding-bottom: 120px !important; 
         transition: .35s;
     }
 
@@ -1505,7 +1652,6 @@ header p {
         justify-content: flex-end;
     }
 
-    /* Resolução do problema 2: Desgrudar os cards (Dashboard, Energia, etc.) */
     .cards, .main-content > div, .energy-section {
         display: flex !important;
         flex-direction: column !important;
@@ -1576,7 +1722,6 @@ header p {
         width: 300px;
     }
 
-    /* Resolução do problema 1: Correção estrutural da Assistente Athena */
     .pomodoro-pet {
         position: fixed !important;
         bottom: 25px !important;
@@ -1619,4 +1764,35 @@ header p {
     .pomodoro-pet p, .pomodoro-pet h3, #athenaStage {
         display: none !important;
     }
+}
+
+    .mood-selector {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 12px !important;
+        margin-bottom: 20px !important;
+    }
+    
+    .mood-btn {
+        min-height: 95px !important;
+        padding: 12px !important;
+    }
+
+@media (max-width: 768px){
+
+    .goal-filters{
+
+        justify-content:center;
+
+        gap:10px;
+
+    }
+
+    .filter-btn{
+
+        flex:1 1 140px;
+
+        min-height:48px;
+
+    }
+
 }
