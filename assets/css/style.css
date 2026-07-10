@@ -1515,269 +1515,356 @@ header p {
 }
 
 /* ========================================
-   21. RESPONSIVIDADE MOBILE GLOBAL (MAX-WIDTH: 768px)
+   21. RESPONSIVIDADE MOBILE GLOBAL
 ======================================== */
 
-@media (max-width: 768px) {
-    /* Estrutura Base */
-    .container {
-        flex-direction: column;
+@media (max-width:768px){
+
+    /* ===========================
+       Estrutura
+    =========================== */
+
+    .container{
+        flex-direction:column;
     }
 
-    .main-content {
-        width: 100%;
-        box-sizing: border-box;
-        padding: 15px;
-        padding-top: 90px;
-        padding-bottom: 120px !important; 
-        transition: .35s;
+    .main-content{
+        width:100%;
+        padding:18px;
+        padding-top:90px;
+        padding-bottom:120px;
+        box-sizing:border-box;
+        transition:.35s;
     }
 
-    .main-content.menu-expanded {
-        padding-top: 520px;
+    .main-content.menu-expanded{
+        padding-top:470px;
     }
 
-    .sidebar {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        background: #1e1e2f;
-        border-right: none;
-        border-bottom: 1px solid rgba(255, 255, 255, .05);
-        padding: 15px;
-        z-index: 9999;
-        box-sizing: border-box;
+    /* ===========================
+       Sidebar
+    =========================== */
+
+    .sidebar{
+
+        position:fixed;
+
+        top:0;
+        left:0;
+
+        width:100%;
+
+        padding:15px;
+
+        background:#1e1e2f;
+
+        border-right:none;
+        border-bottom:1px solid rgba(255,255,255,.05);
+
+        z-index:9999;
+
+        box-sizing:border-box;
+
     }
 
-    .sidebar h2 {
-        display: none;
+    .sidebar h2{
+        display:none;
     }
 
-    .menu-toggle {
-        display: flex !important;
-        width: 100%;
-        justify-content: space-between;
-        align-items: center;
-        background: none;
-        border: none;
-        color: #fff;
-        font-size: 20px;
-        font-weight: 700;
-        cursor: pointer;
-        padding: 0;
+    .menu-toggle{
+
+        display:flex;
+
+        width:100%;
+
+        justify-content:space-between;
+        align-items:center;
+
+        background:none;
+
+        border:none;
+
+        color:#fff;
+
+        font-size:20px;
+
+        font-weight:700;
+
+        cursor:pointer;
+
     }
 
-    .menu-icon {
-        transition: .3s;
-        color: #a78bfa;
-        font-size: 18px;
+    .menu-icon{
+
+        font-size:20px;
+
+        color:#a78bfa;
+
+        transition:.3s;
+
     }
 
-    .sidebar nav {
-        display: flex;
-        flex-direction: column;
-        overflow: hidden;
-        max-height: 0;
-        transition: max-height .35s ease;
-        gap: 10px;
-        margin-top: 0;
+    .sidebar nav{
+
+        display:flex;
+
+        flex-direction:column;
+
+        gap:10px;
+
+        overflow:hidden;
+
+        max-height:0;
+
+        transition:max-height .35s ease;
+
     }
 
-    .sidebar.open nav {
-        max-height: 600px;
-        margin-top: 20px;
+    .sidebar.open nav{
+
+        max-height:600px;
+
+        margin-top:20px;
+
     }
 
-    .sidebar a {
-        display: flex;
-        align-items: center;
-        justify-content: flex-start;
-        width: 100%;
-        padding: 14px 18px;
-        border-radius: 10px;
-        text-decoration: none;
-        background: rgba(255, 255, 255, .04);
-        border: 1px solid rgba(255, 255, 255, .05);
-        color: #fff;
-        font-size: 15px;
-        transition: .25s;
-        box-sizing: border-box;
+    .sidebar a{
+
+        width:100%;
+
+        display:flex;
+
+        align-items:center;
+
+        padding:14px 18px;
+
+        border-radius:10px;
+
+        background:rgba(255,255,255,.04);
+
+        border:1px solid rgba(255,255,255,.05);
+
+        color:#fff;
+
+        text-decoration:none;
+
+        box-sizing:border-box;
+
     }
 
-    .sidebar a:hover {
-        background: rgba(255, 255, 255, .08);
+    .sidebar nav a[href*="youtube"]{
+
+        border-color:rgba(16,185,129,.30);
+
+        background:rgba(16,185,129,.05);
+
     }
 
-    .sidebar nav a[href*="youtube"] {
-        border-color: rgba(16, 185, 129, .35);
-        background: rgba(16, 185, 129, .05);
+    /* ===========================
+       Cabeçalho
+    =========================== */
+
+    header{
+
+        display:flex;
+
+        flex-direction:column;
+
+        align-items:flex-start;
+
+        gap:15px;
+
+        margin-bottom:25px;
+
     }
 
-    header {
-        display: flex !important;
-        flex-direction: column !important;
-        align-items: flex-start !important;
-        gap: 15px;
-        margin-bottom: 25px;
+    header h1{
+
+        font-size:25px;
+
     }
 
-    header h1 { font-size: 24px; }
-    header p { font-size: 14px; }
+    header p{
 
-    .task-input {
-        flex-direction: column;
-        gap: 10px;
+        font-size:15px;
+
+    }
+
+    /* ===========================
+       Cards
+    =========================== */
+
+    .cards{
+
+        display:flex;
+
+        flex-direction:column;
+
+        gap:20px;
+
+    }
+
+    .card,
+    .card-dash,
+    .finance-card,
+    .mood-tracker{
+
+        padding:20px;
+
+        margin-bottom:0;
+
+    }
+
+    /* ===========================
+       Tarefas
+    =========================== */
+
+    .task-input{
+
+        display:flex;
+
+        flex-direction:column;
+
+        gap:10px;
+
     }
 
     .task-input input,
-    .task-input button,
     .task-input select,
-    #taskCategory,
-    #taskPriority {
-        width: 100%;
-        box-sizing: border-box;
+    .task-input button{
+
+        width:100%;
+
     }
 
     #taskList li,
-    #financeHistory li {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 12px;
-        padding: 12px;
+    #financeHistory li{
+
+        display:flex;
+
+        flex-direction:column;
+
+        align-items:flex-start;
+
+        gap:12px;
+
     }
 
-    .task-actions {
-        width: 100%;
-        justify-content: flex-end;
+    .task-actions{
+
+        width:100%;
+
+        justify-content:flex-end;
+
     }
 
-    .cards, .main-content > div, .energy-section {
-        display: flex !important;
-        flex-direction: column !important;
-        gap: 20px !important; 
+    /* ===========================
+       Calendário
+    =========================== */
+
+    .calendar-header{
+
+        flex-wrap:wrap;
+
     }
 
-    .card, [class*="card"], .mood-tracker, .finance-card {
-        padding: 20px;
-        margin-bottom: 5px !important;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
+    .calendar-header h2{
+
+        width:100%;
+
+        order:-1;
+
+        margin-bottom:12px;
+
     }
 
-    .calendar-header {
-        flex-wrap: wrap;
+    .calendar-grid{
+
+        gap:6px;
+
     }
 
-    .calendar-header h2 {
-        order: -1;
-        width: 100%;
-        margin-bottom: 10px;
-        font-size: 22px;
+    .calendar-day{
+
+        min-height:90px;
+
+        padding:8px;
+
     }
 
-    .calendar-grid {
-        gap: 6px;
+    /* ===========================
+       Energia
+    =========================== */
+
+    .mood-selector{
+
+        grid-template-columns:repeat(2,1fr);
+
+        gap:12px;
+
     }
 
-    .calendar-day {
-        min-height: 85px;
-        padding: 8px;
+    .mood-btn{
+
+        min-height:95px;
+
+        padding:12px;
+
     }
 
-    .calendar-day-number {
-        font-size: 15px;
+    .mood-history-item{
+
+        flex-direction:column;
+
+        align-items:flex-start;
+
+        gap:10px;
+
     }
 
-    .calendar-weekdays {
-        font-size: 12px;
+    .mood-history-date{
+
+        align-self:flex-end;
+
     }
 
-    .mood-history-item {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 8px;
-    }
-    
-    .mood-history-date {
-        align-self: flex-end;
+    /* ===========================
+       Pomodoro
+    =========================== */
+
+    #timer{
+
+        font-size:50px;
+
     }
 
-    #timer {
-        font-size: 50px;
+    .pomodoro-buttons{
+
+        flex-direction:column;
+
     }
 
-    .pomodoro-buttons {
-        flex-direction: column;
+    .pomodoro-buttons button{
+
+        width:100%;
+
     }
 
-    .pomodoro-buttons button {
-        width: 100%;
+    .pomodoro-info-toggle{
+
+        font-size:15px;
+
     }
 
-    .pomodoro-info-toggle {
-        font-size: 15px;
+    #musicPanel{
+
+        width:300px;
+
     }
 
-    #musicPanel {
-        width: 300px;
-    }
-
-    .pomodoro-pet {
-        position: fixed !important;
-        bottom: 25px !important;
-        left: 20px !important;
-        z-index: 9999 !important;
-        background: #1e1e2f !important;
-        border: 2px solid #a78bfa !important;
-        border-radius: 50% !important;
-        width: 75px !important;
-        height: 75px !important;
-        padding: 0 !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5) !important;
-        overflow: hidden !important;
-        touch-action: manipulation !important;
-    }
-
-    .pomodoro-pet img {
-        width: 100% !important;
-        height: 100% !important;
-        object-fit: cover !important;
-    }
-
-    #athenaStatus, .pomodoro-pet + div, [id*="message"] {
-        position: fixed !important;
-        bottom: 110px !important;
-        left: 20px !important;
-        z-index: 9998 !important;
-        background: #1e1e2f !important;
-        border: 1px solid #2d2d44 !important;
-        border-radius: 12px !important;
-        padding: 12px !important;
-        max-width: 260px !important;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4) !important;
-        box-sizing: border-box !important;
-    }
-
-    .pomodoro-pet p, .pomodoro-pet h3, #athenaStage {
-        display: none !important;
-    }
-}
-
-    .mood-selector {
-        grid-template-columns: repeat(2, 1fr) !important;
-        gap: 12px !important;
-        margin-bottom: 20px !important;
-    }
-    
-    .mood-btn {
-        min-height: 95px !important;
-        padding: 12px !important;
-    }
-
-@media (max-width: 768px){
+    /* ===========================
+       Metas
+    =========================== */
 
     .goal-filters{
 
@@ -1792,6 +1879,84 @@ header p {
         flex:1 1 140px;
 
         min-height:48px;
+
+    }
+
+    /* ===========================
+       Athena (Pomodoro)
+    =========================== */
+
+    .pomodoro-pet{
+
+        position:fixed;
+
+        bottom:25px;
+
+        left:20px;
+
+        width:75px;
+
+        height:75px;
+
+        padding:0;
+
+        border-radius:50%;
+
+        overflow:hidden;
+
+        background:#1e1e2f;
+
+        border:2px solid #a78bfa;
+
+        display:flex;
+
+        justify-content:center;
+
+        align-items:center;
+
+        z-index:9998;
+
+        box-shadow:0 8px 25px rgba(0,0,0,.45);
+
+    }
+
+    .pomodoro-pet img{
+
+        width:100%;
+
+        height:100%;
+
+        object-fit:cover;
+
+    }
+
+    .pomodoro-pet h2,
+    .pomodoro-pet p,
+    #athenaStage{
+
+        display:none;
+
+    }
+
+    #athenaMessage{
+
+        position:fixed;
+
+        left:20px;
+
+        bottom:110px;
+
+        max-width:260px;
+
+        background:#1e1e2f;
+
+        border:1px solid rgba(255,255,255,.08);
+
+        border-radius:12px;
+
+        padding:14px;
+
+        z-index:9997;
 
     }
 
