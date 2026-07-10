@@ -1358,7 +1358,6 @@ header p {
 /* ========================================
    19. COMPORTAMENTO DESKTOP (REGRA GERAL)
 ======================================== */
-
 @media (min-width: 769px) {
     .menu-toggle {
         display: none !important;
@@ -1366,598 +1365,359 @@ header p {
 }
 
 /* ========================================
-   20. ATHENA ASSISTENTE
+   20. ATHENA ASSISTENTE (ESTILOS BASE / DESKTOP)
 ======================================== */
-
-.athena-assistant-container{
+.athena-assistant-container {
     position: fixed;
     right: 25px;
     bottom: 25px;
     z-index: 9999;
-
     display: flex;
     flex-direction: column;
     align-items: flex-end;
     gap: 12px;
 }
 
-.athena-assistant-button{
+.athena-assistant-button {
     width: 68px;
     height: 68px;
-
     border-radius: 50%;
     overflow: hidden;
-
     display: flex;
     justify-content: center;
     align-items: center;
-
     cursor: pointer;
-
     background: #1a1a2e;
     border: 2px solid #6366f1;
-
     box-shadow: 0 8px 25px rgba(0,0,0,.35);
-
     transition: .25s;
 }
 
-.athena-assistant-button:hover{
+.athena-assistant-button:hover {
     transform: translateY(-3px) scale(1.05);
 }
 
-.athena-avatar{
+.athena-avatar {
     width: 200%;
     height: 200%;
     object-fit: contain;
     transform: translateY(4px);
 }
 
-.athena-summary-card{
-
+.athena-summary-card {
     display: none;
-
     position: absolute;
-
     right: 0;
     bottom: 82px;
-
     width: 330px;
     max-width: calc(100vw - 40px);
-
     padding: 18px;
-
     background: #1e1e2f;
-
     border: 1px solid rgba(255,255,255,.08);
-
     border-radius: 18px;
-
     color: #fff;
-
     box-shadow: 0 20px 50px rgba(0,0,0,.45);
-
     animation: assistantOpen .25s ease;
 }
 
-.athena-summary-card h3{
-
+.athena-summary-card h3 {
     margin: 0 0 15px;
-
     color: #8b5cf6;
-
     font-size: 18px;
 }
 
-.athena-summary-card p{
-
+.athena-summary-card p {
     margin: 0;
-
     color: #d1d5db;
-
     font-size: 14px;
-
     line-height: 1.7;
 }
 
-.close-summary-button{
-
+.close-summary-button {
     position: absolute;
-
     top: 10px;
     right: 14px;
-
     background: none;
-
     border: none;
-
     color: #9ca3af;
-
     font-size: 22px;
-
     cursor: pointer;
-
     transition: .2s;
 }
 
-.close-summary-button:hover{
-
+.close-summary-button:hover {
     color: #fff;
 }
 
-@media (max-width: 768px){
 
-    .athena-assistant-container{
+/* ========================================
+   21. RESPONSIVIDADE MOBILE GLOBAL (TUDO UNIFICADO)
+======================================== */
+@media (max-width: 768px) {
+
+    /* --- Estrutura Geral --- */
+    .container {
+        flex-direction: column;
+    }
+
+    .main-content {
+        width: 100%;
+        padding: 18px;
+        padding-top: 90px;
+        padding-bottom: 120px;
+        box-sizing: border-box;
+        transition: .35s;
+    }
+
+    .main-content.menu-expanded {
+        padding-top: 470px;
+    }
+
+    /* --- Sidebar --- */
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        padding: 15px;
+        background: #1e1e2f;
+        border-right: none;
+        border-bottom: 1px solid rgba(255,255,255,.05);
+        z-index: 9999;
+        box-sizing: border-box;
+    }
+
+    .sidebar h2 {
+        display: none;
+    }
+
+    .menu-toggle {
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+        align-items: center;
+        background: none;
+        border: none;
+        color: #fff;
+        font-size: 20px;
+        font-weight: 700;
+        cursor: pointer;
+    }
+
+    .menu-icon {
+        font-size: 20px;
+        color: #a78bfa;
+        transition: .3s;
+    }
+
+    .sidebar nav {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        overflow: hidden;
+        max-height: 0;
+        transition: max-height .35s ease;
+    }
+
+    .sidebar.open nav {
+        max-height: 600px;
+        margin-top: 20px;
+    }
+
+    .sidebar a {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        padding: 14px 18px;
+        border-radius: 10px;
+        background: rgba(255,255,255,.04);
+        border: 1px solid rgba(255,255,255,.05);
+        color: #fff;
+        text-decoration: none;
+        box-sizing: border-box;
+    }
+
+    .sidebar nav a[href*="youtube"] {
+        border-color: rgba(16,185,129,.30);
+        background: rgba(16,185,129,.05);
+    }
+
+    /* --- Cabeçalho --- */
+    header {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+        margin-bottom: 25px;
+    }
+
+    header h1 {
+        font-size: 25px;
+    }
+
+    header p {
+        font-size: 15px;
+    }
+
+    /* --- Cards --- */
+    .cards {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 20px !important;
+    }
+
+    .card,
+    .card-dash,
+    .finance-card,
+    .mood-tracker {
+        padding: 20px;
+    }
+
+    /* --- Tarefas --- */
+    .task-input {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .task-input input,
+    .task-input select,
+    .task-input button {
+        width: 100%;
+    }
+
+    #taskList li,
+    #financeHistory li {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .task-actions {
+        width: 100%;
+        justify-content: flex-end;
+    }
+
+    /* --- Calendário --- */
+    .calendar-header {
+        flex-wrap: wrap;
+    }
+
+    .calendar-header h2 {
+        width: 100%;
+        order: -1;
+        margin-bottom: 12px;
+    }
+
+    .calendar-grid {
+        gap: 6px;
+    }
+
+    .calendar-day {
+        min-height: 90px;
+        padding: 8px;
+    }
+
+    /* --- Energia --- */
+    .mood-selector {
+        grid-template-columns: repeat(2,1fr);
+        gap: 12px;
+    }
+
+    .mood-btn {
+        min-height: 95px;
+        padding: 12px;
+    }
+
+    .mood-history-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .mood-history-date {
+        align-self: flex-end;
+    }
+
+    /* --- Pomodoro --- */
+    #timer {
+        font-size: 50px;
+    }
+
+    .pomodoro-buttons {
+        flex-direction: column;
+    }
+
+    .pomodoro-buttons button {
+        width: 100%;
+    }
+
+    .pomodoro-info-toggle {
+        font-size: 15px;
+    }
+
+    .pomodoro-pet {
+        position: fixed;
+        bottom: 25px;
+        left: 20px;
+        width: 75px;
+        height: 75px;
+        padding: 0;
+    }
+
+    /* --- Elementos Flutuantes da Direita (Música e Athena Organizados) --- */
+    .athena-assistant-container {
         right: 16px;
         bottom: 16px;
     }
 
-    .athena-assistant-button{
+    .athena-assistant-button {
         width: 60px;
         height: 60px;
     }
 
-    .athena-summary-card{
+    .athena-summary-card {
         width: calc(100vw - 32px);
         max-width: 320px;
         right: 0;
         bottom: 75px;
     }
 
-    .athena-summary-card h3{
+    .athena-summary-card h3 {
         font-size: 16px;
     }
 
-    .athena-summary-card p{
+    .athena-summary-card p {
         font-size: 13px;
         line-height: 1.6;
     }
-}
 
-/* ========================================
-   21. RESPONSIVIDADE MOBILE GLOBAL
-======================================== */
-
-@media (max-width:768px){
-
-    /* ===========================
-       Estrutura
-    =========================== */
-
-    .container{
-        flex-direction:column;
+    /* Sobe o Assistente de música para ficar ACIMA da Athena flutuante */
+    #musicAssistant {
+        right: 16px;
+        bottom: 85px; 
     }
 
-    .main-content{
-        width:100%;
-        padding:18px;
-        padding-top:90px;
-        padding-bottom:120px;
-        box-sizing:border-box;
-        transition:.35s;
+    #musicButton {
+        width: 54px;
+        height: 54px;
+        font-size: 20px;
     }
 
-    .main-content.menu-expanded{
-        padding-top:470px;
+    #musicPanel {
+        width: 300px;
+        bottom: 65px;
     }
 
-    /* ===========================
-       Sidebar
-    =========================== */
-
-    .sidebar{
-
-        position:fixed;
-
-        top:0;
-        left:0;
-
-        width:100%;
-
-        padding:15px;
-
-        background:#1e1e2f;
-
-        border-right:none;
-        border-bottom:1px solid rgba(255,255,255,.05);
-
-        z-index:9999;
-
-        box-sizing:border-box;
-
+    /* --- Metas --- */
+    .goal-filters {
+        justify-content: center;
+        gap: 10px;
     }
 
-    .sidebar h2{
-        display:none;
+    .filter-btn {
+        flex: 1 1 140px;
+        min-height: 48px;
     }
-
-    .menu-toggle{
-
-        display:flex;
-
-        width:100%;
-
-        justify-content:space-between;
-        align-items:center;
-
-        background:none;
-
-        border:none;
-
-        color:#fff;
-
-        font-size:20px;
-
-        font-weight:700;
-
-        cursor:pointer;
-
-    }
-
-    .menu-icon{
-
-        font-size:20px;
-
-        color:#a78bfa;
-
-        transition:.3s;
-
-    }
-
-    .sidebar nav{
-
-        display:flex;
-
-        flex-direction:column;
-
-        gap:10px;
-
-        overflow:hidden;
-
-        max-height:0;
-
-        transition:max-height .35s ease;
-
-    }
-
-    .sidebar.open nav{
-
-        max-height:600px;
-
-        margin-top:20px;
-
-    }
-
-    .sidebar a{
-
-        width:100%;
-
-        display:flex;
-
-        align-items:center;
-
-        padding:14px 18px;
-
-        border-radius:10px;
-
-        background:rgba(255,255,255,.04);
-
-        border:1px solid rgba(255,255,255,.05);
-
-        color:#fff;
-
-        text-decoration:none;
-
-        box-sizing:border-box;
-
-    }
-
-    .sidebar nav a[href*="youtube"]{
-
-        border-color:rgba(16,185,129,.30);
-
-        background:rgba(16,185,129,.05);
-
-    }
-
-    /* ===========================
-       Cabeçalho
-    =========================== */
-
-    header{
-
-        display:flex;
-
-        flex-direction:column;
-
-        align-items:flex-start;
-
-        gap:15px;
-
-        margin-bottom:25px;
-
-    }
-
-    header h1{
-
-        font-size:25px;
-
-    }
-
-    header p{
-
-        font-size:15px;
-
-    }
-
-    /* ===========================
-       Cards
-    =========================== */
-
-    .cards{
-
-        display:flex;
-
-        flex-direction:column;
-
-        gap:20px;
-
-    }
-
-    .card,
-    .card-dash,
-    .finance-card,
-    .mood-tracker{
-
-        padding:20px;
-
-        margin-bottom:0;
-
-    }
-
-    /* ===========================
-       Tarefas
-    =========================== */
-
-    .task-input{
-
-        display:flex;
-
-        flex-direction:column;
-
-        gap:10px;
-
-    }
-
-    .task-input input,
-    .task-input select,
-    .task-input button{
-
-        width:100%;
-
-    }
-
-    #taskList li,
-    #financeHistory li{
-
-        display:flex;
-
-        flex-direction:column;
-
-        align-items:flex-start;
-
-        gap:12px;
-
-    }
-
-    .task-actions{
-
-        width:100%;
-
-        justify-content:flex-end;
-
-    }
-
-    /* ===========================
-       Calendário
-    =========================== */
-
-    .calendar-header{
-
-        flex-wrap:wrap;
-
-    }
-
-    .calendar-header h2{
-
-        width:100%;
-
-        order:-1;
-
-        margin-bottom:12px;
-
-    }
-
-    .calendar-grid{
-
-        gap:6px;
-
-    }
-
-    .calendar-day{
-
-        min-height:90px;
-
-        padding:8px;
-
-    }
-
-    /* ===========================
-       Energia
-    =========================== */
-
-    .mood-selector{
-
-        grid-template-columns:repeat(2,1fr);
-
-        gap:12px;
-
-    }
-
-    .mood-btn{
-
-        min-height:95px;
-
-        padding:12px;
-
-    }
-
-    .mood-history-item{
-
-        flex-direction:column;
-
-        align-items:flex-start;
-
-        gap:10px;
-
-    }
-
-    .mood-history-date{
-
-        align-self:flex-end;
-
-    }
-
-    /* ===========================
-       Pomodoro
-    =========================== */
-
-    #timer{
-
-        font-size:50px;
-
-    }
-
-    .pomodoro-buttons{
-
-        flex-direction:column;
-
-    }
-
-    .pomodoro-buttons button{
-
-        width:100%;
-
-    }
-
-    .pomodoro-info-toggle{
-
-        font-size:15px;
-
-    }
-
-    #musicPanel{
-
-        width:300px;
-
-    }
-
-    /* ===========================
-       Metas
-    =========================== */
-
-    .goal-filters{
-
-        justify-content:center;
-
-        gap:10px;
-
-    }
-
-    .filter-btn{
-
-        flex:1 1 140px;
-
-        min-height:48px;
-
-    }
-
-    /* ===========================
-       Athena (Pomodoro)
-    =========================== */
-
-    .pomodoro-pet{
-
-        position:fixed;
-
-        bottom:25px;
-
-        left:20px;
-
-        width:75px;
-
-        height:75px;
-
-        padding:0;
-
-        border-radius:50%;
-
-        overflow:hidden;
-
-        background:#1e1e2f;
-
-        border:2px solid #a78bfa;
-
-        display:flex;
-
-        justify-content:center;
-
-        align-items:center;
-
-        z-index:9998;
-
-        box-shadow:0 8px 25px rgba(0,0,0,.45);
-
-    }
-
-    .pomodoro-pet img{
-
-        width:100%;
-
-        height:100%;
-
-        object-fit:cover;
-
-    }
-
-    .pomodoro-pet h2,
-    .pomodoro-pet p,
-    #athenaStage{
-
-        display:none;
-
-    }
-
-    #athenaMessage{
-
-        position:fixed;
-
-        left:20px;
-
-        bottom:110px;
-
-        max-width:260px;
-
-        background:#1e1e2f;
-
-        border:1px solid rgba(255,255,255,.08);
-
-        border-radius:12px;
-
-        padding:14px;
-
-        z-index:9997;
-
-    }
-
 }
