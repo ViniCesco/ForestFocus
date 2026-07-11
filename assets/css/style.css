@@ -1373,12 +1373,15 @@ header p {
 
     /* --- Estrutura Geral --- */
     .container {
+        display: flex;
         flex-direction: column;
+        width: 100%;
+        overflow-x: hidden;
     }
 
     .main-content {
         width: 100%;
-        padding: 18px;
+        padding: 20px 16px;
         padding-top: 90px;
         padding-bottom: 120px;
         box-sizing: border-box;
@@ -1475,18 +1478,22 @@ header p {
         font-size: 15px;
     }
 
-    /* --- Cards --- */
+    /* --- Cards (Corrigidos) --- */
     .cards {
         display: flex !important;
         flex-direction: column !important;
         gap: 20px !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
     }
 
     .card,
     .card-dash,
     .finance-card,
     .mood-tracker {
+        width: 100% !important;
         padding: 20px;
+        box-sizing: border-box;
     }
 
     /* --- Tarefas --- */
@@ -1508,6 +1515,8 @@ header p {
         flex-direction: column;
         align-items: flex-start;
         gap: 12px;
+        width: 100%;
+        box-sizing: border-box;
     }
 
     .task-actions {
@@ -1528,6 +1537,7 @@ header p {
 
     .calendar-grid {
         gap: 6px;
+        width: 100%;
     }
 
     .calendar-day {
@@ -1537,7 +1547,7 @@ header p {
 
     /* --- Energia --- */
     .mood-selector {
-        grid-template-columns: repeat(2,1fr);
+        grid-template-columns: repeat(2, 1fr);
         gap: 12px;
     }
 
@@ -1582,7 +1592,7 @@ header p {
         padding: 0;
     }
 
-    /* --- Elementos Flutuantes da Direita (Música e Athena Organizados) --- */
+    /* --- Elementos Flutuantes da Direita --- */
     .athena-assistant-container {
         right: 16px;
         bottom: 16px;
@@ -1609,7 +1619,6 @@ header p {
         line-height: 1.6;
     }
 
-    /* Sobe o Assistente de música para ficar ACIMA da Athena flutuante */
     #musicAssistant {
         right: 16px;
         bottom: 85px; 
