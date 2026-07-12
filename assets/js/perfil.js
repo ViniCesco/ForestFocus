@@ -14,7 +14,6 @@ function renderProfile() {
   const currentXP = parseInt(localStorage.getItem("forestXP") || "0", 10);
   const currentTrees = localStorage.getItem("forestTrees") || "0";
   const currentAvatar = localStorage.getItem("forestAvatar") || "🌱";
-  
   const nameDisplay = document.getElementById("profileNameDisplay");
   const xpDisplay = document.getElementById("profileXP");
   const treesDisplay = document.getElementById("profileTrees");
@@ -110,5 +109,22 @@ function selectAvatar(avatarEmoji) {
 /* Dispara a renderização inicial do perfil assim que o arquivo HTML é totalmente estruturado */
 document.addEventListener("DOMContentLoaded", () => {
   renderProfile();
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    const sidebar = document.querySelector(".sidebar");
+    const button = document.querySelector(".menu-toggle");
+    const main = document.querySelector(".main-content");
+
+    if (!sidebar || !button || !main) return;
+
+    button.addEventListener("click", () => {
+
+        sidebar.classList.toggle("open");
+        main.classList.toggle("menu-expanded");
+
+    });
+
 });
 

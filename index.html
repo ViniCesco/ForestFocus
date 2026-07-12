@@ -2,149 +2,118 @@
 <html lang="pt-BR">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - Forest Focus 1.5v</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - Forest Focus</title>
+  <link rel="icon" type="image/png" href="assets/img/favicon.png">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="manifest" href="./manifest.json">
+<meta name="theme-color" content="#1a1a2e">
 
-    <link rel="icon" type="image/png" href="assets/img/favicon.png">
-    <link rel="stylesheet" href="assets/css/style.css">
-    <link rel="manifest" href="./manifest.json">
-
-    <meta name="theme-color" content="#1a1a2e">
 </head>
 
 <body>
 
     <div class="container">
 
-        <aside class="sidebar">
-            <h2>🌱 Forest Focus</h2>
-
-            <button class="menu-toggle" aria-label="Abrir menu">
-                <span>🌱 Forest Focus</span>
-                <span class="menu-icon">☰</span>
-            </button>
-
-            <nav>
-                <a href="pages/perfil.html">👤 Perfil</a>
-                <a href="#">🚀 Dashboard</a>
-                <a href="pages/tarefas.html">📋 Tarefas</a>
-                <a href="pages/pomodoro.html">⏱️ Pomodoro</a>
-                <a href="pages/calendario.html">📅 Calendário</a>
-                <a href="pages/energia.html">⚡ Energia</a>
-                <a href="pages/financas.html">🪙 Finanças</a>
-                <a href="pages/metas.html">🎯 Metas</a>
-                <a href="https://youtu.be/IvgZ4maSn4c" target="_blank" class="radio-link">📻 Radio</a>
-            </nav>
-        </aside>
+    <aside class="sidebar">
+      <h2>🌱 Forest Focus</h2>
+      <nav>
+        <a href="pages/perfil.html">👤 Perfil</a>
+        <a href="#">🚀 Dashboard</a>
+        <a href="pages/tarefas.html">📋 Tarefas</a>
+        <a href="pages/financas.html">🪙 Finanças</a>
+        <a href="pages/metas.html">🎯 Metas</a>
+        <a href="https://www.youtube.com/watch?v=yv2-8z_p5kw" target="_blank" style="margin-top: 20px; color: #10b981; border-top: 1px solid #374151; padding-top: 15px;">
+          📻 Relaxe aqui!
+        </a>
+      </nav>
+    </aside>
 
         <main class="main-content">
 
-            <header>
-                <div>
-                    <h1>Olá, Explorador! 👋🏽</h1>
-                    <p>Bem-vindo ao Forest Focus.</p>
-                </div>
-
-                <div class="user-level-top">
-                    <span>
-                        ⭐ <span id="levelText">Nível 1</span>
-                    </span>
-                    <div class="progress-bar">
-                        <div id="levelFill" style="width:70%;"></div>
-                    </div>
-                    <span id="xpText">70 / 100 XP</span>
-                </div>
-            </header>
+      <header style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; width: 100%;">
+        <div>
+          <h1 style="margin: 0; font-size: 28px; color: #fff;"> Olá, Explorador! 👋🏽</h1>
+          <p style="margin: 5px 0 0 0; color: #a0aec0;">Bem-vindo ao Forest Focus.</p>
+        </div>
+        
+        <div class="user-level-top" style="display: flex; align-items: center; gap: 15px; background: #1e1e2f; padding: 12px 20px; border-radius: 12px; min-width: 360px; border: 1px solid rgba(255,255,255,0.05);">
+          <span style="font-size: 14px; font-weight: bold; color: #fff; white-space: nowrap; display: flex; align-items: center; gap: 6px;">
+            ⭐ <span id="levelText" style="font-size: 14px; font-weight: bold; color: #fff; margin: 0; padding: 0; line-height: 1;">Nível 1</span>
+          </span>
+          <div class="progress-bar" style="flex-grow: 1; min-width: 120px; height: 6px; background: #2d2d44; border-radius: 3px; overflow: hidden; margin: 0;">
+            <div id="levelFill" style="height: 100%; background: #f59e0b; width: 70%;"></div>
+          </div>
+          <span id="xpText" style="font-size: 12px; color: #a0aec0; font-weight: 500; white-space: nowrap;">70/100 XP</span>
+        </div>
+      </header>
 
             <section class="cards">
 
-                <div class="card card-dash">
-                    <div class="grid-3-columns">
-                        <div class="metric-item border-right">
-                            <h3>📋 Tarefas Pendentes</h3>
-                            <p id="taskCounter" class="dash-number">0</p>
-                        </div>
+        <div class="card card-dash" style="display: flex; flex-direction: column; justify-content: flex-start; min-height: 160px; padding: 20px;">
+          <h3 style="margin: 0 0 5px 0; font-size: 16px; color: #fff; font-weight: 500; text-align: left; width: 100%;">📋 Tarefas Pendentes</h3>
+          <div style="display: flex; justify-content: center; align-items: center; flex-grow: 1; width: 100%;">
+            <p id="taskCounter" class="dash-number" style="margin: 0; font-size: 36px; font-weight: bold; color: #fff; line-height: 1; text-align: center;">0</p>
+          </div>
+        </div>
 
-                        <div class="metric-item border-right">
-                            <h3>✅ Tarefas Concluídas</h3>
-                            <p id="completedCounter" class="dash-number">0</p>
-                        </div>
+        <div class="card card-dash" style="display: flex; flex-direction: column; justify-content: flex-start; min-height: 160px; padding: 20px;">
+          <h3 style="margin: 0 0 5px 0; font-size: 16px; color: #fff; font-weight: 500; text-align: left; width: 100%;">✅ Tarefas Concluídas</h3>
+          <div style="display: flex; justify-content: center; align-items: center; flex-grow: 1; width: 100%;">
+            <p id="completedCounter" class="dash-number" style="margin: 0; font-size: 36px; font-weight: bold; color: #fff; line-height: 1; text-align: center;">0</p>
+          </div>
+        </div>
 
-                        <div class="metric-item">
-                            <h3>📊 Progresso</h3>
-                            <p id="progressText" class="dash-number">0%</p>
-                            <div class="progress-bar">
-                                <div id="progressFill"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+        <div class="card card-dash" style="display: flex; flex-direction: column; justify-content: space-between; min-height: 160px; padding: 20px;">
+          <h3 style="margin: 0; text-align: left;">📊 Progresso</h3>
+          <div style="margin-top: auto; margin-bottom: auto; width: 100%;">
+            <p id="progressText" class="dash-number" style="font-size: 24px; font-weight: bold; margin: 0 0 10px 0; text-align: left;">0%</p>
+            <div class="progress-bar" style="width: 100%; height: 6px; background: #2d2d44; border-radius: 3px; overflow: hidden;">
+              <div id="progressFill" style="height: 100%; background: #6366f1; width: 0%;"></div>
+            </div>
+          </div>
+        </div>
 
-                <div class="grid-2-columns">
-                    <div class="card card-dash flex-center">
-                        <h3>⚡ Energia Recente</h3>
-                        <div id="dashEnergyStatus">
-                            <span id="dashEnergyEmoji">🔋</span>
-                            <div>
-                                <h4 id="dashEnergyLabel">Carregando...</h4>
-                                <p id="dashEnergyNote">"Buscando último registro..."</p>
-                            </div>
-                        </div>
-                    </div>
+        <div class="card card-dash" style="display: flex; flex-direction: column; justify-content: space-between; min-height: 160px; padding: 20px;">
+          <h3 style="margin: 0;">🌱 Planta</h3>
+          <div style="margin-top: auto; margin-bottom: auto; text-align: center; width: 100%;">
+            <div id="plantStage" style="font-size: 42px; margin: 5px 0;">🌱</div>
+            <p id="plantProgress" style="color: var(--text-muted); font-size: 14px; margin: 0; font-weight: 500;">Brotando...</p>
+          </div>
+        </div>
 
-                    <div class="card card-dash flex-center">
-                        <h3>📅 Evento mais próximo</h3>
-                        <div id="dashNextEvent">
-                            <div class="event-wrapper">
-                                <span id="dashEventTitle">Nenhum evento agendado</span>
-                                <span id="dashEventBadge">--</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+        <div class="card card-dash" style="display: flex; flex-direction: column; justify-content: space-between; min-height: 160px; padding: 20px;">
+          <h3 style="margin: 0;">💰 Finanças</h3>
+          <div style="margin-top: auto; margin-bottom: auto; text-align: center; width: 100%;">
+            <p id="financeMonth" style="color: var(--text-muted); font-size: 12px; margin: 0;">Junho 2026</p>
+            <p id="balanceText" style="font-size: 24px; font-weight: bold; margin: 5px 0;">R$ 0,00</p>
+            <div class="finance-summary" style="margin-top: 5px; display: flex; gap: 15px; justify-content: center;">
+              <span id="incomeText" style="font-size: 13px;">📈 R$ 0,00</span>
+              <span id="expenseText" style="font-size: 13px;">📉 R$ 0,00</span>
+            </div>
+          </div>
+        </div>
 
-                <div class="grid-3-columns">
-                    <div class="card card-dash space-between">
-                        <h3>🌱 Planta</h3>
-                        <div class="card-center-content">
-                            <div id="plantStage">🌱</div>
-                            <p id="plantProgress">Brotando...</p>
-                        </div>
-                    </div>
-
-                    <div class="card card-dash space-between">
-                        <h3>💰 Finanças</h3>
-                        <div class="card-center-content">
-                            <h4 id="financeMonth">Junho 2026</h4>
-                            <p id="balanceText">R$ 0,00</p>
-                            <div class="finance-summary">
-                                <span id="incomeText">📈 R$ 0,00</span>
-                                <span id="expenseText">📉 R$ 0,00</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="card card-dash space-between">
-                        <h3>🎯 Suas Metas</h3>
-                        <div id="dashboardGoalsContent">
-                            <p class="loading-text">Carregando metas...</p>
-                        </div>
-                    </div>
-                </div>
+        <div class="card card-dash" style="display: flex; flex-direction: column; justify-content: space-between; min-height: 160px; padding: 20px;">
+          <h3 style="margin: 0; text-align: left;">🎯 Suas Metas</h3>
+          <div id="dashboardGoalsContent" style="margin-top: auto; margin-bottom: auto; width: 100%; display: flex; flex-direction: column; justify-content: center;">
+            <p style="color: #a0aec0; font-style: italic; font-size: 14px; margin: 0; text-align: left;">Carregando metas...</p>
+          </div>
+        </div>
 
             </section>
 
-            <footer class="main-footer">
-                <p>
-                    &copy; 2026 Forest Focus. Desenvolvido por <strong>CESCONETTO</strong>. Todos os direitos reservados.
-                </p>
-                <a href="https://github.com/ViniCesco" target="_blank" rel="noopener noreferrer" title="Ver meu GitHub">
-                    <svg height="20" width="20" viewBox="0 0 16 16" aria-hidden="true">
-                        <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
-                    </svg>
-                </a>
-            </footer>
+      <footer class="main-footer" style="display: flex; justify-content: center; align-items: center; gap: 10px; padding: 20px 0; margin-top: 30px; border-top: 1px solid rgba(255,255,255,0.05);">
+        <p style="margin: 0; color: #a0aec0; font-size: 14px;">
+          &copy; 2026 Forest Focus. Desenvolvido por <strong>CESCONETTO</strong>. Todos os direitos reservados.
+        </p>
+        <a href="https://github.com/ViniCesco" target="_blank" title="Ver meu GitHub" style="display: flex; align-items: center; text-decoration: none; transition: transform 0.2s ease;">
+          <svg height="20" width="20" viewBox="0 0 16 16" fill="#6366f1" style="cursor: pointer;" onmouseover="this.style.fill='#818cf8'" onmouseout="this.style.fill='#6366f1'">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path>
+          </svg>
+        </a>
+      </footer>
 
         </main>
 
@@ -152,5 +121,4 @@
 
     <script src="assets/js/dashboard.js"></script>
 </body>
-
 </html>
