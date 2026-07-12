@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pomodoro • Forest Focus</title>
+  <link rel="icon" type="image/png" href="../assets/img/favicon.png">
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+
+  <div class="container">
+
+    <aside class="sidebar">
+      <h2>🌱 Forest Focus</h2>
+
+      <button class="menu-toggle" aria-label="Abrir menu">
+        <span>🌱 Forest Focus</span>
+        <span class="menu-icon">☰</span>
+      </button>
+
+      <nav>
+        <a href="perfil.html">👤 Perfil</a>
+        <a href="../index.html">🚀 Dashboard</a>
+        <a href="tarefas.html">📋 Tarefas</a>
+        <a href="pomodoro.html">⏱️ Pomodoro</a>
+        <a href="calendario.html">📅 Calendário</a>
+        <a href="energia.html">⚡ Energia</a>
+        <a href="financas.html">🪙 Finanças</a>
+        <a href="metas.html">🎯 Metas</a>
+        <a href="https://youtu.be/IvgZ4maSn4c" target="_blank" class="radio-link">
+          📻 Radio
+        </a>
+      </nav>
+    </aside>
+
+    <main class="main-content">
+
+      <header>
+        <h1>⏳ Pomodoro</h1>
+        <p>Concentre-se e evolua junto com a Athena.</p>
+
+        <section class="card pomodoro-info">
+          <button class="pomodoro-info-toggle">
+            📖 Como funciona o Método Pomodoro?
+            <span class="info-arrow">▼</span>
+          </button>
+
+          <div class="pomodoro-info-content">
+            <p>
+              O Método Pomodoro é uma técnica de gerenciamento de tempo criada para aumentar o foco e reduzir a procrastinação.
+            </p>
+            <ol>
+              <li>⏱️ Inicie um ciclo de <strong>25 minutos</strong> de concentração total.</li>
+              <li>📵 Evite distrações até o cronômetro terminar.</li>
+              <li>☕ Ao concluir a sessão, faça uma <strong>pausa de 5 minutos</strong> para descansar a mente, levantar, alongar ou beber água.</li>
+              <li>🔄 Após a pausa, pressione <strong>Reiniciar</strong> e comece um novo ciclo de foco.</li>
+              <li>🌿 Depois de quatro ciclos completos, recomenda-se uma pausa mais longa de 15 a 30 minutos.</li>
+            </ol>
+            <div class="athena-tip">
+              <strong>🦉 Dica da Athena</strong>
+              <p>
+                Grandes resultados são construídos com pequenos ciclos de foco. Não tenha pressa; mantenha a constância.
+              </p>
+            </div>
+          </div>
+        </section>
+      </header>
+
+      <section class="card pomodoro-pet">
+        <img id="athenaImage" src="../assets/img/athena/athena_inicio.png" alt="Athena">
+        <h2 id="athenaStatus">Athena</h2>
+        <p id="athenaMessage">Vamos começar uma nova sessão de foco?</p>
+      </section>
+
+      <section class="card">
+        <div class="pomodoro-timer">
+          <span id="timer">25:00</span>
+        </div>
+        <div class="pomodoro-buttons">
+          <button id="startPomodoro">▶ Iniciar</button>
+          <button id="pausePomodoro">⏸ Pausar</button>
+          <button id="resetPomodoro">⟳ Reiniciar</button>
+        </div>
+      </section>
+
+      <section class="cards">
+        
+        <div class="card">
+          <h3>🌱 Estágio da Athena</h3>
+          <p id="athenaStage">Estágio 1 de 3</p>
+        </div>
+
+        <div class="card">
+          <h3>📈 Progresso da Sessão</h3>
+          <div class="progress-bar">
+            <div id="pomodoroProgress"></div>
+          </div>
+          <p id="progressPercent">0%</p>
+        </div>
+
+        <div class="card">
+          <h3>⏱ Tempo Focado Hoje</h3>
+          <p id="focusTime">0 minutos</p>
+        </div>
+
+      </section>
+
+      <footer class="main-footer">
+        <p>
+          &copy; 2026 Forest Focus. Desenvolvido por <strong>CESCONETTO</strong>. Todos os direitos reservados.
+        </p>
+        <a href="https://github.com/ViniCesco" target="_blank" title="Ver meu GitHub">
+          <svg height="20" width="20" viewBox="0 0 16 16">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path>
+          </svg>
+        </a>
+      </footer>
+
+    </main>
+  </div>
+
+  <div id="musicAssistant">
+    <button id="musicButton" title="Música Ambiente">🎧</button>
+
+    <div id="musicPanel">
+      <div class="music-header">
+        <h3>🎧 Música Ambiente</h3>
+        <button id="closeMusic">✕</button>
+      </div>
+      <iframe
+        width="100%"
+        height="220"
+        src="https://www.youtube.com/embed/IvgZ4maSn4c?enablejsapi=1"
+        title="Lo-fi"
+        frameborder="0"
+        allow="autoplay; encrypted-media"
+        allowfullscreen>
+      </iframe>
+    </div>
+  </div>
+
+  <script src="../assets/js/pomodoro.js"></script>
+
+</body>
+</html>

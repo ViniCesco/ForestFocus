@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Perfil - Forest Focus</title>
+  <title>Calendário - Forest Focus</title>
   <link rel="icon" type="image/png" href="../assets/img/favicon.png">
   <link rel="stylesheet" href="../assets/css/style.css">
 </head>
@@ -35,56 +35,90 @@
     </aside>
 
     <main class="main-content">
-      
+
       <header>
-        <h1>👤 Meu Perfil</h1>
-        <p>Gerencie sua identidade e acompanhe suas conquistas de evolução.</p>
+        <h1>📅 Calendário</h1>
+        <p>Organize seus compromissos e visualize sua rotina.</p>
       </header>
-    
-      <section class="tasks profile-identity-card">
-        <div class="profile-identity-wrapper">
-          
-          <div class="avatar-wrapper">
-            <div id="profileAvatarDisplay" class="avatar-circle">🌱</div>
-            <button onclick="openAvatarModal()" class="btn-mudar-foto">Mudar Foto</button>
-          </div>
-
-          <div class="profile-info-text">
-            <h2 id="profileNameDisplay">Explorador do Foco</h2>
-            <p id="profileTitleDisplay"></p>
-          </div>
-
-        </div>
-      </section>
-
-      <div id="avatarModal" class="avatar-modal">
-        <h3>Escolha seu Avatar:</h3>
-        <div class="avatar-options">
-          <span onclick="selectAvatar('🌱')">🌱</span>
-          <span onclick="selectAvatar('🐶')">🐶</span>
-          <span onclick="selectAvatar('🪙')">🪙</span>
-          <span onclick="selectAvatar('🧑🏽‍💻')">🧑🏽‍💻</span>
-        </div>
-      </div>
 
       <section class="cards">
         <div class="card">
-          <h3>✨ Experiência (XP)</h3>
-          <p id="profileXP">0 XP</p>
+          <h3>📆 Hoje</h3>
+          <p id="todayCard">--/--/----</p>
         </div>
-        
+
         <div class="card">
-          <h3>🌲 Árvores no Total</h3>
-          <p id="profileTrees">0</p>
+          <h3>📌 Eventos do mês</h3>
+          <p id="monthEvents">0</p>
+        </div>
+
+        <div class="card">
+          <h3>⏰ Próximo evento</h3>
+          <p id="nextEvent">Nenhum evento</p>
         </div>
       </section>
 
+      <div class="section-divider"></div>
+
       <section class="tasks">
-        <h2>Alterar Nome de Usuário</h2>
-        <div class="task-input">
-          <input type="text" id="usernameInput" placeholder="Digite seu novo nome...">
-          <button onclick="updateUsername()">Salvar</button>
+        
+        <div class="calendar-header">
+          <button id="prevMonth">◀</button>
+          <h2 id="calendarTitle">Junho 2026</h2>
+          <button id="nextMonth">▶</button>
         </div>
+
+        <button id="todayButton">Hoje</button>
+
+        <div class="calendar-weekdays">
+          <div>Dom</div>
+          <div>Seg</div>
+          <div>Ter</div>
+          <div>Qua</div>
+          <div>Qui</div>
+          <div>Sex</div>
+          <div>Sáb</div>
+        </div>
+
+        <div id="calendarGrid" class="calendar-grid"></div>
+
+      </section>
+
+      <div class="section-divider"></div>
+
+      <section class="tasks">
+        <h2>➕ Novo Evento</h2>
+
+        <div class="task-input">
+          <input type="text" id="eventTitle" placeholder="Título do evento">
+          <input type="date" id="eventDate">
+          <input type="time" id="eventTime">
+
+          <select id="eventCategory">
+            <option selected disabled>Categoria</option>
+            <option>🎂 Aniversário</option>
+            <option>📝 Estudos</option>
+            <option>💼 Trabalho</option>
+            <option>🖥️ Reunião</option>
+            <option>❤️ Saúde</option>
+            <option>🧳 Viagem</option>
+            <option>🗓️ Evento</option>
+            <option>💰 Financeiro</option>
+            <option>📌 Outros</option>
+          </select>
+        </div>
+
+        <div class="task-input">
+          <input type="text" id="eventDescription" placeholder="Descrição (opcional)">
+          <button id="addEventButton">Adicionar Evento</button>
+        </div>
+      </section>
+
+      <div class="section-divider"></div>
+
+      <section class="tasks">
+        <h2 id="selectedDateTitle">📅 Eventos do Dia</h2>
+        <div id="eventList"></div>
       </section>
 
       <footer class="main-footer">
@@ -97,10 +131,10 @@
           </svg>
         </a>
       </footer>
-    </main>
 
+    </main>
   </div>
 
-  <script src="../assets/js/perfil.js"></script>
+  <script src="../assets/js/calendario.js"></script>
 </body>
 </html>
