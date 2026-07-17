@@ -1,56 +1,58 @@
 # 🌱 Forest Focus
 
-> Organize sua rotina, acompanhe seu progresso e mantenha o foco em um só lugar.
+> **Organize sua rotina, acompanhe seu progresso e mantenha o foco em um só lugar.**
 
-O **Forest Focus** é uma plataforma web de produtividade desenvolvida para centralizar as principais áreas da organização pessoal, oferecendo ferramentas intuitivas para gerenciamento de tarefas, metas, calendário, finanças e hábitos.
+O **Forest Focus** é um **Progressive Web App (PWA)** de produtividade desenvolvido para centralizar as principais áreas da organização pessoal, oferecendo ferramentas intuitivas para gerenciamento de tarefas, metas, calendário, finanças, hábitos e foco.
 
-O projeto foi criado com foco em simplicidade, desempenho e uma interface moderna.
+O projeto foi criado com foco em **simplicidade**, **desempenho**, **organização** e uma interface **moderna, responsiva e intuitiva**.
 
 ---
 
-## ✨ Funcionalidades
+# ✨ Funcionalidades
 
-### 🚀 Dashboard
-- Resumo geral das atividades
-- Indicadores rápidos
-- Estatísticas do usuário
+## 🚀 Dashboard
+- Resumo geral da produtividade.
+- Indicadores rápidos.
+- Estatísticas do usuário.
 
-### 👤 Perfil
-- Informações do usuário
-- Personalização da conta
+## 👤 Perfil
+- Informações do usuário.
+- Personalização da conta.
 
-### 📋 Tarefas
-- Criar tarefas
-- Editar tarefas
-- Excluir tarefas
-- Marcar como concluídas
-- Persistência dos dados
+## 📋 Tarefas
+- Criar, editar e excluir tarefas.
+- Marcar tarefas como concluídas.
+- Persistência automática dos dados.
 
-### 📅 Calendário
-- Calendário mensal interativo
-- Cadastro de eventos
-- Categorias de eventos
-- Horário e descrição
-- Próximo evento
-- Quantidade de eventos do mês
-- Eventos organizados por data
+## 📅 Calendário
+- Calendário mensal interativo.
+- Cadastro de eventos.
+- Categorias, horários e descrições.
+- Visualização dos próximos compromissos.
 
-### 🎯 Metas
-- Cadastro de metas
-- Acompanhamento do progresso
-- Organização por objetivos
+## 🎯 Metas
+- Cadastro de metas.
+- Acompanhamento do progresso.
+- Organização por objetivos.
 
-### 🪙 Finanças
-- Controle financeiro
-- Registro de receitas
-- Registro de despesas
-- Resumo financeiro
+## 💰 Finanças
+- Registro de receitas.
+- Registro de despesas.
+- Resumo financeiro.
+- Controle de saldo.
 
-### ⚡ Energia
-- Área dedicada ao acompanhamento da produtividade e energia diária.
+## ⚡ Energia
+- Acompanhamento dos níveis de produtividade e energia diária.
 
-### 📻 Rádio Lo-Fi
-- Atalho para música ambiente durante os estudos ou trabalho.
+## ⏱️ Pomodoro
+- Timer Pomodoro integrado para melhorar foco e produtividade.
+
+## 📻 Rádio Lo-Fi
+- Atalho para música ambiente durante estudos e trabalho.
+
+## 📱 Progressive Web App (PWA)
+- Instalação no computador ou celular.
+- Funcionamento offline básico através de Service Worker.
 
 ---
 
@@ -60,6 +62,8 @@ O projeto foi criado com foco em simplicidade, desempenho e uma interface modern
 - CSS3
 - JavaScript (ES6)
 - LocalStorage
+- Service Worker
+- Manifest.json
 - Git
 - GitHub
 
@@ -67,81 +71,117 @@ O projeto foi criado com foco em simplicidade, desempenho e uma interface modern
 
 # 📁 Estrutura do Projeto
 
-```
+```text
 Forest Focus
 │
 ├── assets
 │   ├── css
-│   │   └── style.css
+│   │   ├── base.css
+│   │   ├── calendario.css
+│   │   ├── energia.css
+│   │   ├── financas.css
+│   │   ├── metas.css
+│   │   ├── perfil.css
+│   │   ├── pomodoro.css
+│   │   ├── style.css
+│   │   └── tarefas.css
 │   │
 │   ├── img
+│   │   ├── athena
+│   │   │   ├── athena_fim.png
+│   │   │   ├── athena_inicio.png
+│   │   │   └── athena_meio.png
+│   │   │   
+│   │   │
 │   │   ├── favicon.png
 │   │   ├── logo-192.png
 │   │   └── logo-512.png
 │   │
 │   └── js
-│       ├── dashboard.js
-│       ├── perfil.js
-│       ├── tarefas.js
 │       ├── calendario.js
+│       ├── dashboard.js
+│       ├── energia.js
 │       ├── financas.js
+│       ├── menu.js
 │       ├── metas.js
-│       └── energia.js
+│       ├── perfil.js
+│       ├── pomodoro.js
+│       └── tarefas.js
 │
 ├── pages
-│   ├── perfil.html
-│   ├── tarefas.html
 │   ├── calendario.html
+│   ├── energia.html
 │   ├── financas.html
 │   ├── metas.html
-│   └── energia.html
+│   ├── perfil.html
+│   ├── pomodoro.html
+│   └── tarefas.html
 │
 ├── index.html
 ├── manifest.json
 ├── sw.js
 └── README.md
+```
+
 ---
 
 # 💾 Armazenamento
 
-Atualmente os dados são armazenados utilizando o **LocalStorage** do navegador.
+Atualmente, todas as informações do projeto são armazenadas utilizando o **LocalStorage** do navegador.
 
-Isso permite que:
+Isso garante que tarefas, metas, eventos e registros financeiros permaneçam salvos mesmo após fechar o navegador.
 
-- tarefas
-- eventos
-- metas
-- informações
+### 🔮 Próximas Atualizações
 
-permaneçam salvos mesmo após fechar a página.
-
-Nas próximas versões será implementada integração com o **Firebase**, permitindo autenticação e sincronização em nuvem.
+- Login de usuários
+- Sincronização em nuvem
+- Backup automático
+- Integração com Firebase
+- Banco de dados online
+- Notificações
+- Gamificação expandida
 
 ---
 
-# 🚀 Próximas Atualizações
+# 🚀 Como Executar o Projeto
 
-## Versão 2.0
+1. Clone este repositório.
 
-- Backup dos dados
+```bash
+git clone https://github.com/vinicesco/Forest-Focus.git
+```
+
+2. Entre na pasta do projeto.
+
+```bash
+cd Forest-Focus
+```
+
+3. Abra o arquivo **index.html** no navegador.
+
+Ou utilize a extensão **Live Server** do VS Code para uma melhor experiência.
 
 ---
 
 # 🎯 Objetivo
 
-O Forest Focus busca oferecer uma experiência simples e eficiente para quem deseja organizar estudos, trabalho e vida pessoal em uma única plataforma.
+O **Forest Focus** tem como objetivo oferecer uma plataforma moderna para organização pessoal, reunindo produtividade, estudos, trabalho e rotina em um único ambiente.
 
-
-
-# 👨‍💻 Desenvolvedor
-
-**VINÍCIUS CESCONETTO**
-
-Projeto desenvolvido para fins de estudo, prática em desenvolvimento web e evolução contínua das habilidades em HTML, CSS e JavaScript.
+Além de ser um aplicativo funcional, o projeto representa minha evolução como desenvolvedor Front-end, aplicando conceitos de arquitetura de software, responsividade, experiência do usuário e desenvolvimento de Progressive Web Apps.
 
 ---
 
-# 🔒 Direitos Autorais
+# 👨‍💻 Desenvolvedor
+
+**Vinícius Cesconetto**
+
+Projeto desenvolvido de forma independente para estudo, prática de desenvolvimento web e evolução contínua das habilidades em programação.
+
+---
+
+# 🔒 Licença
+
+**Copyright © 2026 Vinícius Cesconetto. Todos os direitos reservados.**
 
 Este projeto é privado.
 
@@ -151,4 +191,4 @@ Todos os direitos sobre o código, design e estrutura pertencem exclusivamente a
 
 ---
 
-⭐ Se este projeto foi útil para você, considere deixar uma estrela no repositório.
+⭐ Se este projeto foi útil ou inspirou você de alguma forma, considere deixar uma **estrela** no repositório.

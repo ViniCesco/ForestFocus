@@ -5,19 +5,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Tarefas - Forest Focus</title>
   <link rel="icon" type="image/png" href="../assets/img/favicon.png">
-  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/tarefas.css">
 </head>
 <body>
 
   <div class="container">
 
+    <!-- CORREÇÃO: o botão agora é irmão da sidebar, não filho dela.
+         Antes ele ficava PRESO dentro da sidebar, que fica escondida
+         fora da tela no mobile — por isso o menu nunca abria. -->
+    <button class="menu-toggle" aria-label="Abrir menu">
+      <span>🌱 Forest Focus</span>
+      <span class="menu-icon">☰</span>
+    </button>
+
     <aside class="sidebar">
       <h2>🌱 Forest Focus</h2>
-
-      <button class="menu-toggle" aria-label="Abrir menu">
-        <span>🌱 Forest Focus</span>
-        <span class="menu-icon">☰</span>
-      </button>
 
       <nav>
         <a href="perfil.html">👤 Perfil</a>
@@ -111,6 +115,19 @@
 
   </div>
 
+  <div class="modal-overlay" id="editTaskModal">
+    <div class="modal-box">
+      <h3>✏️ Editar tarefa</h3>
+      <input type="text" id="editTaskInput" placeholder="Nome da tarefa">
+      <p class="modal-error" id="editTaskError"></p>
+      <div class="modal-actions">
+        <button class="btn-cancel" id="editTaskCancelBtn">Cancelar</button>
+        <button class="btn-save" id="editTaskSaveBtn">Salvar</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../assets/js/menu.js"></script>
   <script src="../assets/js/tarefas.js"></script>
 </body>
 </html>

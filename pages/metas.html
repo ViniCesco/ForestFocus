@@ -4,20 +4,21 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Metas - Forest Focus</title>
-  <link class="favicon" type="image/png" href="../assets/img/favicon.png">
-  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="icon" type="image/png" href="../assets/img/favicon.png">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/metas.css">
 </head>
 <body>
 
   <div class="container">
 
+    <button class="menu-toggle" aria-label="Abrir menu">
+      <span>🌱 Forest Focus</span>
+      <span class="menu-icon">☰</span>
+    </button>
+
     <aside class="sidebar">
       <h2>🌱 Forest Focus</h2>
-
-      <button class="menu-toggle" aria-label="Abrir menu">
-        <span>🌱 Forest Focus</span>
-        <span class="menu-icon">☰</span>
-      </button>
 
       <nav>
         <a href="perfil.html">👤 Perfil</a>
@@ -92,15 +93,16 @@
 
           <button onclick="addGoal()">Adicionar</button>
         </div>
+        <p class="modal-error" id="goalFormError"></p>
       </section>
 
       <section class="tasks">
         
         <div class="goal-filters">
-          <button onclick="filterGoals('Todas')" class="filter-btn active">Todas</button>
-          <button onclick="filterGoals('Profissional')" class="filter-btn">🎓 Profissional</button>
-          <button onclick="filterGoals('Pessoal')" class="filter-btn">🏠 Pessoal</button>
-          <button onclick="filterGoals('Financeira')" class="filter-btn">💰 Financeira</button>
+          <button onclick="filterGoals('Todas')" class="filter-btn active" data-category="Todas">Todas</button>
+          <button onclick="filterGoals('Profissional')" class="filter-btn" data-category="Profissional">🎓 Profissional</button>
+          <button onclick="filterGoals('Pessoal')" class="filter-btn" data-category="Pessoal">🏠 Pessoal</button>
+          <button onclick="filterGoals('Financeira')" class="filter-btn" data-category="Financeira">💰 Financeira</button>
         </div>
 
         <ul id="goalList"></ul>
@@ -120,7 +122,43 @@
     </main>
 
   </div>
-  
+
+  <div class="modal-overlay" id="goalAmountModal">
+    <div class="modal-box">
+      <h3 id="goalAmountTitle">Atualizar progresso</h3>
+      <input type="number" id="goalAmountInput" placeholder="Valor">
+      <p class="modal-error" id="goalAmountError"></p>
+      <div class="modal-actions">
+        <button class="btn-cancel" id="goalAmountCancelBtn">Cancelar</button>
+        <button class="btn-save" id="goalAmountConfirmBtn">Confirmar</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="goalEditModal">
+    <div class="modal-box">
+      <h3>✏️ Editar objetivo</h3>
+      <input type="text" id="goalEditInput" placeholder="Objetivo">
+      <p class="modal-error" id="goalEditError"></p>
+      <div class="modal-actions">
+        <button class="btn-cancel" id="goalEditCancelBtn">Cancelar</button>
+        <button class="btn-save" id="goalEditSaveBtn">Salvar</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="goalDeleteModal">
+    <div class="modal-box">
+      <h3>Excluir meta</h3>
+      <p>Tem certeza que deseja excluir esta meta? Essa ação não pode ser desfeita.</p>
+      <div class="modal-actions">
+        <button class="btn-cancel" id="goalDeleteCancelBtn">Cancelar</button>
+        <button class="btn-danger" id="goalDeleteConfirmBtn">Excluir</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../assets/js/menu.js"></script>
   <script src="../assets/js/metas.js"></script>
 </body>
 </html>

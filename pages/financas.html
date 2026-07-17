@@ -5,19 +5,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Finanças - Forest Focus</title>
   <link rel="icon" type="image/png" href="../assets/img/favicon.png">
-  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/financas.css">
 </head>
 <body>
 
   <div class="container">
 
+    <button class="menu-toggle" aria-label="Abrir menu">
+      <span>🌱 Forest Focus</span>
+      <span class="menu-icon">☰</span>
+    </button>
+
     <aside class="sidebar">
       <h2>🌱 Forest Focus</h2>
-
-      <button class="menu-toggle" aria-label="Abrir menu">
-        <span>🌱 Forest Focus</span>
-        <span class="menu-icon">☰</span>
-      </button>
 
       <nav>
         <a href="perfil.html">👤 Perfil</a>
@@ -90,7 +91,8 @@
       <section class="tasks">
         <h2 id="currentMonthTitle">📄 Últimos Lançamentos</h2>
         <div id="financeHistory"></div>
-        <button id="toggleFinanceHistory" onclick="toggleFinanceHistory()">
+        
+        <button id="toggleFinanceHistory" style="display: none;">
           <span id="toggleFinanceIcon">▼</span>
           <span id="toggleFinanceText">Mostrar mais</span>
         </button>
@@ -120,6 +122,20 @@
     </main>
   </div>
 
+  <div class="modal-overlay" id="editFinanceModal">
+    <div class="modal-box">
+      <h3>✏️ Editar lançamento</h3>
+      <input type="text" id="editFinanceDescription" placeholder="Descrição">
+      <input type="number" id="editFinanceValue" placeholder="Valor">
+      <p class="modal-error" id="editFinanceError"></p>
+      <div class="modal-actions">
+        <button class="btn-cancel" id="editFinanceCancelBtn">Cancelar</button>
+        <button class="btn-save" id="editFinanceSaveBtn">Salvar</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../assets/js/menu.js"></script>
   <script src="../assets/js/financas.js"></script>
 </body>
 </html>

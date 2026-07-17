@@ -67,14 +67,16 @@ function renderProfile() {
 /* Valida o campo de texto e atualiza o nome de usuário salvo localmente */
 function updateUsername() {
   const input = document.getElementById("usernameInput");
+  const error = document.getElementById("usernameError");
   if (!input) return;
 
   const newName = input.value.trim();
   if (newName === "") {
-    alert("Por favor, digite um nome válido.");
+    if (error) error.textContent = "Por favor, digite um nome válido.";
     return;
   }
 
+  if (error) error.textContent = "";
   localStorage.setItem("forestUsername", newName);
   input.value = "";
   renderProfile();
@@ -86,45 +88,21 @@ function updateUsername() {
 
 /* Alterna a visibilidade do modal de seleção de avatares na tela */
 function openAvatarModal() {
-  const modal = document.getElementById("avatarModal");
-  if (modal) {
-    modal.style.display = modal.style.display === "none" ? "block" : "none";
-  }
+  document.getElementById("avatarModal")?.classList.toggle("active");
 }
 
 /* Salva o emoji selecionado como o novo avatar do perfil e fecha a janela modal */
 function selectAvatar(avatarEmoji) {
   localStorage.setItem("forestAvatar", avatarEmoji);
-  
-  const modal = document.getElementById("avatarModal");
-  if (modal) modal.style.display = "none";
-  
-  renderProfile(); 
+  document.getElementById("avatarModal")?.classList.remove("active");
+  renderProfile();
 }
 
 /* ----------------------------------------------
    5. GATILHO DE EXECUÇÃO (DOM)
+   (menu mobile agora é responsabilidade do menu.js, incluído no HTML
+    antes deste arquivo)
 -----------------------------------------------*/
-
-/* Dispara a renderização inicial do perfil assim que o arquivo HTML é totalmente estruturado */
 document.addEventListener("DOMContentLoaded", () => {
   renderProfile();
 });
-
-document.addEventListener("DOMContentLoaded", () => {
-
-    const sidebar = document.querySelector(".sidebar");
-    const button = document.querySelector(".menu-toggle");
-    const main = document.querySelector(".main-content");
-
-    if (!sidebar || !button || !main) return;
-
-    button.addEventListener("click", () => {
-
-        sidebar.classList.toggle("open");
-        main.classList.toggle("menu-expanded");
-
-    });
-
-});
-

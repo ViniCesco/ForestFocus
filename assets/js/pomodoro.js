@@ -23,17 +23,14 @@ const focusTime = document.getElementById("focusTime");
 const athenaImage = document.getElementById("athenaImage");
 const athenaStage = document.getElementById("athenaStage");
 const athenaMessage = document.getElementById("athenaMessage");
-const petCard = document.querySelector(".pomodoro-pet");
 
-const infoCard = document.querySelector(".pomodoro-info");
 const infoButton = document.querySelector(".pomodoro-info-toggle");
+const infoContent = document.querySelector(".pomodoro-info-content");
+const infoArrow = document.querySelector(".info-arrow");
+
 const musicButton = document.getElementById("musicButton");
 const musicPanel = document.getElementById("musicPanel");
 const closeMusic = document.getElementById("closeMusic");
-
-const sidebar = document.querySelector(".sidebar");
-const menuButton = document.querySelector(".menu-toggle");
-const mainContent = document.querySelector(".main-content");
 
 // ========================================
 // 3. INICIALIZAÇÃO DO SISTEMA
@@ -69,28 +66,28 @@ document.addEventListener("keydown", (event) => {
 });
 
 function initInterfaceListeners() {
-    if (menuButton && sidebar && mainContent) {
-        menuButton.addEventListener("click", () => {
-            sidebar.classList.toggle("open");
-            mainContent.classList.toggle("menu-expanded");
-        });
-    }
-
-    if (infoButton && infoCard) {
+    if (infoButton && infoContent) {
+        infoContent.style.display = "none";
         infoButton.addEventListener("click", () => {
-            infoCard.classList.toggle("open");
+            if (infoContent.style.display === "none") {
+                infoContent.style.display = "flex";
+                if (infoArrow) infoArrow.style.transform = "rotate(180deg)";
+            } else {
+                infoContent.style.display = "none";
+                if (infoArrow) infoArrow.style.transform = "rotate(0deg)";
+            }
         });
     }
 
     if (musicButton && musicPanel) {
         musicButton.addEventListener("click", () => {
-            musicPanel.classList.toggle("open");
+            musicPanel.style.display = (musicPanel.style.display === "block") ? "none" : "block";
         });
     }
 
     if (closeMusic && musicPanel) {
         closeMusic.addEventListener("click", () => {
-            musicPanel.classList.remove("open");
+            musicPanel.style.display = "none";
         });
     }
 }
@@ -162,10 +159,6 @@ function updateAthena() {
     
     const progress = ((TOTAL_SECONDS - remainingSeconds) / TOTAL_SECONDS) * 100;
 
-    if (petCard) {
-        petCard.classList.remove("stage2", "stage3");
-    }
-
     if (progress < 40) {
         athenaImage.src = "../assets/img/athena/athena_inicio.png";
         athenaStage.textContent = "Estágio 1 de 3";
@@ -173,16 +166,12 @@ function updateAthena() {
     } else if (progress < 80) {
         athenaImage.src = "../assets/img/athena/athena_meio.png";
         athenaStage.textContent = "Estágio 2 de 3";
-        if (petCard) petCard.classList.add("stage2");
-
         athenaMessage.textContent = (progress < 60) 
             ? "Ótimo trabalho! Continue nesse ritmo." 
             : "Excelente! Já passamos da metade.";
     } else {
         athenaImage.src = "../assets/img/athena/athena_fim.png";
         athenaStage.textContent = "Estágio 3 de 3";
-        if (petCard) petCard.classList.add("stage3");
-
         athenaMessage.textContent = (progress < 100) 
             ? "Estamos quase lá! Continue firme." 
             : "Parabéns! Você concluiu mais uma sessão.";
@@ -249,7 +238,7 @@ function finishPomodoro() {
     updateTimer();
     updateProgress();
     updateAthena();
-    addFocusTime(25);
+    addFocusTime(POMODORO_MINUTES);
 
     tocarSomFimCronograma();
 

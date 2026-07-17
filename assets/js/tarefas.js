@@ -80,16 +80,47 @@ function toggleTask(index) {
   updateTaskStats();
 }
 
-/* Abre uma janela de texto para modificar a descrição de uma tarefa existente */
-function editTask(index) {
-  const newText = prompt("Editar tarefa:", tasks[index].text);
-  if (newText === null || newText.trim() === "") return;
+/* Estado de qual tarefa está sendo editada no momento pelo modal */
+let editingTaskIndex = null;
 
-  tasks[index].text = newText.trim();
+/* Abre o modal de edição preenchido com o texto atual da tarefa */
+function editTask(index) {
+  editingTaskIndex = index;
+
+  const modal = document.getElementById("editTaskModal");
+  const input = document.getElementById("editTaskInput");
+  const error = document.getElementById("editTaskError");
+  if (!modal || !input) return;
+
+  input.value = tasks[index].text;
+  if (error) error.textContent = "";
+  modal.classList.add("active");
+  input.focus();
+}
+
+function closeEditTaskModal() {
+  const modal = document.getElementById("editTaskModal");
+  if (modal) modal.classList.remove("active");
+  editingTaskIndex = null;
+}
+
+function saveEditTask() {
+  const input = document.getElementById("editTaskInput");
+  const error = document.getElementById("editTaskError");
+  if (!input || editingTaskIndex === null) return;
+
+  const newText = input.value.trim();
+  if (newText === "") {
+    if (error) error.textContent = "A tarefa não pode ficar vazia.";
+    return;
+  }
+
+  tasks[editingTaskIndex].text = newText;
 
   saveTasks();
   renderTasks();
   updateTaskStats();
+  closeEditTaskModal();
 }
 
 /* Remove definitivamente uma tarefa da lista com base em seu índice */
@@ -232,6 +263,8 @@ function updateTaskStats() {
 
 /* ----------------------------------------------
    6. GATILHO DE EXECUÇÃO E EVENTOS (DOM)
+   (a lógica do menu mobile agora está em menu.js — incluído no HTML
+    antes deste arquivo — por isso não aparece mais aqui)
 -----------------------------------------------*/
 
 /* Inicializa o módulo carregando as informações, configurando atalhos de digitação e gerando a interface visual */
@@ -248,21 +281,13 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   }
-});
 
-document.addEventListener("DOMContentLoaded", () => {
-
-    const sidebar = document.querySelector(".sidebar");
-    const button = document.querySelector(".menu-toggle");
-    const main = document.querySelector(".main-content");
-
-    if (!sidebar || !button || !main) return;
-
-    button.addEventListener("click", () => {
-
-        sidebar.classList.toggle("open");
-        main.classList.toggle("menu-expanded");
-
-    });
-
+  document.getElementById("editTaskCancelBtn")?.addEventListener("click", closeEditTaskModal);
+  document.getElementById("editTaskSaveBtn")?.addEventListener("click", saveEditTask);
+  document.getElementById("editTaskModal")?.addEventListener("click", (e) => {
+    if (e.target.id === "editTaskModal") closeEditTaskModal();
+  });
+  document.getElementById("editTaskInput")?.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") saveEditTask();
+  });
 });

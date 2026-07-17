@@ -5,19 +5,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Estado de Energia - Forest Focus</title>
   <link rel="icon" type="image/png" href="../assets/img/favicon.png">
-  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/energia.css">
 </head>
 <body>
 
   <div class="container">
 
+    <button class="menu-toggle" aria-label="Abrir menu">
+      <span>🌱 Forest Focus</span>
+      <span class="menu-icon">☰</span>
+    </button>
+
     <aside class="sidebar">
       <h2>🌱 Forest Focus</h2>
-
-      <button class="menu-toggle" aria-label="Abrir menu">
-        <span>🌱 Forest Focus</span>
-        <span class="menu-icon">☰</span>
-      </button>
 
       <nav>
         <a href="perfil.html">👤 Perfil</a>
@@ -75,6 +76,7 @@
           <input type="text" id="moodNote" placeholder="Gatilho ou observação (Ex: 5h de sono, entrega de projeto importante...)">
           <button id="saveMoodButton">Registrar Estado</button>
         </div>
+        <p class="modal-error" id="moodError"></p>
       </section>
 
       <div class="section-divider"></div>
@@ -119,6 +121,7 @@
     </main>
   </div>
 
+  <script src="../assets/js/menu.js"></script>
   <script src="../assets/js/energia.js"></script>
 </body>
 </html>

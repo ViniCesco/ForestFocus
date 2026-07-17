@@ -7,11 +7,15 @@ console.log("Sistema de Metas Carregado!");
 let goals = [];
 let currentFilter = "Todas";
 
+let pendingGoalId = null;
+let pendingGoalAction = null;
+let editingGoalId = null;
+let pendingDeleteId = null;
+
 /* ----------------------------------------------
    2. PERSISTÊNCIA DE DADOS (LOCALSTORAGE)
 -----------------------------------------------*/
 
-/* Carrega as metas salvas localmente no armazenamento do navegador */
 function loadGoals() {
   const savedGoals = localStorage.getItem("forestGoals");
   if (savedGoals) {
@@ -19,7 +23,6 @@ function loadGoals() {
   }
 }
 
-/* Salva a lista atual de metas no armazenamento local do navegador */
 function saveGoals() {
   localStorage.setItem("forestGoals", JSON.stringify(goals));
 }
@@ -28,20 +31,25 @@ function saveGoals() {
    3. OPERAÇÕES PRINCIPAIS (AÇÕES)
 -----------------------------------------------*/
 
-/* Valida os dados do formulário e cria uma nova meta com progresso zerado */
 function addGoal() {
-  const category = document.getElementById("goalCategory").value;
-  const title = document.getElementById("goalInput").value.trim();
-  const target = Number(document.getElementById("goalTarget").value);
+  const categoryEl = document.getElementById("goalCategory");
+  const titleEl = document.getElementById("goalInput");
+  const targetEl = document.getElementById("goalTarget");
+  const error = document.getElementById("goalFormError");
+
+  const category = categoryEl.value;
+  const title = titleEl.value.trim();
+  const target = Number(targetEl.value);
 
   if (!category) {
-    alert("Por favor, selecione uma categoria para a sua meta.");
+    if (error) error.textContent = "Selecione uma categoria para a sua meta.";
     return;
   }
   if (title === "" || target <= 0) {
-    alert("Insira uma descrição válida e um valor alvo maior que zero.");
+    if (error) error.textContent = "Insira uma descrição válida e um alvo maior que zero.";
     return;
   }
+  if (error) error.textContent = "";
 
   goals.push({
     id: Date.now(),
@@ -54,82 +62,154 @@ function addGoal() {
   saveGoals();
   renderGoals();
 
-  document.getElementById("goalCategory").selectedIndex = 0;
-  document.getElementById("goalInput").value = "";
-  document.getElementById("goalTarget").value = "";
+  categoryEl.selectedIndex = 0;
+  titleEl.value = "";
+  targetEl.value = "";
+}
+
+/* Abre o modal de valor, usado tanto por incrementGoal quanto decrementGoal */
+function openAmountModal(id, action) {
+  const goal = goals.find(g => g.id === id);
+  if (!goal) return;
+
+  pendingGoalId = id;
+  pendingGoalAction = action;
+
+  const modal = document.getElementById("goalAmountModal");
+  const title = document.getElementById("goalAmountTitle");
+  const input = document.getElementById("goalAmountInput");
+  const error = document.getElementById("goalAmountError");
+  if (!modal || !input) return;
+
+  if (title) {
+    title.textContent = action === "increment"
+      ? `Adicionar progresso — ${goal.title}`
+      : `Subtrair progresso — ${goal.title}`;
+  }
+  input.value = "";
+  if (error) error.textContent = "";
+  modal.classList.add("active");
+  input.focus();
+}
+
+function closeAmountModal() {
+  document.getElementById("goalAmountModal")?.classList.remove("active");
+  pendingGoalId = null;
+  pendingGoalAction = null;
+}
+
+function confirmAmount() {
+  const input = document.getElementById("goalAmountInput");
+  const error = document.getElementById("goalAmountError");
+  if (!input || pendingGoalId === null) return;
+
+  const value = Number(input.value);
+  if (isNaN(value) || value <= 0) {
+    if (error) error.textContent = "Digite um número válido maior que zero.";
+    return;
+  }
+
+  const goal = goals.find(g => g.id === pendingGoalId);
+  if (!goal) return;
+
+  if (pendingGoalAction === "increment") {
+    goal.current = Math.min(goal.current + value, goal.target);
+  } else {
+    goal.current = Math.max(goal.current - value, 0);
+  }
+
+  saveGoals();
+  renderGoals();
+  closeAmountModal();
 }
 
 function incrementGoal(id) {
-  const goal = goals.find(g => g.id === id);
-  if (!goal) return;
-
-  const valueToAdd = Number(prompt(`Meta: ${goal.title}\nQuanto você deseja ADICIONAR ao progresso atual?`));
-
-  if (isNaN(valueToAdd) || valueToAdd <= 0) {
-    alert("Por favor, digite um número válido maior que zero.");
-    return;
-  }
-
-  goal.current = Math.min(goal.current + valueToAdd, goal.target);
-  
-  saveGoals();
-  renderGoals();
+  openAmountModal(id, "increment");
 }
 
 function decrementGoal(id) {
-  const goal = goals.find(g => g.id === id);
-  if (!goal) return;
-
-  const valueToSubtract = Number(prompt(`Meta: ${goal.title}\nQuanto você deseja SUBTRAIR do progresso atual?`));
-
-  if (isNaN(valueToSubtract) || valueToSubtract <= 0) {
-    alert("Por favor, digite um número válido maior que zero.");
-    return;
-  }
-
-  goal.current = Math.max(goal.current - valueToSubtract, 0);
-
-  saveGoals();
-  renderGoals();
+  openAmountModal(id, "decrement");
 }
 
-/* Altera o texto descritivo/objetivo de uma meta cadastrada */
 function editGoal(id) {
   const goal = goals.find(g => g.id === id);
   if (!goal) return;
 
-  const newTitle = prompt("Edite o seu objetivo:", goal.title);
+  editingGoalId = id;
 
-  if (newTitle && newTitle.trim() !== "") {
-    goal.title = newTitle.trim();
-    saveGoals();
-    renderGoals();
-  }
+  const modal = document.getElementById("goalEditModal");
+  const input = document.getElementById("goalEditInput");
+  const error = document.getElementById("goalEditError");
+  if (!modal || !input) return;
+
+  input.value = goal.title;
+  if (error) error.textContent = "";
+  modal.classList.add("active");
+  input.focus();
 }
 
-/* Remove definitivamente uma meta do sistema após a confirmação do usuário */
-function deleteGoal(id) {
-  if (confirm("Tem certeza que deseja excluir esta meta?")) {
-    goals = goals.filter(g => g.id !== id);
+function closeGoalEditModal() {
+  document.getElementById("goalEditModal")?.classList.remove("active");
+  editingGoalId = null;
+}
+
+function saveGoalEdit() {
+  const input = document.getElementById("goalEditInput");
+  const error = document.getElementById("goalEditError");
+  if (!input || editingGoalId === null) return;
+
+  const newTitle = input.value.trim();
+  if (newTitle === "") {
+    if (error) error.textContent = "O objetivo não pode ficar vazio.";
+    return;
+  }
+
+  const goal = goals.find(g => g.id === editingGoalId);
+  if (goal) {
+    goal.title = newTitle;
     saveGoals();
     renderGoals();
   }
+  closeGoalEditModal();
+}
+
+function deleteGoal(id) {
+  pendingDeleteId = id;
+  document.getElementById("goalDeleteModal")?.classList.add("active");
+}
+
+function closeDeleteModal() {
+  document.getElementById("goalDeleteModal")?.classList.remove("active");
+  pendingDeleteId = null;
+}
+
+function confirmDeleteGoal() {
+  if (pendingDeleteId === null) return;
+  goals = goals.filter(g => g.id !== pendingDeleteId);
+  saveGoals();
+  renderGoals();
+  closeDeleteModal();
 }
 
 /* ----------------------------------------------
    4. FILTROS E RENDERIZAÇÃO DE INTERFACE
 -----------------------------------------------*/
 
-/* Renderiza as metas na tela, calculando porcentagens e aplicando o filtro de categoria selecionado */
+const categoryLabels = {
+  Profissional: "🎓 Profissional",
+  Pessoal: "🏠 Pessoal",
+  Financeira: "💰 Financeira"
+};
+
 function renderGoals() {
   const listElement = document.getElementById("goalList");
   if (!listElement) return;
 
   listElement.innerHTML = "";
 
-  let profCount = goals.filter(g => g.category === "Profissional").length;
-  let persCount = goals.filter(g => g.category === "Pessoal").length;
-  let finCount = goals.filter(g => g.category === "Financeira").length;
+  const profCount = goals.filter(g => g.category === "Profissional").length;
+  const persCount = goals.filter(g => g.category === "Pessoal").length;
+  const finCount = goals.filter(g => g.category === "Financeira").length;
 
   const filteredGoals = goals.filter(goal => {
     if (currentFilter === "Todas") return true;
@@ -137,45 +217,38 @@ function renderGoals() {
   });
 
   if (filteredGoals.length === 0) {
-    listElement.innerHTML = `<p style="color: var(--text-label); font-style: italic;">Nenhuma meta nesta categoria.</p__>`;
+    listElement.innerHTML = `<p class="meta-empty">Nenhuma meta nesta categoria.</p>`;
+  } else {
+    filteredGoals.forEach(goal => {
+      const percent = Math.min(Math.round((goal.current / goal.target) * 100), 100);
+      const isCompleted = percent === 100;
+
+      const li = document.createElement("li");
+
+      li.innerHTML = `
+        <div class="goal-top-row">
+          <div class="goal-content-wrapper">
+            <span class="goal-tag">${categoryLabels[goal.category] || goal.category}</span>
+            <span class="goal-title ${isCompleted ? "completed" : ""}">${goal.title}</span>
+            <span class="goal-target-val">
+              Progresso: ${goal.current.toLocaleString("pt-BR")} / ${goal.target.toLocaleString("pt-BR")} (${percent}%)
+            </span>
+          </div>
+          <div class="goal-actions">
+            <button class="goal-btn-decrement" onclick="decrementGoal(${goal.id})">-</button>
+            <button class="goal-btn-increment" onclick="incrementGoal(${goal.id})">+</button>
+            <button onclick="editGoal(${goal.id})" title="Editar objetivo">✏️</button>
+            <button onclick="deleteGoal(${goal.id})" title="Excluir">❌</button>
+          </div>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill ${isCompleted ? "completed" : ""}" style="width: ${percent}%"></div>
+        </div>
+      `;
+
+      listElement.appendChild(li);
+    });
   }
-
-  filteredGoals.forEach(goal => {
-    const percent = Math.min(Math.round((goal.current / goal.target) * 100), 100);
-    const isCompleted = percent === 100;
-
-    const li = document.createElement("li");
-    li.style.cssText = "background: #1e1e2f; padding: 18px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); display: flex; flex-direction: column; gap: 10px; margin-bottom: 12px;";
-
-    li.innerHTML = `
-      <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
-        <div>
-          <span style="font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; color: #a78bfa; font-weight: bold;">
-            ${goal.category === "Profissional" ? "🎓 Profissional" : goal.category === "Pessoal" ? "🏠 Pessoal" : "💰 Financeira"}
-          </span>
-          <strong style="display: block; font-size: 16px; color: #fff; margin-top: 3px; ${isCompleted ? 'text-decoration: line-through; opacity: 0.6;' : ''}">
-            ${goal.title}
-          </strong>
-          <span style="display: block; font-size: 13px; color: #a0aec0; margin-top: 2px;">
-            Progresso: ${goal.current.toLocaleString('pt-BR')} / ${goal.target.toLocaleString('pt-BR')} (${percent}%)
-          </span>
-        </div>
-
-        <div style="display: flex; gap: 8px; align-items: center;">
-          <button onclick="decrementGoal(${goal.id})" style="background: #3d3d5c; color: #fff; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-weight: bold; transition: 0.2s;">-</button>
-          <button onclick="incrementGoal(${goal.id})" style="background: #6366f1; color: #fff; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-weight: bold; transition: 0.2s;">+</button>
-          <button onclick="editGoal(${goal.id})" title="Editar objetivo" style="background: transparent; border: none; cursor: pointer; font-size: 15px; margin-left: 5px;">✏️</button>
-          <button onclick="deleteGoal(${goal.id})" style="background: transparent; border: none; cursor: pointer; font-size: 16px; margin-left: 5px;">❌</button>
-        </div>
-      </div>
-
-      <div class="progress-bar" style="width: 100%; height: 6px; background: #2d2d44; border-radius: 3px; overflow: hidden;">
-        <div style="width: ${percent}%; height: 100%; background: ${isCompleted ? '#10b981' : '#6366f1'}; transition: width 0.3s ease;"></div>
-      </div>
-    `;
-
-    listElement.appendChild(li);
-  });
 
   document.getElementById("professionalGoalsCounter").textContent = profCount;
   document.getElementById("personalGoalsCounter").textContent = persCount;
@@ -185,17 +258,8 @@ function renderGoals() {
 function filterGoals(category) {
   currentFilter = category;
 
-  const buttons = document.querySelectorAll(".filter-btn");
-  buttons.forEach(btn => {
-    if (btn.innerText.includes(category) || (category === "Todas" && btn.innerText === "Todas")) {
-      btn.style.background = "#6366f1";
-      btn.style.color = "#fff";
-      btn.style.border = "none";
-    } else {
-      btn.style.background = "#1e1e2f";
-      btn.style.color = "#a0aec0";
-      btn.style.border = "1px solid #3d3d5c";
-    }
+  document.querySelectorAll(".filter-btn").forEach(btn => {
+    btn.classList.toggle("active", btn.dataset.category === category);
   });
 
   renderGoals();
@@ -205,7 +269,6 @@ function filterGoals(category) {
    5. ACESSIBILIDADE E ATALHOS
 -----------------------------------------------*/
 
-/* Escuta os campos de entrada de dados e dispara a gravação da meta ao pressionar a tecla Enter */
 function setupEnterKey() {
   const inputs = ["goalInput", "goalTarget"];
 
@@ -214,8 +277,8 @@ function setupEnterKey() {
     if (inputElement) {
       inputElement.addEventListener("keydown", function (event) {
         if (event.key === "Enter") {
-          event.preventDefault(); 
-          addGoal(); 
+          event.preventDefault();
+          addGoal();
         }
       });
     }
@@ -224,26 +287,35 @@ function setupEnterKey() {
 
 /* ----------------------------------------------
    6. DISPARO INICIAL
+   (menu mobile agora é responsabilidade do menu.js, incluído no HTML
+    antes deste arquivo)
 -----------------------------------------------*/
-
-/* Executa o carregamento das metas, monta os atalhos de teclado e atualiza a interface visual */
-loadGoals();
-renderGoals();
-setupEnterKey();
-
 document.addEventListener("DOMContentLoaded", () => {
+  loadGoals();
+  renderGoals();
+  setupEnterKey();
 
-    const sidebar = document.querySelector(".sidebar");
-    const button = document.querySelector(".menu-toggle");
-    const main = document.querySelector(".main-content");
+  document.getElementById("goalAmountCancelBtn")?.addEventListener("click", closeAmountModal);
+  document.getElementById("goalAmountConfirmBtn")?.addEventListener("click", confirmAmount);
+  document.getElementById("goalAmountModal")?.addEventListener("click", (e) => {
+    if (e.target.id === "goalAmountModal") closeAmountModal();
+  });
+  document.getElementById("goalAmountInput")?.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") confirmAmount();
+  });
 
-    if (!sidebar || !button || !main) return;
+  document.getElementById("goalEditCancelBtn")?.addEventListener("click", closeGoalEditModal);
+  document.getElementById("goalEditSaveBtn")?.addEventListener("click", saveGoalEdit);
+  document.getElementById("goalEditModal")?.addEventListener("click", (e) => {
+    if (e.target.id === "goalEditModal") closeGoalEditModal();
+  });
+  document.getElementById("goalEditInput")?.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") saveGoalEdit();
+  });
 
-    button.addEventListener("click", () => {
-
-        sidebar.classList.toggle("open");
-        main.classList.toggle("menu-expanded");
-
-    });
-
+  document.getElementById("goalDeleteCancelBtn")?.addEventListener("click", closeDeleteModal);
+  document.getElementById("goalDeleteConfirmBtn")?.addEventListener("click", confirmDeleteGoal);
+  document.getElementById("goalDeleteModal")?.addEventListener("click", (e) => {
+    if (e.target.id === "goalDeleteModal") closeDeleteModal();
+  });
 });

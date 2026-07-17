@@ -1,3 +1,8 @@
+// ========================================
+// 1. CONFIGURAÇÕES E SINALIZADORES GLOBAIS
+// (menu mobile agora é responsabilidade do menu.js, incluído no HTML
+//  antes deste arquivo)
+// ========================================
 document.addEventListener("DOMContentLoaded", () => {
 
     let moodLogs = JSON.parse(localStorage.getItem("forestMoodLogs")) || [];
@@ -6,21 +11,23 @@ document.addEventListener("DOMContentLoaded", () => {
     let isCurrentExpanded = false;
     let isArchiveExpanded = false;
 
+    // ========================================
+    // 2. MAPEAMENTO DE ELEMENTOS DO DOM
+    // ========================================
     const moodButtons = document.querySelectorAll(".mood-btn");
     const moodNoteInput = document.getElementById("moodNote");
     const saveMoodButton = document.getElementById("saveMoodButton");
+    const moodError = document.getElementById("moodError");
     const currentMonthHeader = document.getElementById("currentMonthHeader");
     const currentMonthList = document.getElementById("currentMonthList");
     const archivedMonthList = document.getElementById("archivedMonthList");
     const moodChartContainer = document.getElementById("moodChartContainer");
     const monthFilter = document.getElementById("monthFilter");
-    const sidebar = document.querySelector(".sidebar");
-    const menuButton = document.querySelector(".menu-toggle");
-    const mainContent = document.querySelector(".main-content");
 
     const moodConfig = {
         "Ultra Focado": { emoji: "⚡", class: "bar-ultra" },
         "Energia Alta": { emoji: "🔋", class: "bar-alta" },
+        "Equilibrado": { emoji: "⚖️", class: "bar-equilibrado" },
         "Fadiga Mental": { emoji: "📉", class: "bar-fadiga" },
         "Bloqueio Criativo": { emoji: "🚫", class: "bar-bloqueio" },
         "Exaustão": { emoji: "💤", class: "bar-exaustao" }
@@ -32,6 +39,9 @@ document.addEventListener("DOMContentLoaded", () => {
         "09": "Setembro", "10": "Outubro", "11": "Novembro", "12": "Dezembro"
     };
 
+    // ========================================
+    // 3. FUNÇÕES AUXILIARES DE DATA E ARQUIVO
+    // ========================================
     const getLocalDateStr = () => {
         const now = new Date();
         const year = now.getFullYear();
@@ -54,7 +64,7 @@ document.addEventListener("DOMContentLoaded", () => {
     function checkAndArchivePreviousMonths() {
         const currentMonth = getCurrentMonthKey();
         const pastLogs = moodLogs.filter(log => !log.date.startsWith(currentMonth));
-        
+
         if (pastLogs.length > 0) {
             pastLogs.forEach(log => {
                 const logMonth = log.date.substring(0, 7);
@@ -76,7 +86,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!monthFilter) return;
         const currentSelected = monthFilter.value;
         monthFilter.innerHTML = '<option value="">Selecione um mês anterior...</option>';
-        
+
         Object.keys(archivedMonths).sort().reverse().forEach(key => {
             const option = document.createElement("option");
             option.value = key;
@@ -87,31 +97,54 @@ document.addEventListener("DOMContentLoaded", () => {
         monthFilter.value = currentSelected;
     }
 
-    function createHistoryItemHTML(log) {
+    /* Remove um registro específico — da lista do mês atual (monthKey vazio)
+       ou de um mês arquivado (monthKey preenchido) */
+    function deleteMoodLog(date, monthKey) {
+        if (monthKey) {
+            archivedMonths[monthKey] = (archivedMonths[monthKey] || []).filter(l => l.date !== date);
+            localStorage.setItem("forestMoodArchive", JSON.stringify(archivedMonths));
+        } else {
+            moodLogs = moodLogs.filter(l => l.date !== date);
+            localStorage.setItem("forestMoodLogs", JSON.stringify(moodLogs));
+        }
+        updateAnalytics();
+    }
+
+    // ========================================
+    // 4. RENDERIZAÇÃO DE COMPONENTES VISUAIS
+    // ========================================
+    function createHistoryItem(log, monthKey) {
         const parts = log.date.split("-");
         const day = parts[2] || "00";
         const month = parts[1] || "00";
         const config = moodConfig[log.mood] || { emoji: "📝" };
-        
-        return `
-            <div class="mood-history-main">
-                <span style="font-size: 20px;">${config.emoji}</span>
-                <div>
-                    <div class="mood-history-status">${log.mood}</div>
-                    ${log.note ? `<div class="mood-history-note">"${log.note}"</div>` : ""}
-                </div>
+
+        const item = document.createElement("div");
+        item.className = "mood-log-item";
+        item.innerHTML = `
+            <div class="mood-log-meta">
+                <span class="mood-log-title">${config.emoji} ${log.mood}</span>
+                ${log.note ? `<span class="mood-log-note">"${log.note}"</span>` : ""}
             </div>
-            <div class="mood-history-date">${day}/${month}</div>
+            <div class="mood-log-aside">
+                <span class="mood-log-date">${day}/${month}</span>
+                <button class="mood-log-delete" title="Excluir registro">🗑️</button>
+            </div>
         `;
+
+        item.querySelector(".mood-log-delete")?.addEventListener("click", () => {
+            deleteMoodLog(log.date, monthKey);
+        });
+
+        return item;
     }
 
     function createToggleTemplate(isExpandedState, onClickCallback) {
         const toggleBtn = document.createElement("button");
-        toggleBtn.style.cssText = "width:100%; padding:12px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.05); border-radius:6px; color:#a0aec0; font-size:14px; cursor:pointer; margin-top:15px; transition:background 0.2s;";
+        toggleBtn.className = "today-btn-alt";
+        toggleBtn.style.width = "100%";
+        toggleBtn.style.marginTop = "15px";
         toggleBtn.textContent = isExpandedState ? "▲ Mostrar menos" : "▼ Mostrar mais";
-        
-        toggleBtn.addEventListener("mouseenter", () => toggleBtn.style.background = "rgba(255,255,255,0.05)");
-        toggleBtn.addEventListener("mouseleave", () => toggleBtn.style.background = "rgba(255,255,255,0.02)");
         toggleBtn.addEventListener("click", onClickCallback);
         return toggleBtn;
     }
@@ -119,23 +152,20 @@ document.addEventListener("DOMContentLoaded", () => {
     function renderArchiveList() {
         if (!archivedMonthList || !monthFilter) return;
         archivedMonthList.innerHTML = "";
-        
+
         const selectedPeriod = monthFilter.value;
         if (!selectedPeriod) return;
 
         const archiveLogs = archivedMonths[selectedPeriod] || [];
 
         if (archiveLogs.length === 0) {
-            archivedMonthList.innerHTML = `<div style="text-align:center; padding:20px; color:var(--text-muted);">Nenhum registro encontrado.</div>`;
+            archivedMonthList.innerHTML = `<div class="energy-empty">Nenhum registro encontrado.</div>`;
             return;
         }
 
         const logsToRender = isArchiveExpanded ? archiveLogs : archiveLogs.slice(0, 3);
         logsToRender.forEach(log => {
-            const item = document.createElement("div");
-            item.className = "mood-history-item";
-            item.innerHTML = createHistoryItemHTML(log);
-            archivedMonthList.appendChild(item);
+            archivedMonthList.appendChild(createHistoryItem(log, selectedPeriod));
         });
 
         if (archiveLogs.length > 3) {
@@ -159,15 +189,12 @@ document.addEventListener("DOMContentLoaded", () => {
         if (currentMonthList) {
             currentMonthList.innerHTML = "";
             if (moodLogs.length === 0) {
-                currentMonthList.innerHTML = `<div style="text-align:center; padding:20px; color:var(--text-muted);">Nenhum registro feito neste mês ainda.</div>`;
+                currentMonthList.innerHTML = `<div class="energy-empty">Nenhum registro feito neste mês ainda.</div>`;
             } else {
                 const logsToRender = isCurrentExpanded ? moodLogs : moodLogs.slice(0, 3);
 
                 logsToRender.forEach(log => {
-                    const item = document.createElement("div");
-                    item.className = "mood-history-item";
-                    item.innerHTML = createHistoryItemHTML(log);
-                    currentMonthList.appendChild(item);
+                    currentMonthList.appendChild(createHistoryItem(log, null));
                 });
 
                 if (moodLogs.length > 3) {
@@ -180,7 +207,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         }
 
-        const counts = { "Ultra Focado": 0, "Energia Alta": 0, "Fadiga Mental": 0, "Bloqueio Criativo": 0, "Exaustão": 0 };
+        const counts = { "Ultra Focado": 0, "Energia Alta": 0, "Equilibrado": 0, "Fadiga Mental": 0, "Bloqueio Criativo": 0, "Exaustão": 0 };
         let totalRecords = moodLogs.length;
 
         moodLogs.forEach(log => {
@@ -199,24 +226,26 @@ document.addEventListener("DOMContentLoaded", () => {
                 const row = document.createElement("div");
                 row.className = "chart-row";
                 row.innerHTML = `
-                    <div class="chart-label-zone">
-                        <span>${config.emoji} ${moodName}</span>
-                        <strong>${count}x</strong>
+                    <div class="chart-label">${config.emoji} ${moodName}</div>
+                    <div class="chart-bar-wrapper">
+                        <div class="chart-bar-fill ${config.class || ''}" style="width: ${percentage}%"></div>
                     </div>
-                    <div class="chart-bar-bg">
-                        <div class="chart-bar-fill ${config.class}" style="width: ${percentage}%"></div>
-                    </div>
+                    <div class="chart-count">${count}x</div>
                 `;
                 moodChartContainer.appendChild(row);
             });
         }
     }
 
+    // ========================================
+    // 5. OUVINTES DE EVENTOS (LISTENERS)
+    // ========================================
     moodButtons.forEach(button => {
         button.addEventListener("click", () => {
             moodButtons.forEach(btn => btn.classList.remove("selected"));
             button.classList.add("selected");
             selectedMood = button.dataset.mood;
+            if (moodError) moodError.textContent = "";
         });
     });
 
@@ -232,9 +261,11 @@ document.addEventListener("DOMContentLoaded", () => {
     if (saveMoodButton) {
         saveMoodButton.addEventListener("click", () => {
             if (!selectedMood) {
-                alert("Por favor, selecione um estado de energia antes de registrar.");
+                if (moodError) moodError.textContent = "Selecione um estado de energia antes de registrar.";
                 return;
             }
+
+            if (moodError) moodError.textContent = "";
 
             const todayStr = getLocalDateStr();
             moodLogs = moodLogs.filter(log => log.date !== todayStr);
@@ -246,8 +277,7 @@ document.addEventListener("DOMContentLoaded", () => {
             });
 
             localStorage.setItem("forestMoodLogs", JSON.stringify(moodLogs));
-            alert("✅ Estado de energia registrado!");
-            
+
             if (moodNoteInput) moodNoteInput.value = "";
             moodButtons.forEach(btn => btn.classList.remove("selected"));
             selectedMood = null;
@@ -261,13 +291,6 @@ document.addEventListener("DOMContentLoaded", () => {
         monthFilter.addEventListener("change", () => {
             isArchiveExpanded = false;
             renderArchiveList();
-        });
-    }
-
-    if (menuButton && sidebar && mainContent) {
-        menuButton.addEventListener("click", () => {
-            sidebar.classList.toggle("open");
-            mainContent.classList.toggle("menu-expanded");
         });
     }
 

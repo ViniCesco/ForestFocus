@@ -5,19 +5,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Calendário - Forest Focus</title>
   <link rel="icon" type="image/png" href="../assets/img/favicon.png">
-  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/calendario.css">
 </head>
 <body>
 
   <div class="container">
 
+    <button class="menu-toggle" aria-label="Abrir menu">
+      <span>🌱 Forest Focus</span>
+      <span class="menu-icon">☰</span>
+    </button>
+
     <aside class="sidebar">
       <h2>🌱 Forest Focus</h2>
-
-      <button class="menu-toggle" aria-label="Abrir menu">
-        <span>🌱 Forest Focus</span>
-        <span class="menu-icon">☰</span>
-      </button>
 
       <nav>
         <a href="perfil.html">👤 Perfil</a>
@@ -112,6 +113,7 @@
           <input type="text" id="eventDescription" placeholder="Descrição (opcional)">
           <button id="addEventButton">Adicionar Evento</button>
         </div>
+        <p class="modal-error" id="eventFormError"></p>
       </section>
 
       <div class="section-divider"></div>
@@ -135,6 +137,43 @@
     </main>
   </div>
 
+  <div class="modal-overlay" id="eventEditModal">
+    <div class="modal-box">
+      <h3>✏️ Editar evento</h3>
+      <input type="text" id="eventEditTitle" placeholder="Título">
+      <input type="time" id="eventEditTime">
+      <select id="eventEditCategory">
+        <option>🎂 Aniversário</option>
+        <option>📝 Estudos</option>
+        <option>💼 Trabalho</option>
+        <option>🖥️ Reunião</option>
+        <option>❤️ Saúde</option>
+        <option>🧳 Viagem</option>
+        <option>🗓️ Evento</option>
+        <option>💰 Financeiro</option>
+        <option>📌 Outros</option>
+      </select>
+      <input type="text" id="eventEditDescription" placeholder="Descrição (opcional)">
+      <p class="modal-error" id="eventEditError"></p>
+      <div class="modal-actions">
+        <button class="btn-cancel" id="eventEditCancelBtn">Cancelar</button>
+        <button class="btn-save" id="eventEditSaveBtn">Salvar</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="eventDeleteModal">
+    <div class="modal-box">
+      <h3>Excluir evento</h3>
+      <p>Tem certeza que deseja excluir este evento? Essa ação não pode ser desfeita.</p>
+      <div class="modal-actions">
+        <button class="btn-cancel" id="eventDeleteCancelBtn">Cancelar</button>
+        <button class="btn-danger" id="eventDeleteConfirmBtn">Excluir</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../assets/js/menu.js"></script>
   <script src="../assets/js/calendario.js"></script>
 </body>
 </html>

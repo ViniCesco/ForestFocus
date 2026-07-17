@@ -1,259 +1,256 @@
 /* ----------------------------------------------
    1. CONFIGURAÇÕES E ESTADO GLOBAL
 -----------------------------------------------*/
-
-console.log("Sistema Financeiro Carregado!");
+console.log("Sistema Financeiro Inicializado com Sucesso!");
 
 let finances = [];
 let showAllFinances = false;
-let showAllMonthlyHistory = false; 
 
 /* ----------------------------------------------
    2. FORMATADORES E UTILITÁRIOS
 -----------------------------------------------*/
-
-
-/* Formata valores para moeda brasileira (R$) */
 function formatMoney(value) {
-
   return value.toLocaleString("pt-BR", {
     style: "currency",
     currency: "BRL"
   });
 }
 
-function getMonthName(month) {
+function getMonthName(monthIndex) {
   const months = [
     "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
     "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
   ];
-  return months[month];
+  return months[monthIndex];
 }
 
 function getCategoryIcon(category) {
   switch (category) {
     case "Salário":           return "💰";
     case "Extra":             return "💵";
-    case "Investimentos":    return "📊";
-    case "Fixo":             return "🎯";
-    case "Moradia":          return "🏠";
-    case "Mercado":          return "🛒";
-    case "Alimentação":      return "🍔";
-    case "Saúde":            return "❤️";
-    case "Educação":         return "🎓";
-    case "Transporte":       return "🚌";
-    case "Lazer":            return "🎮";
-    case "Pix":              return "💲";
+    case "Investimentos":     return "📊";
+    case "Fixo":              return "🎯";
+    case "Moradia":           return "🏠";
+    case "Mercado":           return "🛒";
+    case "Alimentação":       return "🍔";
+    case "Saúde":             return "❤️";
+    case "Educação":          return "🎓";
+    case "Transporte":        return "🚌";
+    case "Lazer":             return "🎮";
+    case "Pix":               return "💲";
     case "Cartão de crédito": return "💳";
-    case "Outros":           return "📦";
-    default:                 return "📝";
+    case "Outros":            return "📦";
+    default:                  return "📝";
   }
 }
 
+function getMonthKey(dateObj) {
+  return `${getMonthName(dateObj.getMonth())} / ${dateObj.getFullYear()}`;
+}
 
 /* ----------------------------------------------
    3. PERSISTÊNCIA DE DADOS (LOCALSTORAGE)
 -----------------------------------------------*/
-
-/* Recupera os registros financeiros salvos localmente no navegador */
 function loadFinances() {
-  const savedFinances = localStorage.getItem("finances");
-  if (savedFinances) {
-    finances = JSON.parse(savedFinances);
-  }
+  const savedFinances = localStorage.getItem("forestTransactions");
+  finances = savedFinances ? JSON.parse(savedFinances) : [];
 }
 
-/* Salva a lista atual de finanças no armazenamento local do navegador */
 function saveFinances() {
-  localStorage.setItem("finances", JSON.stringify(finances));
+  localStorage.setItem("forestTransactions", JSON.stringify(finances));
 }
 
 /* ----------------------------------------------
-   4. ENTRADA DE MOVIMENTAÇÕES (AÇÕES)
+   4. ENTRADA E CONTROLE DE MOVIMENTAÇÕES
 -----------------------------------------------*/
-
 function addIncome() {
-  const description = document.getElementById("financeDescription").value.trim();
-  const value = Number(document.getElementById("financeValue").value);
-  const category = document.getElementById("financeCategory").value;
-
-  if (description === "" || value <= 0) return;
-
-  finances.push({
-    type: "income",
-    description: description,
-    category: category,
-    value: value,
-    date: new Date().toISOString()
-  });
-
-  saveFinances();
-  updateAllFinanceViews();
-
-  document.getElementById("financeDescription").value = "";
-  document.getElementById("financeValue").value = "";
-  document.getElementById("financeCategory").selectedIndex = 0;
+  handleNewTransaction("Receita");
 }
 
 function addExpense() {
-  const description = document.getElementById("financeDescription").value.trim();
-  const value = Number(document.getElementById("financeValue").value);
-  const category = document.getElementById("financeCategory").value;
+  handleNewTransaction("Despesa");
+}
 
-  if (description === "" || value <= 0) return;
+function handleNewTransaction(type) {
+  const descriptionInput = document.getElementById("financeDescription");
+  const valueInput = document.getElementById("financeValue");
+  const categoryInput = document.getElementById("financeCategory");
 
-  finances.push({
-    type: "expense",
+  if (!descriptionInput || !valueInput || !categoryInput) return;
+
+  const description = descriptionInput.value.trim();
+  const value = parseFloat(valueInput.value);
+  const category = categoryInput.value;
+
+  if (description === "" || isNaN(value) || value <= 0 || !category) {
+    alert("Por favor, preencha todos os campos (Descrição, Valor e Categoria) corretamente.");
+    return;
+  }
+
+  const today = new Date();
+  finances.unshift({
+    id: Date.now(),
+    type: type,
     description: description,
     category: category,
     value: value,
-    date: new Date().toISOString()
+    date: today.toLocaleDateString("pt-BR"),
+    monthKey: getMonthKey(today)
   });
 
   saveFinances();
   updateAllFinanceViews();
 
-  document.getElementById("financeDescription").value = "";
-  document.getElementById("financeValue").value = "";
-  document.getElementById("financeCategory").selectedIndex = 0;
+  descriptionInput.value = "";
+  valueInput.value = "";
+  categoryInput.value = "";
 }
 
-/* ----------------------------------------------
-   5. ESTILOS E COMPONENTES DE INTERFACE
------------------------------------------------*/
+/* Estado de qual lançamento está sendo editado no momento pelo modal */
+let editingFinanceId = null;
 
-function updateCurrentMonthTitle() {
-  const title = document.getElementById("currentMonthTitle");
-  if (!title) return;
+/* Abre o modal de edição preenchido com os dados atuais do lançamento */
+function editTransaction(id) {
+  const transaction = finances.find(f => f.id === id);
+  if (!transaction) return;
 
-  const today = new Date();
-  title.textContent = `📄 ${getMonthName(today.getMonth())} ${today.getFullYear()}`;
+  editingFinanceId = id;
+
+  const modal = document.getElementById("editFinanceModal");
+  const descInput = document.getElementById("editFinanceDescription");
+  const valueInput = document.getElementById("editFinanceValue");
+  const error = document.getElementById("editFinanceError");
+  if (!modal || !descInput || !valueInput) return;
+
+  descInput.value = transaction.description;
+  valueInput.value = transaction.value;
+  if (error) error.textContent = "";
+  modal.classList.add("active");
+  descInput.focus();
 }
 
-function populateMonthFilter() {
-  const filter = document.getElementById("monthFilter");
-  if (!filter) return;
+function closeEditFinanceModal() {
+  const modal = document.getElementById("editFinanceModal");
+  if (modal) modal.classList.remove("active");
+  editingFinanceId = null;
+}
 
-  filter.innerHTML = `<option value="all">📅 Todos os meses</option>`;
-  const months = [];
+function saveEditFinance() {
+  const descInput = document.getElementById("editFinanceDescription");
+  const valueInput = document.getElementById("editFinanceValue");
+  const error = document.getElementById("editFinanceError");
+  if (!descInput || !valueInput || editingFinanceId === null) return;
 
-  finances.forEach(finance => {
-    const date = new Date(finance.date);
-    const key = `${date.getFullYear()}-${date.getMonth()}`;
-    if (!months.includes(key)) months.push(key);
-  });
+  const newDescription = descInput.value.trim();
+  const newValue = parseFloat(valueInput.value);
 
-  months.reverse().forEach(key => {
-    const [year, month] = key.split("-");
-    const option = document.createElement("option");
-    option.value = key;
-    option.textContent = `📌 ${getMonthName(Number(month))} ${year}`;
-    filter.appendChild(option);
-  });
+  if (newDescription === "") {
+    if (error) error.textContent = "A descrição não pode ficar vazia.";
+    return;
+  }
+  if (isNaN(newValue) || newValue <= 0) {
+    if (error) error.textContent = "Informe um valor válido maior que zero.";
+    return;
+  }
+
+  const transaction = finances.find(f => f.id === editingFinanceId);
+  if (!transaction) return;
+
+  transaction.description = newDescription;
+  transaction.value = newValue;
+
+  saveFinances();
+  updateAllFinanceViews();
+  closeEditFinanceModal();
+}
+
+function deleteTransaction(id) {
+  finances = finances.filter(f => f.id !== id);
+  saveFinances();
+  updateAllFinanceViews();
 }
 
 function toggleFinanceHistory() {
   showAllFinances = !showAllFinances;
-  const text = document.getElementById("toggleFinanceText");
-  const icon = document.getElementById("toggleFinanceIcon");
-
-  if (showAllFinances) {
-    if (text) text.textContent = "Mostrar menos";
-    if (icon) icon.textContent = "▲";
-  } else {
-    if (text) text.textContent = "Mostrar mais";
-    if (icon) icon.textContent = "▼";
-  }
   renderFinances();
 }
 
 /* ----------------------------------------------
-   6. RENDERIZAÇÃO DOS LISTADOS (MÊS ATUAL)
+   5. RENDERIZAÇÃO DA INTERFACE (DOM)
 -----------------------------------------------*/
-
 function renderFinances() {
   const financeHistory = document.getElementById("financeHistory");
-  if (!financeHistory) return;
+  const toggleButton = document.getElementById("toggleFinanceHistory");
+  const toggleText = document.getElementById("toggleFinanceText");
+  const toggleIcon = document.getElementById("toggleFinanceIcon");
 
+  if (!financeHistory) return;
   financeHistory.innerHTML = "";
 
-  const today = new Date();
-  const currentMonth = today.getMonth();
-  const currentYear = today.getFullYear();
-
-  const currentMonthFinances = finances.filter(finance => {
-    if (!finance.date) return false;
-    const date = new Date(finance.date);
-    return date.getMonth() === currentMonth && date.getFullYear() === currentYear;
-  });
+  const currentMonthKey = getMonthKey(new Date());
+  const currentMonthFinances = finances.filter(f => f.monthKey === currentMonthKey);
 
   const financesToShow = showAllFinances
-    ? [...currentMonthFinances].reverse()
-    : [...currentMonthFinances].reverse().slice(0, 3);
+    ? currentMonthFinances
+    : currentMonthFinances.slice(0, 3);
 
-  financesToShow.forEach(finance => {
-    const li = document.createElement("li");
-    const text = document.createElement("span");
-    const deleteButton = document.createElement("button");
+  if (currentMonthFinances.length === 0) {
+    financeHistory.innerHTML = `<div class="meta-empty">Nenhum lançamento registrado este mês.</div>`;
+  } else {
+    financesToShow.forEach(finance => {
+      const item = document.createElement("div");
+      item.className = "finance-item";
 
-    const dateStr = finance.date 
-      ? new Date(finance.date).toLocaleDateString("pt-BR") 
-      : "Sem data";
+      const isIncome = finance.type === "Receita" || finance.type === "income";
+      const valClass = isIncome ? "income-value" : "expense-value";
+      const sign = isIncome ? "+" : "-";
 
-    const isIncome = finance.type === "income";
-    text.className = isIncome ? "income" : "";
-    
-    text.innerHTML = `
-      <span class="finance-description">${finance.description}</span>
-      <span class="finance-date">${dateStr} • ${getCategoryIcon(finance.category)} ${finance.category}</span>
-      <span class="${isIncome ? 'income-value' : 'expense-value'}">
-        ${isIncome ? '+' : '-'} ${formatMoney(finance.value)}
-      </span>
-    `;
+      item.innerHTML = `
+        <div class="finance-info-block">
+          <span class="finance-description">${finance.description}</span>
+          <div class="finance-details-sub">
+            <span>${getCategoryIcon(finance.category)} ${finance.category}</span>
+            <span>📅 ${finance.date}</span>
+          </div>
+        </div>
+        <div class="finance-value-block">
+          <span class="${valClass}">${sign} ${formatMoney(finance.value)}</span>
+          <button class="delete-finance" onclick="editTransaction(${finance.id})" title="Editar" style="color: var(--text-muted); margin-right: 8px;">📝</button>
+          <button class="delete-finance" onclick="deleteTransaction(${finance.id})" title="Excluir">🗑️</button>
+        </div>
+      `;
+      financeHistory.appendChild(item);
+    });
+  }
 
-    deleteButton.innerHTML = "❌";
-    deleteButton.className = "delete-finance";
-    deleteButton.onclick = () => {
-      const realIndex = finances.indexOf(finance);
-      if (realIndex !== -1) {
-        finances.splice(realIndex, 1);
-        saveFinances();
-        updateAllFinanceViews();
-      }
-    };
-
-    li.appendChild(text);
-    li.appendChild(deleteButton);
-    financeHistory.appendChild(li);
-  });
-
-  const toggleButton = document.getElementById("toggleFinanceHistory");
   if (toggleButton) {
-    toggleButton.style.display = currentMonthFinances.length <= 3 ? "none" : "flex";
+    if (currentMonthFinances.length > 3) {
+      toggleButton.style.display = "flex";
+      if (toggleText) toggleText.textContent = showAllFinances ? "Mostrar menos" : "Mostrar mais";
+      if (toggleIcon) toggleIcon.style.transform = showAllFinances ? "rotate(180deg)" : "rotate(0deg)";
+    } else {
+      toggleButton.style.display = "none";
+    }
   }
 }
 
-/* ----------------------------------------------
-   7. HISTÓRICO MENSAL ACUMULADO
------------------------------------------------*/
-
 function renderMonthlyHistory() {
   const container = document.getElementById("monthlyHistory");
-  if (!container) return;
+  const filterElement = document.getElementById("monthFilter");
+  if (!container || !filterElement) return;
 
   container.innerHTML = "";
-  const selectedMonth = document.getElementById("monthFilter")?.value || "all";
+  const selectedMonth = filterElement.value || "all";
   const monthlyData = {};
 
   finances.forEach(finance => {
-    const date = finance.date ? new Date(finance.date) : new Date();
-    const key = `${date.getFullYear()}-${date.getMonth()}`;
-
+    // CORREÇÃO: "currentMonthKey" não existia nesse escopo (variável não
+    // declarada aqui); trocado pelo próprio monthKey já salvo na transação.
+    const key = finance.monthKey || getMonthKey(new Date());
     if (!monthlyData[key]) {
       monthlyData[key] = { income: 0, expense: 0 };
     }
-
-    if (finance.type === "income") {
+    if (finance.type === "Receita" || finance.type === "income") {
       monthlyData[key].income += finance.value;
     } else {
       monthlyData[key].expense += finance.value;
@@ -261,88 +258,59 @@ function renderMonthlyHistory() {
   });
 
   const filteredKeys = Object.keys(monthlyData)
-    .reverse()
+    .sort().reverse()
     .filter(key => selectedMonth === "all" || key === selectedMonth);
 
-  const keysToShow = showAllMonthlyHistory
-    ? filteredKeys
-    : filteredKeys.slice(0, 3);
+  if (filteredKeys.length === 0) {
+    container.innerHTML = `<div class="meta-empty">Nenhum registro histórico acumulado.</div>`;
+    return;
+  }
 
-  keysToShow.forEach(key => {
-    const [year, month] = key.split("-");
+  filteredKeys.forEach(key => {
     const data = monthlyData[key];
     const card = document.createElement("div");
     card.className = "month-card";
 
     const balance = data.income - data.expense;
-    const monthFinances = finances.filter(finance => {
-      const fDate = new Date(finance.date);
-      return fDate.getMonth() === Number(month) && fDate.getFullYear() === Number(year);
-    });
+    const balColor = balance >= 0 ? "var(--success)" : "var(--danger)";
 
     card.innerHTML = `
-      <h3>${getMonthName(Number(month))} ${year}</h3>
-      <details>
-        <summary>Ver lançamentos</summary>
-        <div class="month-details">
-          <p>📈 Receitas: ${formatMoney(data.income)}</p>
-          <p>📉 Despesas: ${formatMoney(data.expense)}</p>
-          <p>💰 Saldo: ${formatMoney(balance)}</p>
-          <hr>
-          <div class="month-transactions">
-            ${monthFinances.map(f => `
-              <div class="history-line">
-                ${f.description} • ${getCategoryIcon(f.category)} ${f.category || "Outros"} • 
-                <span class="${f.type === 'income' ? 'income-value' : 'expense-value'}">
-                  ${f.type === 'income' ? '+' : '-'} ${formatMoney(f.value)}
-                </span>
-              </div>
-            `).join("")}
-          </div>
-        </div>
-      </details>
+      <h3>📅 ${key}</h3>
+      <p>📈 Receitas: <span style="color: var(--success)">${formatMoney(data.income)}</span></p>
+      <p>📉 Despesas: <span style="color: var(--danger)">${formatMoney(data.expense)}</span></p>
+      <p>💰 Saldo Mensal: <span style="color: ${balColor}">${formatMoney(balance)}</span></p>
     `;
     container.appendChild(card);
   });
-
-  document.getElementById("toggleMonthlyHistoryButton")?.remove();
-
-  if (filteredKeys.length > 3) {
-    const toggleBtn = document.createElement("button");
-    toggleBtn.id = "toggleMonthlyHistoryButton";
-    toggleBtn.style.cssText = "width:100%; padding:12px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.05); border-radius:6px; color:#a0aec0; font-size:14px; cursor:pointer; margin-top:15px; transition:background 0.2s; display:flex; justify-content:center; align-items:center; gap:8px;";
-    toggleBtn.innerHTML = showAllMonthlyHistory 
-      ? `<span id="toggleMonthlyText">Mostrar menos</span> <span id="toggleMonthlyIcon">▲</span>`
-      : `<span id="toggleMonthlyText">Mostrar mais</span> <span id="toggleMonthlyIcon">▼</span>`;
-    
-    toggleBtn.addEventListener("mouseenter", () => toggleBtn.style.background = "rgba(255,255,255,0.05)");
-    toggleBtn.addEventListener("mouseleave", () => toggleBtn.style.background = "rgba(255,255,255,0.02)");
-    
-    toggleBtn.addEventListener("click", () => {
-      showAllMonthlyHistory = !showAllMonthlyHistory;
-      renderMonthlyHistory();
-    });
-    
-    container.appendChild(toggleBtn);
-  }
 }
 
-/* ----------------------------------------------
-   8. CONTADORES FINANCEIROS (MÊS CORRENTE)
------------------------------------------------*/
+function populateMonthFilter() {
+  const filter = document.getElementById("monthFilter");
+  if (!filter) return;
+
+  const previousSelection = filter.value;
+  filter.innerHTML = `<option value="all">↘️ Todos os meses</option>`;
+  
+  const uniqueMonths = [...new Set(finances.map(f => f.monthKey))].sort().reverse();
+
+  uniqueMonths.forEach(m => {
+    const option = document.createElement("option");
+    option.value = m;
+    option.textContent = `📅 ${m}`;
+    filter.appendChild(option);
+  });
+
+  filter.value = previousSelection || "all";
+}
 
 function updateFinanceSummary() {
-  const today = new Date();
-  const currentMonth = today.getMonth();
-  const currentYear = today.getFullYear();
-
+  const currentMonthKey = getMonthKey(new Date());
   let income = 0;
   let expense = 0;
 
   finances.forEach(finance => {
-    const date = new Date(finance.date);
-    if (date.getMonth() === currentMonth && date.getFullYear() === currentYear) {
-      if (finance.type === "income") income += finance.value;
+    if (finance.monthKey === currentMonthKey) {
+      if (finance.type === "Receita" || finance.type === "income") income += finance.value;
       else expense += finance.value;
     }
   });
@@ -355,28 +323,33 @@ function updateFinanceSummary() {
 }
 
 function updateBalance() {
-  const today = new Date();
-  const currentMonth = today.getMonth();
-  const currentYear = today.getFullYear();
-
+  const currentMonthKey = getMonthKey(new Date());
   let balance = 0;
 
   finances.forEach(finance => {
-    const date = new Date(finance.date);
-    if (date.getMonth() === currentMonth && date.getFullYear() === currentYear) {
-      if (finance.type === "income") balance += finance.value;
+    if (finance.monthKey === currentMonthKey) {
+      if (finance.type === "Receita" || finance.type === "income") balance += finance.value;
       else balance -= finance.value;
     }
   });
 
   const balanceElement = document.getElementById("financeBalance");
-  if (balanceElement) balanceElement.textContent = formatMoney(balance);
+  if (balanceElement) {
+    balanceElement.textContent = formatMoney(balance);
+    balanceElement.style.color = balance >= 0 ? "var(--text-white)" : "var(--danger)";
+  }
+}
+
+function updateCurrentMonthTitle() {
+  const title = document.getElementById("currentMonthTitle");
+  if (!title) return;
+  const today = new Date();
+  title.textContent = `📄 Últimos Lançamentos (${getMonthName(today.getMonth())} / ${today.getFullYear()})`;
 }
 
 /* ----------------------------------------------
-   9. CONTROLADOR CENTRAL DE ATUALIZAÇÃO
+   6. ATUALIZAÇÃO CENTRALIZADA
 -----------------------------------------------*/
-
 function updateAllFinanceViews() {
   populateMonthFilter();
   renderFinances();
@@ -387,32 +360,20 @@ function updateAllFinanceViews() {
 }
 
 /* ----------------------------------------------
-   10. DISPARO INICIAL
+   7. DISPARO EVENTOS DOM
+   (menu mobile agora é responsabilidade do menu.js, incluído no HTML
+    antes deste arquivo)
 -----------------------------------------------*/
-
 document.addEventListener("DOMContentLoaded", () => {
   loadFinances();
   updateAllFinanceViews();
 
-document.getElementById("monthFilter")?.addEventListener("change", () => {
-    showAllMonthlyHistory = false;
-    renderMonthlyHistory();
+  document.getElementById("monthFilter")?.addEventListener("change", renderMonthlyHistory);
+  document.getElementById("toggleFinanceHistory")?.addEventListener("click", toggleFinanceHistory);
+
+  document.getElementById("editFinanceCancelBtn")?.addEventListener("click", closeEditFinanceModal);
+  document.getElementById("editFinanceSaveBtn")?.addEventListener("click", saveEditFinance);
+  document.getElementById("editFinanceModal")?.addEventListener("click", (e) => {
+    if (e.target.id === "editFinanceModal") closeEditFinanceModal();
   });
-});
-
-document.addEventListener("DOMContentLoaded", () => {
-
-    const sidebar = document.querySelector(".sidebar");
-    const button = document.querySelector(".menu-toggle");
-    const main = document.querySelector(".main-content");
-
-    if (!sidebar || !button || !main) return;
-
-    button.addEventListener("click", () => {
-
-        sidebar.classList.toggle("open");
-        main.classList.toggle("menu-expanded");
-
-    });
-
 });
