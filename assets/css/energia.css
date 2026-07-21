@@ -106,9 +106,16 @@
 }
 
 .chart-label {
-  width: 130px;
-  font-size: 13px;
-  color: var(--text-muted);
+    width: 150px;
+    font-size: 13px;
+    color: var(--text-muted);
+
+    display: flex;
+    align-items: center;
+    gap: 6px;
+
+    white-space: nowrap;
+    flex-shrink: 0;
 }
 
 .chart-bar-wrapper {
@@ -127,12 +134,29 @@
   border-radius: 8px;
 }
 
-.chart-bar-fill.bar-ultra { background: #8b5cf6; }
-.chart-bar-fill.bar-alta { background: var(--success); }
-.chart-bar-fill.bar-equilibrado { background: var(--primary); }
-.chart-bar-fill.bar-fadiga { background: #f59e0b; }
-.chart-bar-fill.bar-bloqueio { background: var(--danger); }
-.chart-bar-fill.bar-exaustao { background: #64748b; }
+.chart-bar-fill.bar-maxima {
+    background: #8b5cf6; 
+}
+
+.chart-bar-fill.bar-alta {
+    background: var(--success); 
+}
+
+.chart-bar-fill.bar-normal {
+    background: var(--primary); 
+}
+
+.chart-bar-fill.bar-baixa {
+    background: #f59e0b; 
+}
+
+.chart-bar-fill.bar-cansado {
+    background: var(--danger);
+}
+
+.chart-bar-fill.bar-sem-energia {
+    background: #64748b; 
+}
 
 .chart-count {
   width: 35px;

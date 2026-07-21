@@ -195,10 +195,30 @@ function updateDashboardNextEventCard() {
   if (dashEventBadge) dashEventBadge.textContent = `${d}/${m}`;
 }
 
+
+// TEMA 
+
+const themeToggle = document.getElementById("themeToggle");
+const themeIcon = document.querySelector(".theme-icon");
+
+if(localStorage.getItem("theme")==="light"){
+    document.body.classList.add("light-theme");
+    themeIcon.textContent="☀️";
+}
+
+themeToggle.addEventListener("click",()=>{
+
+    document.body.classList.toggle("light-theme");
+
+    const light=document.body.classList.contains("light-theme");
+
+    themeIcon.textContent=light ? "☀️" : "🌙";
+
+    localStorage.setItem("theme",light?"light":"dark");
+});
+
 // ========================================
 // 10. INICIALIZAÇÃO DO SISTEMA
-// (o menu mobile é inicializado por menu.js, incluído no HTML antes
-//  deste arquivo — não precisa chamar nada aqui)
 // ========================================
 document.addEventListener("DOMContentLoaded", () => {
   updateTaskDashboard();

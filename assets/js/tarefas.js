@@ -29,8 +29,6 @@ function saveTasks() {
 /* ----------------------------------------------
    3. OPERAÇÕES PRINCIPAIS (AÇÕES)
 -----------------------------------------------*/
-
-/* Captura e valida os dados do formulário de entrada para criar uma nova tarefa */
 function addTask() {
   const input = document.getElementById("taskInput");
   if (!input) return;
@@ -72,7 +70,6 @@ function addTask() {
   updateTaskStats();
 }
 
-/* Alterna o estado de conclusão (concluída/pendente) de uma tarefa específica */
 function toggleTask(index) {
   tasks[index].completed = !tasks[index].completed;
   saveTasks();
@@ -80,10 +77,8 @@ function toggleTask(index) {
   updateTaskStats();
 }
 
-/* Estado de qual tarefa está sendo editada no momento pelo modal */
 let editingTaskIndex = null;
 
-/* Abre o modal de edição preenchido com o texto atual da tarefa */
 function editTask(index) {
   editingTaskIndex = index;
 
@@ -123,7 +118,6 @@ function saveEditTask() {
   closeEditTaskModal();
 }
 
-/* Remove definitivamente uma tarefa da lista com base em seu índice */
 function deleteTask(index) {
   tasks.splice(index, 1);
   saveTasks();
@@ -135,7 +129,6 @@ function deleteTask(index) {
    4. RENDERIZAÇÃO E FILTROS DE INTERFACE
 -----------------------------------------------*/
 
-/* Classifica as tarefas por prioridade e monta a estrutura visual da lista no HTML */
 function renderTasks() {    
   const list = document.getElementById("taskList");
   if (!list) return;
@@ -185,7 +178,6 @@ function renderTasks() {
    5. MÓDULO GAMIFICAÇÃO E CONTROLE DE CICLO
 -----------------------------------------------*/
 
-/* Redefine o estado de conclusão de todas as tarefas e reinicia o progresso da planta para o novo dia */
 function startNewDay() {
   const confirmReset = confirm("Deseja iniciar um novo dia? Isso desmarcará as tarefas atuais.");
   if (!confirmReset) return;
@@ -205,7 +197,6 @@ function startNewDay() {
   updateTaskStats();
 }
 
-/* Define o emoji correspondente ao estágio atual de evolução da planta com base no progresso */
 function getPlantStage(progress) {
   if (progress < 25) return "🌱";
   if (progress < 50) return "🌿";
@@ -214,7 +205,6 @@ function getPlantStage(progress) {
   return "🌳✨";
 }
 
-/* Calcula estatísticas de progresso, atualiza elementos da interface e concede recompensas de gamificação ao atingir 100% */
 function updateTaskStats() {
   const total = tasks.length;
   const done = tasks.filter(t => t.completed).length;
@@ -262,12 +252,9 @@ function updateTaskStats() {
 }
 
 /* ----------------------------------------------
-   6. GATILHO DE EXECUÇÃO E EVENTOS (DOM)
-   (a lógica do menu mobile agora está em menu.js — incluído no HTML
-    antes deste arquivo — por isso não aparece mais aqui)
+   6. GATILHO DE EXECUÇÃO E EVENTOS 
 -----------------------------------------------*/
 
-/* Inicializa o módulo carregando as informações, configurando atalhos de digitação e gerando a interface visual */
 document.addEventListener("DOMContentLoaded", () => {
   loadTasks();
   renderTasks();

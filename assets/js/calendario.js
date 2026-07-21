@@ -52,8 +52,6 @@ renderEvents();
 
 // ========================================
 // 4. OUVINTES DE EVENTOS (LISTENERS)
-// (menu mobile agora é responsabilidade do menu.js, incluído no HTML
-//  antes deste arquivo)
 // ========================================
 prevMonthBtn?.addEventListener("click", () => {
     currentMonth--;
@@ -280,7 +278,6 @@ function renderEvents() {
     });
 }
 
-/* Edição via modal próprio (substitui os 4 prompt() em sequência) */
 function editEvent(id) {
     const event = events.find(e => e.id === id);
     if (!event) return;

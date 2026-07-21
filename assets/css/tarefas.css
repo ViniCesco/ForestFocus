@@ -1,8 +1,4 @@
-/* ==========================================================================
-   TAREFAS.CSS — específico da página Tarefas
-   Depende de base.css (variáveis, sidebar, menu mobile, rodapé) já estar
-   linkado antes deste arquivo no HTML.
-   ========================================================================== */
+
 
 /* CARDS E GRIDS SUPERIORES */
 
@@ -13,8 +9,6 @@
   margin-bottom: 30px;
 }
 
-/* .card (fundo/borda/hover/h3) agora vem do base.css — aqui só o que
-   é específico das tarefas */
 .card p {
   font-size: 28px;
   font-weight: bold;
@@ -54,6 +48,7 @@
 }
 
 /* BOTÃO NOVO DIA */
+
 #newDayButton {
   background: var(--success);
   color: var(--text-white);
@@ -226,9 +221,9 @@
 }
 
 /* ==========================================================================
-   RESPONSIVIDADE MOBILE — ESPECÍFICA DA PÁGINA TAREFAS
-   (o menu cortina em si já está em base.css)
+   RESPONSIVIDADE MOBILE 
    ========================================================================== */
+
 @media (max-width: 768px) {
   .cards {
     grid-template-columns: 1fr;

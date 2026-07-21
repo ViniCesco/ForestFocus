@@ -1,10 +1,3 @@
-/* ==========================================================================
-   STYLE.CSS — específico da página Dashboard
-   Depende de base.css (variáveis, sidebar, menu mobile, rodapé) já estar
-   linkado antes deste arquivo no HTML.
-   ========================================================================== */
-
-/* HEADER ESPECÍFICO DO DASHBOARD (com o bloco de nível/XP ao lado) */
 header {
   display: flex;
   justify-content: space-between;
@@ -40,6 +33,7 @@ header h1 {
 /* ==========================================================================
    GRIDS E CARDS DO DASHBOARD
    ========================================================================== */
+
 .cards {
   display: flex;
   flex-direction: column;
@@ -58,18 +52,13 @@ header h1 {
   gap: 24px;
 }
 
-/* .card (fundo/borda/hover/h3) agora vem do base.css — aqui só o que
-   é específico do dashboard */
+
 .card-dash {
   min-height: 140px;
   display: flex;
   flex-direction: column;
 }
 
-/* CORREÇÃO: quando .grid-3-columns é usado junto com .card-dash no mesmo
-   elemento (card de métricas), a regra .card-dash sobrescrevia o
-   display:grid por vir depois na cascata. Esta regra tem 2 classes
-   (especificidade maior) e garante que o grid sempre vença. */
 .card-dash.grid-3-columns {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -96,6 +85,7 @@ header h1 {
 /* ==========================================================================
    MÉTRICAS E COMPONENTES ESPECÍFICOS
    ========================================================================== */
+
 .dash-number {
   font-size: 32px;
   font-weight: bold;
@@ -273,8 +263,8 @@ header h1 {
 
 /* ==========================================================================
    RESPONSIVIDADE MOBILE — ESPECÍFICA DO DASHBOARD
-   (o menu cortina em si já está em base.css)
    ========================================================================== */
+
 @media (max-width: 768px) {
   .grid-2-columns,
   .grid-3-columns,

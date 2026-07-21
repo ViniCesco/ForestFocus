@@ -46,12 +46,12 @@
         <div class="card">
           <h3>📆 Hoje</h3>
           <p id="todayCard">--/--/----</p>
-        </div>
+        </div> <br>
 
         <div class="card">
           <h3>📌 Eventos do mês</h3>
           <p id="monthEvents">0</p>
-        </div>
+        </div> <br> 
 
         <div class="card">
           <h3>⏰ Próximo evento</h3>
@@ -91,10 +91,15 @@
         <h2>➕ Novo Evento</h2>
 
         <div class="task-input">
-          <input type="text" id="eventTitle" placeholder="Título do evento">
-          <input type="date" id="eventDate">
-          <input type="time" id="eventTime">
+          <label for="eventTitle">Título:</label>
+          <input type="text" id="eventTitle" placeholder="Escreva um Título"
 
+          <label for="eventDate">Data: </label>
+          <input type="date" id="eventDate">
+
+          <label for="eventTime">Horário: </label>
+          <input type="time" id="eventTime">
+          <label for="eventTitle">Categoria:</label>
           <select id="eventCategory">
             <option selected disabled>Categoria</option>
             <option>🎂 Aniversário</option>
@@ -175,5 +180,7 @@
 
   <script src="../assets/js/menu.js"></script>
   <script src="../assets/js/calendario.js"></script>
+  <script src="../assets/js/tema.js"></script>
+  
 </body>
 </html>

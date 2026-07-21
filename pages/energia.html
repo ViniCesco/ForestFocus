@@ -43,39 +43,45 @@
       </header>
 
       <section class="tasks">
-        <h2>Qual é o seu estado mental e de energia agora?</h2>
+        <h2>Qual é o seu nível de energia agora?</h2>
         
         <div class="mood-selector">
-          <button class="mood-btn" data-mood="Ultra Focado" title="Ultra Focado">
+          <button class="mood-btn" data-mood="Energia Máxima" title="Energia Máxima">
+            <span class="mood-emoji">🚀</span>
+            <span class="mood-label">Energia Máxima</span>
+          </button>
+
+          <button class="mood-btn" data-mood="Muita Energia" title="Muita Energia">
             <span class="mood-emoji">⚡</span>
-            <span class="mood-label">Ultra Focado</span>
+            <span class="mood-label">Muita Energia</span>
           </button>
-          <button class="mood-btn" data-mood="Energia Alta" title="Energia Alta">
-            <span class="mood-emoji">🔋</span>
-            <span class="mood-label">Energia Alta</span>
+
+          <button class="mood-btn" data-mood="Energia Normal" title="Energia Normal">
+            <span class="mood-emoji">😊</span>
+            <span class="mood-label">Energia Normal</span>
           </button>
-          <button class="mood-btn" data-mood="Equilibrado" title="Equilibrado">
-            <span class="mood-emoji">⚖️</span>
-            <span class="mood-label">Equilibrado</span>
+
+          <button class="mood-btn" data-mood="Pouca Energia" title="Pouca Energia">
+            <span class="mood-emoji">😐</span>
+            <span class="mood-label">Pouca Energia</span>
           </button>
-          <button class="mood-btn" data-mood="Fadiga Mental" title="Fadiga Mental">
-            <span class="mood-emoji">📉</span>
-            <span class="mood-label">Fadiga Mental</span>
+
+          <button class="mood-btn" data-mood="Muito Cansado" title="Muito Cansado">
+            <span class="mood-emoji">😵</span>
+            <span class="mood-label">Muito Cansado</span>
           </button>
-          <button class="mood-btn" data-mood="Bloqueio Criativo" title="Bloqueio Criativo">
-            <span class="mood-emoji">🚫</span>
-            <span class="mood-label">Bloqueio Criativo</span>
-          </button>
-          <button class="mood-btn" data-mood="Exaustão" title="Exaustão">
+
+          <button class="mood-btn" data-mood="Sem Energia" title="Sem Energia">
             <span class="mood-emoji">💤</span>
-            <span class="mood-label">Exaustão</span>
+            <span class="mood-label">Sem Energia</span>
           </button>
-        </div>
+        </div> <br>
 
         <div class="task-input energy-input-group">
-          <input type="text" id="moodNote" placeholder="Gatilho ou observação (Ex: 5h de sono, entrega de projeto importante...)">
-          <button id="saveMoodButton">Registrar Estado</button>
+          <input type="text" id="moodNote" placeholder="Descreva o seu nível de energia hoje (Opcional)."> <br>
+         <button id="saveMoodButton">Registrar Estado</button>
         </div>
+
         <p class="modal-error" id="moodError"></p>
       </section>
 
@@ -98,7 +104,7 @@
       <div class="section-divider"></div>
 
       <section class="tasks">
-        <h2>📅 Histórico Mensal</h2>
+        <h2>📅 Histórico Mensal</h2> <br>
         <div class="filter-wrapper">
           <select id="monthFilter">
             <option value="">Selecione um mês anterior...</option>
@@ -123,5 +129,7 @@
 
   <script src="../assets/js/menu.js"></script>
   <script src="../assets/js/energia.js"></script>
+  <script src="../assets/js/tema.js"></script>
+  
 </body>
 </html>

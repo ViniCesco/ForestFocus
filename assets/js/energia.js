@@ -1,7 +1,5 @@
 // ========================================
 // 1. CONFIGURAÇÕES E SINALIZADORES GLOBAIS
-// (menu mobile agora é responsabilidade do menu.js, incluído no HTML
-//  antes deste arquivo)
 // ========================================
 document.addEventListener("DOMContentLoaded", () => {
 
@@ -25,12 +23,30 @@ document.addEventListener("DOMContentLoaded", () => {
     const monthFilter = document.getElementById("monthFilter");
 
     const moodConfig = {
-        "Ultra Focado": { emoji: "⚡", class: "bar-ultra" },
-        "Energia Alta": { emoji: "🔋", class: "bar-alta" },
-        "Equilibrado": { emoji: "⚖️", class: "bar-equilibrado" },
-        "Fadiga Mental": { emoji: "📉", class: "bar-fadiga" },
-        "Bloqueio Criativo": { emoji: "🚫", class: "bar-bloqueio" },
-        "Exaustão": { emoji: "💤", class: "bar-exaustao" }
+        "Energia Máxima": {
+            emoji: "🚀",
+            class: "bar-maxima"
+        },
+        "Muita Energia": {
+            emoji: "⚡",
+            class: "bar-alta"
+        },
+        "Energia Normal": {
+            emoji: "😊",
+            class: "bar-normal"
+        },
+        "Pouca Energia": {
+            emoji: "😐",
+            class: "bar-baixa"
+        },
+        "Muito Cansado": {
+            emoji: "😵",
+            class: "bar-cansado"
+        },
+        "Sem Energia": {
+            emoji: "💤",
+            class: "bar-sem-energia"
+        }
     };
 
     const monthNames = {
@@ -96,9 +112,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         monthFilter.value = currentSelected;
     }
-
-    /* Remove um registro específico — da lista do mês atual (monthKey vazio)
-       ou de um mês arquivado (monthKey preenchido) */
+    
     function deleteMoodLog(date, monthKey) {
         if (monthKey) {
             archivedMonths[monthKey] = (archivedMonths[monthKey] || []).filter(l => l.date !== date);
@@ -207,7 +221,15 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         }
 
-        const counts = { "Ultra Focado": 0, "Energia Alta": 0, "Equilibrado": 0, "Fadiga Mental": 0, "Bloqueio Criativo": 0, "Exaustão": 0 };
+        const counts = {
+            "Energia Máxima": 0,
+            "Muita Energia": 0,
+            "Energia Normal": 0,
+            "Pouca Energia": 0,
+            "Muito Cansado": 0,
+            "Sem Energia": 0
+        };
+
         let totalRecords = moodLogs.length;
 
         moodLogs.forEach(log => {
