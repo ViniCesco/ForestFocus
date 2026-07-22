@@ -29,7 +29,7 @@
 .task-input select {
   height: 50px;
   padding: 0 16px;
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-color);
   border-radius: 12px;
   background: var(--bg-select);
   color: var(--text-white);
@@ -44,7 +44,7 @@
   min-width: 140px;
   height: 50px;
   padding: 0 15px;
-  border: 1px solid transparent;
+  border: 1px solid var(--border-color);
   border-radius: 12px;
   background: var(--bg-card);
   color: var(--text-white);

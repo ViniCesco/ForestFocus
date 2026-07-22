@@ -1,7 +1,4 @@
 
-
-/* CARDS E GRIDS SUPERIORES */
-
 .cards {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -15,7 +12,6 @@
   color: var(--text-white);
 }
 
-/* BARRA DE PROGRESSO */
 
 .progress-header {
   display: flex;
@@ -47,8 +43,6 @@
   transition: width 0.3s ease;
 }
 
-/* BOTÃO NOVO DIA */
-
 #newDayButton {
   background: var(--success);
   color: var(--text-white);
@@ -67,7 +61,6 @@
   opacity: 0.9;
 }
 
-/* FORMULÁRIOS E CAMPOS DE ENTRADA (TAREFAS) */
 
 .tasks {
   margin-top: 15px;
@@ -87,7 +80,7 @@
 .task-input input {
   flex: 1;
   padding: 15px;
-  border: none;
+  border: 1px solid var(--border-color);
   border-radius: 12px;
   background: var(--bg-card);
   color: var(--text-white);
@@ -101,7 +94,7 @@
 .task-input select {
   height: 48px;
   padding: 0 16px;
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-color);
   border-radius: 16px;
   background: var(--bg-select);
   color: var(--text-white);
@@ -132,7 +125,6 @@
   transform: scale(1.03);
 }
 
-/* LISTAGEM DE TAREFAS E CONTEÚDO */
 
 #taskList {
   list-style: none;
@@ -221,9 +213,9 @@
 }
 
 /* ==========================================================================
-   RESPONSIVIDADE MOBILE 
+   RESPONSIVIDADE MOBILE — ESPECÍFICA DA PÁGINA TAREFAS
    ========================================================================== */
-
+   
 @media (max-width: 768px) {
   .cards {
     grid-template-columns: 1fr;

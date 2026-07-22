@@ -7,7 +7,7 @@
             TEMAS
 =========================================*/
 
-/* Tema Escuro*/
+/* Tema Escuro (padrão) */
 :root {
   --bg-main: #0f1117;
   --bg-card: #171923;
@@ -39,6 +39,22 @@ body.light-theme {
   --logo-color: #000000;
 }
 
+/* Tema Full Black */
+body.black-theme {
+  --bg-main: #000000;
+  --bg-card: #121212;
+  --bg-select: #0d0d0d;
+  --border-color: #35353a;
+  --primary: #4f46e5;
+  --primary-hover: #6d5dfc;
+  --success: #22c55e;
+  --danger: #ef4444;
+  --text-white: #ffffff;
+  --text-muted: #9a9a9a;
+  --text-label: #888888;
+  --logo-color: #ffffff;
+}
+
 /*=========================================
             RESET
 =========================================*/
@@ -59,45 +75,32 @@ body {
     background: var(--bg-main);
     color: var(--text-white);
     min-height: 100vh;
+    transition: background 0.2s ease, color 0.2s ease;
 }
 
 /*=========================================
-            BOTÃO DE TEMA
+        BOTÃO DE TEMA (descritivo, único)
 =========================================*/
 
-.theme-toggle{
-    width:60px;
-    height:32px;
-    background:var(--bg-card);
-    border:1px solid var(--border-color);
-    border-radius:50px;
-    cursor:pointer;
-    position:relative;
-    transition:.3s;
-    display:flex;
-    align-items:center;
-    padding:3px;
+.theme-toggle-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    color: var(--text-white);
+    padding: 10px 18px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: border-color 0.2s ease, transform 0.2s ease;
+    white-space: nowrap;
 }
 
-.theme-toggle:hover{
-    border-color:var(--primary);
-}
-
-.theme-icon{
-    width:24px;
-    height:24px;
-    background:var(--primary);
-    border-radius:50%;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:14px;
-    transition:.3s;
-    transform:translateX(0);
-}
-
-body.light-theme .theme-icon {
-    transform: translateX(28px);
+.theme-toggle-btn:hover {
+    border-color: var(--primary);
+    transform: translateY(-2px);
 }
 
 /*=========================================
@@ -230,7 +233,6 @@ header p {
   text-align: left;
 }
 
-/* Overlay escuro criado dinamicamente pelo menu.js */
 .sidebar-overlay {
   display: none;
 }

@@ -1,58 +1,35 @@
-    /*=========================================
-        TEMA GLOBAL 
-    =========================================*/
+/* ==========================================================================
+   TEMA.JS — compartilhado por TODAS as páginas do projeto
+   Aplica o tema salvo em qualquer página (dark/black/light). 
+   ========================================================================== */
+
+const THEME_KEY = "forestTheme";
+const THEME_SEQUENCE = ["dark", "black", "light"];
+const THEME_LABELS = { dark: "Original", black: "Escuro", light: "Claro" };
+
+function getSavedTheme() {
+  return localStorage.getItem(THEME_KEY) || "dark";
+}
+
+function applyTheme(theme) {
+  document.body.classList.remove("light-theme", "black-theme");
+  if (theme === "light") document.body.classList.add("light-theme");
+  if (theme === "black") document.body.classList.add("black-theme");
+
+  const label = document.getElementById("themeToggleLabel");
+  if (label) label.textContent = `🎨 Tema: ${THEME_LABELS[theme] || THEME_LABELS.dark}`;
+}
 
 document.addEventListener("DOMContentLoaded", () => {
+  applyTheme(getSavedTheme());
 
-    const body = document.body;
-    const themeToggle = document.getElementById("themeToggle");
-    const themeIcon = document.querySelector(".theme-icon");
+  const toggleBtn = document.getElementById("themeToggleBtn");
+  if (!toggleBtn) return;
 
-    /*=========================
-        Carregar tema salvo
-    =========================*/
-
-    const savedTheme = localStorage.getItem("theme");
-
-    if (savedTheme === "light") {
-        body.classList.add("light-theme");
-    }
-
-    /*=========================
-        Atualizar ícone
-    =========================*/
-
-    function updateIcon() {
-
-        if (!themeIcon) return;
-
-        themeIcon.textContent = body.classList.contains("light-theme")
-            ? "☀️"
-            : "🌙";
-    }
-
-    updateIcon();
-
-    /*=========================
-        Clique no botão
-    =========================*/
-
-    if (themeToggle) {
-
-        themeToggle.addEventListener("click", () => {
-
-            body.classList.toggle("light-theme");
-
-            const currentTheme = body.classList.contains("light-theme")
-                ? "light"
-                : "dark";
-
-            localStorage.setItem("theme", currentTheme);
-
-            updateIcon();
-
-        });
-
-    }
-
+  toggleBtn.addEventListener("click", () => {
+    const currentIndex = THEME_SEQUENCE.indexOf(getSavedTheme());
+    const nextTheme = THEME_SEQUENCE[(currentIndex + 1) % THEME_SEQUENCE.length];
+    localStorage.setItem(THEME_KEY, nextTheme);
+    applyTheme(nextTheme);
+  });
 });
