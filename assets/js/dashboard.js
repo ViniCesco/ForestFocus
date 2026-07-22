@@ -195,27 +195,30 @@ function updateDashboardNextEventCard() {
   if (dashEventBadge) dashEventBadge.textContent = `${d}/${m}`;
 }
 
-
-// TEMA 
-
+// ========================================
+// TEMA (protegido contra ausência do botão nesta página)
+// ========================================
 const themeToggle = document.getElementById("themeToggle");
 const themeIcon = document.querySelector(".theme-icon");
 
-if(localStorage.getItem("theme")==="light"){
-    document.body.classList.add("light-theme");
-    themeIcon.textContent="☀️";
+if (localStorage.getItem("theme") === "light") {
+  document.body.classList.add("light-theme");
+  if (themeIcon) themeIcon.textContent = "☀️";
 }
 
-themeToggle.addEventListener("click",()=>{
-
+if (themeToggle) {
+  themeToggle.addEventListener("click", () => {
     document.body.classList.toggle("light-theme");
 
-    const light=document.body.classList.contains("light-theme");
+    const light = document.body.classList.contains("light-theme");
 
-    themeIcon.textContent=light ? "☀️" : "🌙";
+    if (themeIcon) themeIcon.textContent = light ? "☀️" : "🌙";
 
-    localStorage.setItem("theme",light?"light":"dark");
-});
+    localStorage.setItem("theme", light ? "light" : "dark");
+  });
+} else {
+  console.warn("[dashboard.js] Botão #themeToggle não encontrado nesta página — alternância de tema desativada aqui.");
+}
 
 // ========================================
 // 10. INICIALIZAÇÃO DO SISTEMA
