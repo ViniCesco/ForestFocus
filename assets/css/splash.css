@@ -1,0 +1,94 @@
+body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: var(--bg-main, #0d0f12);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+.splash-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.splash-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  animation: fadeIn 0.8s ease-out forwards;
+}
+
+.logo-icon {
+  font-size: 64px;
+  animation: float 2.5s ease-in-out infinite;
+  filter: drop-shadow(0 0 16px rgba(108, 92, 231, 0.4));
+}
+
+.logo-title {
+  color: var(--text-white, #ffffff);
+  font-size: 28px;
+  font-weight: 800;
+  margin: 0;
+  letter-spacing: -0.5px;
+}
+
+.logo-subtitle {
+  color: var(--text-muted, #a0a0a0);
+  font-size: 14px;
+  margin: 0 0 20px 0;
+}
+
+/* Barra de Carregamento Estilizada */
+.progress-bar-container {
+  width: 180px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+}
+
+.progress-bar {
+  width: 0%;
+  height: 100%;
+  background: var(--primary, #6c5ce7);
+  border-radius: 10px;
+  animation: loadProgress 2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* Animações */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes loadProgress {
+  0% {
+    width: 0%;
+  }
+  100% {
+    width: 100%;
+  }
+}

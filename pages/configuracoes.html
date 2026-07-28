@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Configurações - Forest Focus</title>
+<link rel="icon" type="image/png" href="../assets/img/favicon.png">
+<link rel="stylesheet" href="../assets/css/base.css">
+<link rel="stylesheet" href="../assets/css/configuracoes.css">
+
+</head>
+<body>
+
+<div class="container">
+
+<button class="menu-toggle" aria-label="Abrir menu">
+<span>🌱 Forest Focus</span>
+<span class="menu-icon">☰</span>
+</button>
+
+<aside class="sidebar">
+<h2>🌱 Forest Focus</h2>
+
+<nav>
+
+  <a href="../index.html">📊 Dashboard</a>
+        <a href="tarefas.html">📋 Tarefas</a>
+        <a href="pomodoro.html">⏳ Pomodoro</a>
+        <a href="calendario.html">📆 Calendário</a>
+        <a href="notion.html">✒️ Anotações</a>
+        <a href="energia.html">🔋 Energia</a>
+        <a href="financas.html">💰 Finanças</a>
+        <a href="metas.html">🎯 Metas</a>
+
+        <hr class="sidebar-divider">
+        
+        <a href="doacoes.html">🤍 Apoie o Projeto</a>
+        <a href="https://youtu.be/IvgZ4maSn4c" target="_blank" class="radio-link"> 🎧 Forest Beats </a>
+        <a href="configuracoes.html">⚙️ Configurações</a>
+
+</nav>
+</aside>
+
+<main class="main-content">
+<header>
+<div>
+<h1>⚙️ Configurações</h1>
+<p>Perfil, tema e sua evolução no Forest Focus.</p>
+</div>
+</header>
+
+<!-- Cartão de perfil resumido — toque abre o modal de edição -->
+<div class="profile-summary-card" onclick="openAvatarModal()">
+<div id="profileAvatarDisplay" class="avatar-circle">🌱</div>
+<div class="profile-summary-text">
+<div id="profileNameDisplay">Explorador do Foco</div>
+<div id="profileTitleDisplay"></div>
+</div>
+<span class="profile-summary-chevron">›</span>
+</div>
+
+<!-- Modal de edição de perfil — reaproveita .modal-overlay/.modal-box do base.css -->
+<div id="avatarModal" class="modal-overlay">
+<div class="modal-box">
+<h3>Editar Perfil</h3>
+
+<p style="font-size:13px; color:var(--text-label); margin-bottom:10px;">Escolha seu avatar:</p>
+<div class="avatar-options">
+<span onclick="selectAvatar('🌱')">🌱</span>
+<span onclick="selectAvatar('🐶')">🐶</span>
+<span onclick="selectAvatar('🪙')">🪙</span>
+<span onclick="selectAvatar('🧑🏽‍💻')">🧑🏽‍💻</span>
+</div>
+
+<input type="text" id="usernameInput" placeholder="Digite seu novo nome...">
+<p class="modal-error" id="usernameError"></p>
+
+<div class="modal-actions">
+<button class="btn-cancel" onclick="document.getElementById('avatarModal').classList.remove('active')">Cancelar</button>
+<button class="btn-save" onclick="updateUsername()">Salvar</button>
+</div>
+</div>
+</div>
+
+<div class="settings-groups">
+
+<div>
+<p class="settings-group-label">Progresso</p>
+<div class="settings-block">
+<div class="settings-row">
+<span class="settings-row-icon">✨</span>
+<span class="settings-row-label">Experiência</span>
+<span class="settings-row-value" id="profileXP">0 XP</span>
+</div>
+<div class="settings-row">
+<span class="settings-row-icon">🌲</span>
+<span class="settings-row-label">Árvores no total</span>
+<span class="settings-row-value" id="profileTrees">0</span>
+</div>
+</div>
+</div>
+
+<div>
+<p class="settings-group-label">Aparência</p>
+<div class="settings-block">
+<div class="settings-row">
+<span class="settings-row-icon">🎨</span>
+<span class="settings-row-label">Tema</span>
+<button class="theme-toggle-btn" id="themeToggleBtn">
+<span id="themeToggleLabel">Original</span>
+</button>
+</div>
+</div>
+</div>
+
+<div>
+<p class="settings-group-label">Sobre</p>
+<div class="settings-block">
+<div class="settings-row">
+<span class="settings-row-icon">📦</span>
+<span class="settings-row-label">Versão</span>
+<span class="settings-row-value">1.5</span>
+</div>
+<div class="settings-row">
+<span class="settings-row-icon">💻</span>
+<span class="settings-row-label">Desenvolvido por Vinícius Cesconetto</span>
+<a href="https://github.com/ViniCesco" target="_blank" title="Ver meu GitHub">
+<svg height="16" width="16" viewBox="0 0 16 16">
+<path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path>
+</svg>
+GitHub
+</a>
+</div>
+</div>
+</div>
+
+</div>
+
+</main>
+
+</div>
+
+<script src="../assets/js/menu.js"></script>
+<script src="../assets/js/tema.js"></script>
+<script src="../assets/js/configuracoes.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,162 @@
+/* ===== Grade de Cartões ===== */
+.notes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 18px;
+  padding-bottom: 90px;
+}
+
+/* Cartão / Bloco Individual */
+.note-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 18px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  position: relative;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.note-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--primary);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+}
+
+.note-card.editing {
+  border-color: var(--primary);
+}
+
+.note-title {
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-white);
+  width: 100%;
+}
+
+.note-title::placeholder {
+  color: var(--text-muted);
+  opacity: 0.6;
+}
+
+.note-body {
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: 14px;
+  color: var(--text-muted);
+  line-height: 1.5;
+  resize: none;
+  min-height: 90px;
+  width: 100%;
+}
+
+.note-body::placeholder {
+  color: var(--text-muted);
+  opacity: 0.4;
+}
+
+.note-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 6px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.note-date {
+  font-size: 11px;
+  color: var(--text-label);
+}
+
+/* ===== Botões de Ação do Cartão (Editar / Excluir) ===== */
+.note-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.note-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--text-muted);
+  font-size: 13px;
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.note-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+.note-btn:active {
+  transform: scale(0.95);
+}
+
+.note-btn.delete:hover {
+  background: rgba(255, 85, 85, 0.2);
+  border-color: rgba(255, 85, 85, 0.4);
+  color: #ff5555;
+}
+
+/* ===== Ilha Flutuante / Botão "+" ===== */
+.fab-button {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: #ffffff;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  cursor: pointer;
+  transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275), background 0.2s ease;
+  z-index: 99;
+}
+
+.fab-button span {
+  font-size: 32px;
+  line-height: 1;
+  font-weight: 300;
+  margin-top: -2px;
+}
+
+.fab-button:hover {
+  transform: scale(1.1) rotate(90deg);
+  background: var(--primary-hover);
+}
+
+.fab-button:active {
+  transform: scale(0.95);
+}
+
+@media (max-width: 480px) {
+  .notes-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .fab-button {
+    bottom: 20px;
+    right: 20px;
+    width: 54px;
+    height: 54px;
+  }
+}
