@@ -12,8 +12,7 @@ let isRunning = false;
 // 2. MAPEAMENTO DE ELEMENTOS DO DOM
 // ========================================
 const timer = document.getElementById("timer");
-const startButton = document.getElementById("startPomodoro");
-const pauseButton = document.getElementById("pausePomodoro");
+const toggleButton = document.getElementById("toggleTimerButton");
 const resetButton = document.getElementById("resetPomodoro");
 
 const progressBar = document.getElementById("pomodoroProgress");
@@ -46,8 +45,7 @@ document.addEventListener("DOMContentLoaded", () => {
 // ========================================
 // 4. OUVINTES DE EVENTOS (LISTENERS)
 // ========================================
-if (startButton) startButton.addEventListener("click", startPomodoro);
-if (pauseButton) pauseButton.addEventListener("click", pausePomodoro);
+if (toggleButton) toggleButton.addEventListener("click", toggleTimer);
 if (resetButton) resetButton.addEventListener("click", resetPomodoro);
 
 document.addEventListener("keydown", (event) => {
@@ -57,11 +55,7 @@ document.addEventListener("keydown", (event) => {
 
     if (event.code === "Space") {
         event.preventDefault();
-        if (isRunning) {
-            pausePomodoro();
-        } else {
-            startPomodoro();
-        }
+        toggleTimer();
     }
 });
 
@@ -200,9 +194,30 @@ function showFocusTime(minutes) {
 // ========================================
 // 8. GERENCIAMENTO DAS REGRAS DE NEGÓCIO (TIMER CORE / LOCALSTORAGE)
 // ========================================
+function toggleTimer() {
+    if (isRunning) {
+        pausePomodoro();
+    } else {
+        startPomodoro();
+    }
+}
+
+function updateToggleButton() {
+    if (!toggleButton) return;
+
+    if (isRunning) {
+        toggleButton.textContent = "⏸ Pausar";
+        toggleButton.classList.add("is-running");
+    } else {
+        toggleButton.textContent = "▶ Iniciar";
+        toggleButton.classList.remove("is-running");
+    }
+}
+
 function startPomodoro() {
     if (isRunning) return;
     isRunning = true;
+    updateToggleButton();
 
     timerInterval = setInterval(() => {
         remainingSeconds--;
@@ -221,6 +236,7 @@ function pausePomodoro() {
     clearInterval(timerInterval);
     timerInterval = null;
     isRunning = false;
+    updateToggleButton();
 }
 
 function resetPomodoro() {

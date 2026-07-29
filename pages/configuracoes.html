@@ -23,7 +23,7 @@
 
 <nav>
 
-  <a href="../index.html">📊 Dashboard</a>
+        <a href="dashboard.html">📊 Dashboard</a>
         <a href="tarefas.html">📋 Tarefas</a>
         <a href="pomodoro.html">⏳ Pomodoro</a>
         <a href="calendario.html">📆 Calendário</a>
@@ -49,6 +49,7 @@
 </div>
 </header>
 
+<p class="settings-group-label">Perfil
 <!-- Cartão de perfil resumido — toque abre o modal de edição -->
 <div class="profile-summary-card" onclick="openAvatarModal()">
 <div id="profileAvatarDisplay" class="avatar-circle">🌱</div>
@@ -66,10 +67,13 @@
 
 <p style="font-size:13px; color:var(--text-label); margin-bottom:10px;">Escolha seu avatar:</p>
 <div class="avatar-options">
-<span onclick="selectAvatar('🌱')">🌱</span>
-<span onclick="selectAvatar('🐶')">🐶</span>
-<span onclick="selectAvatar('🪙')">🪙</span>
-<span onclick="selectAvatar('🧑🏽‍💻')">🧑🏽‍💻</span>
+<span onclick="selectAvatar('🧑🏽')">🧑🏽</span>
+<span onclick="selectAvatar('👩🏽')">👩🏽</span>
+<span onclick="selectAvatar('👨🏼')">👨🏼</span>
+<span onclick="selectAvatar('👧🏼')">👧🏼</span>
+<span onclick="selectAvatar('🧑🏻‍🦰')">🧑🏻‍🦰</span>
+<span onclick="selectAvatar('👩🏻‍🦰')">👩🏻‍🦰</span>
+
 </div>
 
 <input type="text" id="usernameInput" placeholder="Digite seu novo nome...">

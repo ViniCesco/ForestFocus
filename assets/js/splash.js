@@ -3,5 +3,5 @@ const SPLASH_TIME = 3200;
 
 setTimeout(() => {
   // Redireciona para o Dashboard (index.html)
-  window.location.href = 'index.html';
+  window.location.href = 'pages/dashboard.html';
 }, SPLASH_TIME);

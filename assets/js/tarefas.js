@@ -277,4 +277,6 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("editTaskInput")?.addEventListener("keydown", (e) => {
     if (e.key === "Enter") saveEditTask();
   });
+  
 });
+

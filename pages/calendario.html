@@ -21,7 +21,7 @@
       <h2>🌱 Forest Focus</h2>
 
       <nav>
-        <a href="../index.html">📊 Dashboard</a>
+        <a href="dashboard.html">📊 Dashboard</a>
         <a href="tarefas.html">📋 Tarefas</a>
         <a href="pomodoro.html">⏳ Pomodoro</a>
         <a href="calendario.html">📆 Calendário</a>
@@ -87,43 +87,65 @@
 
         <div id="calendarGrid" class="calendar-grid"></div>
 
-      </section>
-
       <div class="section-divider"></div>
 
-      <section class="tasks">
-        <h2>➕ Novo Evento</h2>
+<div class="section-divider"></div>
 
-        <div class="task-input">
-          <label for="eventTitle">Título:</label>
-          <input type="text" id="eventTitle" placeholder="Escreva um Título"
+<section class="event-form-card">
+  <div class="event-form-header">
+    <span class="event-form-icon">✅</span>
+    <div>
+      <h2>Novo Evento</h2>
+      <p>Adicione um compromisso ao seu calendário</p>
+    </div>
+  </div>
 
-          <label for="eventDate">Data: </label>
-          <input type="date" id="eventDate">
+  <div class="event-form-body">
 
-          <label for="eventTime">Horário: </label>
-          <input type="time" id="eventTime">
-          <label for="eventTitle">Categoria:</label>
-          <select id="eventCategory">
-            <option selected disabled>Categoria</option>
-            <option>🎂 Aniversário</option>
-            <option>📝 Estudos</option>
-            <option>💼 Trabalho</option>
-            <option>🖥️ Reunião</option>
-            <option>❤️ Saúde</option>
-            <option>🧳 Viagem</option>
-            <option>🗓️ Evento</option>
-            <option>💰 Financeiro</option>
-            <option>📌 Outros</option>
-          </select>
-        </div>
+    <div class="field field-full">
+      <label for="eventTitle">Título</label>
+      <input type="text" id="eventTitle" placeholder="Ex: Reunião com o time">
+    </div>
 
-        <div class="task-input">
-          <input type="text" id="eventDescription" placeholder="Descrição (opcional)">
-          <button id="addEventButton">Adicionar Evento</button>
-        </div>
-        <p class="modal-error" id="eventFormError"></p>
-      </section>
+    <div class="field">
+      <label for="eventDate">Data</label>
+      <input type="date" id="eventDate">
+    </div>
+
+    <div class="field">
+      <label for="eventTime">Horário</label>
+      <input type="time" id="eventTime">
+    </div>
+
+    <div class="field field-full">
+      <label for="eventCategory">Categoria</label>
+      <select id="eventCategory">
+        <option selected disabled>Selecione uma categoria</option>
+        <option>🎂 Aniversário</option>
+        <option>📝 Estudos</option>
+        <option>💼 Trabalho</option>
+        <option>🖥️ Reunião</option>
+        <option>❤️ Saúde</option>
+        <option>🧳 Viagem</option>
+        <option>🗓️ Evento</option>
+        <option>💰 Financeiro</option>
+        <option>📌 Outros</option>
+      </select>
+    </div>
+
+    <div class="field field-full">
+      <label for="eventDescription">Descrição <span>(opcional)</span></label>
+      <input type="text" id="eventDescription" placeholder="Detalhes do evento...">
+    </div>
+
+    <p class="modal-error" id="eventFormError"></p>
+
+    <button id="addEventButton" class="event-form-submit">
+      <span>Adicionar Evento</span> 
+    </button>
+
+  </div>
+</section>
 
       <div class="section-divider"></div>
 

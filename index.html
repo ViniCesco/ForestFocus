@@ -3,157 +3,25 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard - Forest Focus</title>
+  <title>Forest Focus</title>
   <link rel="icon" type="image/png" href="assets/img/favicon.png">
   <link rel="stylesheet" href="assets/css/base.css">
-  <link rel="stylesheet" href="assets/css/style.css">
-  <link rel="manifest" href="./manifest.json">
-  <meta name="theme-color" content="#1a1a2e">
+  <link rel="stylesheet" href="assets/css/splash.css">
 </head>
 <body>
 
-  <div class="container">
-
-    <button class="menu-toggle" aria-label="Abrir menu">
-      <span>🌱 Forest Focus</span>
-      <span class="menu-icon">☰</span>
-    </button>
-
-    <aside class="sidebar">
-      <h2>🌱 Forest Focus</h2>
-
-      <nav>
-        <a href="#">📊 Dashboard</a>
-        <a href="pages/tarefas.html">📋 Tarefas</a>
-        <a href="pages/pomodoro.html">⏳ Pomodoro</a>
-        <a href="pages/calendario.html">📆 Calendário</a>
-        <a href="pages/notion.html">✒️ Anotações</a>
-        <a href="pages/energia.html">🔋 Energia</a>
-        <a href="pages/financas.html">💰 Finanças</a>
-        <a href="pages/metas.html">🎯 Metas</a>
-
-        <hr class="sidebar-divider">
-
-        <a href="pages/doacoes.html">🤍 Apoie o Projeto</a>
-        <a href="https://youtu.be/IvgZ4maSn4c" target="_blank" class="radio-link"> 🎧 Forest Beats</a>
-        <a href="pages/configuracoes.html">⚙️ Configurações</a>
-      </nav>
-    </aside>
-
-    <main class="main-content">
-
-      <header>
-        <div>
-          <h1>Olá, Explorador! 👋🏽</h1>
-          <p>Bem-vindo ao Forest Focus.</p>
-        </div>
-        
-        <div class="user-level-top">
-          <span>⭐ <span id="levelText">Nível 1</span></span>
-          <div class="progress-bar">
-            <div id="levelFill" style="width: 70%;"></div>
-          </div>
-          <span id="xpText">70/100 XP</span>
-        </div>
-      </header>
-
-      <section class="cards">
-
-        <div class="card card-dash grid-3-columns">
-          <div class="metric-item border-right">
-            <h3>📋 Tarefas Pendentes</h3>
-            <p id="taskCounter" class="dash-number">0</p>
-          </div>
-          
-          <div class="metric-item border-right">
-            <h3>✅ Tarefas Concluídas</h3>
-            <p id="completedCounter" class="dash-number">0</p>
-          </div>
-
-          <div class="metric-item padding-x">
-            <h3>📊 Progresso</h3>
-            <p id="progressText" class="dash-number">0%</p>
-            <div class="progress-bar">
-              <div id="progressFill"></div>
-            </div>
-          </div>
-        </div>
-
-        <div class="grid-2-columns">
-          
-          <div class="card card-dash flex-center">
-            <h3>⚡ Energia Recente</h3>
-            <div id="dashEnergyStatus">
-              <span id="dashEnergyEmoji">🔋</span>
-              <div>
-                <h4 id="dashEnergyLabel">Carregando...</h4>
-                <p id="dashEnergyNote">"Buscando último registro..."</p>
-              </div>
-            </div>
-          </div>
-
-          <div class="card card-dash flex-center">
-            <h3>📅 Evento mais próximo</h3>
-            <div id="dashNextEvent">
-              <div class="event-wrapper">
-                <span id="dashEventTitle">Nenhum evento agendado</span>
-                <span id="dashEventBadge">--</span>
-              </div>
-            </div>
-          </div>
-
-        </div>
-
-        <div class="grid-3-columns">
-          
-          <div class="card card-dash space-between">
-            <h3>🌱 Planta</h3>
-            <div class="card-center-content">
-              <div id="plantStage">🌱</div>
-              <p id="plantProgress">Brotando...</p>
-            </div>
-          </div>
-
-          <div class="card card-dash space-between">
-            <h3>💰 Finanças</h3>
-            <div class="card-center-content">
-              <p id="financeMonth">Junho 2026</p>
-              <p id="balanceText">R$ 0,00</p>
-              <div class="finance-summary">
-                <span id="incomeText">📈 R$ 0,00</span>
-                <span id="expenseText">📉 R$ 0,00</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="card card-dash space-between">
-            <h3>🎯 Suas Metas</h3>
-            <div id="dashboardGoalsContent">
-              <p class="loading-text">Carregando metas...</p>
-            </div>
-          </div>
-
-        </div>
-
-      </section>
-
-      <footer class="main-footer">
-        <p>
-          &copy; 2026 Forest Focus. Desenvolvido por <strong>CESCONETTO</strong>. Todos os direitos reservados.
-        </p>
-        <a href="https://github.com/ViniCesco" target="_blank" title="Ver meu GitHub">
-          <svg height="20" width="20" viewBox="0 0 16 16">
-            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path>
-          </svg>
-        </a>
-      </footer>
-
-    </main>
+  <div class="splash-container">
+    <div class="splash-content">
+      <div class="logo-icon">🌱</div>
+      <h1 class="logo-title">Forest Focus</h1>
+      <p class="logo-subtitle">Cultive sua produtividade</p>
+      
+      <div class="progress-bar-container">
+        <div class="progress-bar"></div>
+      </div>
+    </div>
   </div>
 
-  <script src="assets/js/menu.js"></script>
-  <script src="assets/js/tema.js"></script>
-  <script src="assets/js/dashboard.js"></script>
-
+  <script src="assets/js/splash.js"></script>
 </body>
 </html>
